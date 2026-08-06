@@ -1,0 +1,8 @@
+# 统一 LF 行尾，避免 Windows 检出转 CRLF 破坏脚本/构建文件
+* text=auto eol=lf
+
+# 构建产物与二进制不入库
+*.img binary
+*.zip binary
+*.cpio binary
+*.png binary

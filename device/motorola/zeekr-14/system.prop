@@ -1,0 +1,13 @@
+#
+# system.prop for OrangeFox Recovery (zeekr-14)
+# recovery 构建基本不需要大量系统属性，这里仅保留最小的必要项
+#
+ro.product.board=zeekr
+ro.board.platform=sm8475
+
+# 允许 recovery 下的 adb
+ro.adb.secure=0
+ro.debuggable=1
+
+# 显示（外屏密度 420，与 V-3.1 一致）
+ro.sf.lcd_density=420

@@ -1,0 +1,165 @@
+name: Build OrangeFox for zeekr (A16 + Legacy)
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_target:
+        description: '要编译的目标：zeekr(安卓16) / zeekr14(老版V-3.1世代) / both(全部)'
+        type: choice
+        default: both
+        options:
+          - both
+          - zeekr
+          - zeekr14
+  push:
+    branches: [main, master]
+    paths:
+      - 'device/**'
+      - 'scripts/**'
+      - '**.mk'
+      - '!README.md'
+
+concurrency:
+  group: ofox-build-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  DEVICE_16: zeekr
+  DEVICE_14: zeekr14
+  KERNEL_REPO: https://github.com/LineageOS/android_kernel_motorola_sm8475.git
+  CCACHE_DIR: /root/.ccache
+
+jobs:
+  build-android16:
+    name: "安卓16 新版 OrangeFox (zeekr)"
+    if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.build_target == 'both' || github.event.inputs.build_target == 'zeekr') || github.event_name != 'workflow_dispatch' }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    steps:
+      - name: 检出设备树仓库
+        uses: actions/checkout@v4
+        with:
+          path: device_tree
+
+      - name: 安装编译依赖
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib \
+            gcc-multilib git gnupg gperf imagemagick lib32ncurses-dev lib32readline-dev \
+            lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libxml2 \
+            libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip \
+            zlib1g-dev python3 python3-pip openjdk-17-jdk repo sshpass
+          sudo apt-get clean
+
+      - name: 同步 OrangeFox 16.0 源码
+        run: |
+          mkdir -p "$HOME/fox16"
+          cd "$HOME"
+          git clone https://gitlab.com/OrangeFox/sync.git fox16_sync
+          cd fox16_sync
+          ./orangefox_sync.sh --branch 16.0 --path "$HOME/fox16" || \
+            ./orangefox_sync.sh --branch 16.0 --path "$HOME/fox16"
+        timeout-minutes: 180
+
+      - name: 克隆内核 (安卓16 lineage-23.2)
+        run: |
+          cd "$HOME/fox16"
+          mkdir -p kernel/motorola
+          git clone --depth=1 --branch lineage-23.2 "$KERNEL_REPO" kernel/motorola/sm8475
+
+      - name: 部署设备树
+        run: |
+          cd "$HOME/fox16"
+          mkdir -p device/motorola
+          cp -r "$GITHUB_WORKSPACE/device_tree/device/motorola/${{ env.DEVICE_16 }}" device/motorola/
+          ls -la device/motorola/
+
+      - name: 编译 OrangeFox (安卓16)
+        run: |
+          cd "$HOME/fox16"
+          source build/envsetup.sh
+          lunch twrp_${{ env.DEVICE_16 }}-eng || lunch twrp_${{ env.DEVICE_16 }}-bp2a-eng
+          mka recoveryimage 2>&1 | tee /tmp/build16.log
+        timeout-minutes: 240
+
+      - name: 收集产物
+        run: |
+          OUT="$HOME/fox16/out/target/product/${{ env.DEVICE_16 }}"
+          echo "===== 产物目录 ====="
+          ls -la "$OUT" 2>/dev/null | head -50
+          mkdir -p "$GITHUB_WORKSPACE/artifacts/zeekr-a16"
+          find "$OUT" -maxdepth 1 -name 'OrangeFox-*.zip' -exec cp {} "$GITHUB_WORKSPACE/artifacts/zeekr-a16/" \;
+          cp "$OUT/recovery.img" "$GITHUB_WORKSPACE/artifacts/zeekr-a16/" 2>/dev/null || true
+
+      - name: 上传产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: OrangeFox-zeekr-Android16
+          path: artifacts/zeekr-a16/
+
+  build-legacy:
+    name: "老版 OrangeFox (fox_14.1, V-3.1世代)"
+    if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.build_target == 'both' || github.event.inputs.build_target == 'zeekr14') || github.event_name != 'workflow_dispatch' }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    steps:
+      - name: 检出设备树仓库
+        uses: actions/checkout@v4
+        with:
+          path: device_tree
+
+      - name: 安装编译依赖
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib \
+            gcc-multilib git gnupg gperf imagemagick lib32ncurses-dev lib32readline-dev \
+            lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libxml2 \
+            libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip \
+            zlib1g-dev python3 python3-pip openjdk-17-jdk repo sshpass
+          sudo apt-get clean
+
+      - name: 同步 OrangeFox 14.1 源码
+        run: |
+          mkdir -p "$HOME/fox14"
+          cd "$HOME"
+          git clone https://gitlab.com/OrangeFox/sync.git fox14_sync
+          cd fox14_sync
+          ./orangefox_sync.sh --branch 14.1 --path "$HOME/fox14" || \
+            ./orangefox_sync.sh --branch 14.1 --path "$HOME/fox14"
+        timeout-minutes: 180
+
+      - name: 克隆内核 (安卓14 lineage-21)
+        run: |
+          cd "$HOME/fox14"
+          mkdir -p kernel/motorola
+          git clone --depth=1 --branch lineage-21 "$KERNEL_REPO" kernel/motorola/sm8475
+
+      - name: 部署设备树
+        run: |
+          cd "$HOME/fox14"
+          mkdir -p device/motorola
+          cp -r "$GITHUB_WORKSPACE/device_tree/device/motorola/${{ env.DEVICE_14 }}" device/motorola/
+          ls -la device/motorola/
+
+      - name: 编译 OrangeFox (老版)
+        run: |
+          cd "$HOME/fox14"
+          source build/envsetup.sh
+          lunch twrp_${{ env.DEVICE_14 }}-eng
+          mka recoveryimage 2>&1 | tee /tmp/build14.log
+        timeout-minutes: 240
+
+      - name: 收集产物
+        run: |
+          OUT="$HOME/fox14/out/target/product/${{ env.DEVICE_16 }}"
+          echo "===== 产物目录 ====="
+          ls -la "$OUT" 2>/dev/null | head -50
+          mkdir -p "$GITHUB_WORKSPACE/artifacts/zeekr-legacy"
+          find "$OUT" -maxdepth 1 -name 'OrangeFox-*.zip' -exec cp {} "$GITHUB_WORKSPACE/artifacts/zeekr-legacy/" \;
+          cp "$OUT/recovery.img" "$GITHUB_WORKSPACE/artifacts/zeekr-legacy/" 2>/dev/null || true
+
+      - name: 上传产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: OrangeFox-zeekr-Legacy14
+          path: artifacts/zeekr-legacy/
