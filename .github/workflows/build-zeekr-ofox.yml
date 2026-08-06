@@ -25,7 +25,7 @@ concurrency:
 
 env:
   DEVICE_16: zeekr
-  DEVICE_14: zeekr14
+  DEVICE_14: zeekr-14
   KERNEL_REPO: https://github.com/LineageOS/android_kernel_motorola_sm8475.git
   CCACHE_DIR: /root/.ccache
 
@@ -34,7 +34,7 @@ jobs:
     name: "安卓16 新版 OrangeFox (zeekr)"
     if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.build_target == 'both' || github.event.inputs.build_target == 'zeekr') || github.event_name != 'workflow_dispatch' }}
     runs-on: ubuntu-22.04
-    timeout-minutes: 360
+    timeout-minutes: 600
     steps:
       - name: 检出设备树仓库
         uses: actions/checkout@v4
@@ -51,6 +51,13 @@ jobs:
             zlib1g-dev python3 python3-pip openjdk-17-jdk repo sshpass
           sudo apt-get clean
 
+      - name: ccache 缓存恢复
+        uses: actions/cache@v4
+        with:
+          path: /root/.ccache
+          key: ccache-a16-${{ github.run_id }}
+          restore-keys: ccache-a16-
+
       - name: 同步 OrangeFox 16.0 源码
         run: |
           mkdir -p "$HOME/fox16"
@@ -59,7 +66,7 @@ jobs:
           cd fox16_sync
           ./orangefox_sync.sh --branch 16.0 --path "$HOME/fox16" || \
             ./orangefox_sync.sh --branch 16.0 --path "$HOME/fox16"
-        timeout-minutes: 180
+        timeout-minutes: 300
 
       - name: 克隆内核 (安卓16 lineage-23.2)
         run: |
@@ -81,7 +88,7 @@ jobs:
           source build/envsetup.sh
           lunch twrp_${{ env.DEVICE_16 }}-eng || lunch twrp_${{ env.DEVICE_16 }}-bp2a-eng
           mka recoveryimage 2>&1 | tee /tmp/build16.log
-        timeout-minutes: 240
+        timeout-minutes: 480
 
       - name: 收集产物
         run: |
@@ -102,7 +109,7 @@ jobs:
     name: "老版 OrangeFox (fox_14.1, V-3.1世代)"
     if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.build_target == 'both' || github.event.inputs.build_target == 'zeekr14') || github.event_name != 'workflow_dispatch' }}
     runs-on: ubuntu-22.04
-    timeout-minutes: 360
+    timeout-minutes: 600
     steps:
       - name: 检出设备树仓库
         uses: actions/checkout@v4
@@ -119,6 +126,13 @@ jobs:
             zlib1g-dev python3 python3-pip openjdk-17-jdk repo sshpass
           sudo apt-get clean
 
+      - name: ccache 缓存恢复
+        uses: actions/cache@v4
+        with:
+          path: /root/.ccache
+          key: ccache-a14-${{ github.run_id }}
+          restore-keys: ccache-a14-
+
       - name: 同步 OrangeFox 14.1 源码
         run: |
           mkdir -p "$HOME/fox14"
@@ -127,7 +141,7 @@ jobs:
           cd fox14_sync
           ./orangefox_sync.sh --branch 14.1 --path "$HOME/fox14" || \
             ./orangefox_sync.sh --branch 14.1 --path "$HOME/fox14"
-        timeout-minutes: 180
+        timeout-minutes: 300
 
       - name: 克隆内核 (安卓14 lineage-21)
         run: |
@@ -139,6 +153,7 @@ jobs:
         run: |
           cd "$HOME/fox14"
           mkdir -p device/motorola
+          # 老版设备树目录 zeekr-14 保持原名（设备树内部继承路径写死为 zeekr-14）
           cp -r "$GITHUB_WORKSPACE/device_tree/device/motorola/${{ env.DEVICE_14 }}" device/motorola/
           ls -la device/motorola/
 
@@ -146,9 +161,9 @@ jobs:
         run: |
           cd "$HOME/fox14"
           source build/envsetup.sh
-          lunch twrp_${{ env.DEVICE_14 }}-eng
+          lunch twrp_zeekr14-eng
           mka recoveryimage 2>&1 | tee /tmp/build14.log
-        timeout-minutes: 240
+        timeout-minutes: 480
 
       - name: 收集产物
         run: |

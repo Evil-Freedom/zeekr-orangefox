@@ -1,0 +1,1091 @@
+﻿2026-08-06T02:21:47.2123846Z Current runner version: '2.336.0'
+2026-08-06T02:21:47.2146134Z ##[group]Runner Image Provisioner
+2026-08-06T02:21:47.2147074Z Hosted Compute Agent
+2026-08-06T02:21:47.2147628Z Version: 20260707.563
+2026-08-06T02:21:47.2148173Z Commit: 02667638d2b423fbc733a8e32a88b44996a3ba6e
+2026-08-06T02:21:47.2148750Z Build Date: 2026-07-07T19:33:50Z
+2026-08-06T02:21:47.2149375Z Worker ID: {d6759b98-8d56-4753-b645-d8866435457d}
+2026-08-06T02:21:47.2149957Z Azure Region: westcentralus
+2026-08-06T02:21:47.2150428Z ##[endgroup]
+2026-08-06T02:21:47.2151666Z ##[group]Operating System
+2026-08-06T02:21:47.2152174Z Ubuntu
+2026-08-06T02:21:47.2152728Z 22.04.5
+2026-08-06T02:21:47.2153183Z LTS
+2026-08-06T02:21:47.2153611Z ##[endgroup]
+2026-08-06T02:21:47.2154139Z ##[group]Runner Image
+2026-08-06T02:21:47.2154661Z Image: ubuntu-22.04
+2026-08-06T02:21:47.2155169Z Version: 20260720.234.2
+2026-08-06T02:21:47.2156181Z Included Software: https://github.com/actions/runner-images/blob/ubuntu22/20260720.234/images/ubuntu/Ubuntu2204-Readme.md
+2026-08-06T02:21:47.2157774Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu22%2F20260720.234
+2026-08-06T02:21:47.2158538Z ##[endgroup]
+2026-08-06T02:21:47.2159890Z ##[group]GITHUB_TOKEN Permissions
+2026-08-06T02:21:47.2161641Z Contents: read
+2026-08-06T02:21:47.2162115Z Metadata: read
+2026-08-06T02:21:47.2162686Z Packages: read
+2026-08-06T02:21:47.2163150Z ##[endgroup]
+2026-08-06T02:21:47.2164914Z Secret source: Actions
+2026-08-06T02:21:47.2165829Z Prepare workflow directory
+2026-08-06T02:21:47.2497048Z Prepare all required actions
+2026-08-06T02:21:47.2552065Z Getting action download info
+2026-08-06T02:21:47.5391879Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-08-06T02:21:48.2105132Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-08-06T02:21:48.5629628Z Complete job name: 老版 OrangeFox (fox_14.1, V-3.1世代)
+2026-08-06T02:21:48.6266114Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-08-06T02:21:48.6273207Z ##[group]Run actions/checkout@v4
+2026-08-06T02:21:48.6273783Z with:
+2026-08-06T02:21:48.6274138Z   path: device_tree
+2026-08-06T02:21:48.6274546Z   repository: Evil-Freedom/zeekr-orangefox
+2026-08-06T02:21:48.6278355Z   token: ***
+2026-08-06T02:21:48.6278722Z   ssh-strict: true
+2026-08-06T02:21:48.6279094Z   ssh-user: git
+2026-08-06T02:21:48.6279460Z   persist-credentials: true
+2026-08-06T02:21:48.6279866Z   clean: true
+2026-08-06T02:21:48.6280236Z   sparse-checkout-cone-mode: true
+2026-08-06T02:21:48.6280664Z   fetch-depth: 1
+2026-08-06T02:21:48.6281018Z   fetch-tags: false
+2026-08-06T02:21:48.6281395Z   show-progress: true
+2026-08-06T02:21:48.6281832Z   lfs: false
+2026-08-06T02:21:48.6282181Z   submodules: false
+2026-08-06T02:21:48.6282581Z   set-safe-directory: true
+2026-08-06T02:21:48.6283006Z   allow-unsafe-pr-checkout: false
+2026-08-06T02:21:48.6283598Z env:
+2026-08-06T02:21:48.6283934Z   DEVICE_16: zeekr
+2026-08-06T02:21:48.6284297Z   DEVICE_14: zeekr14
+2026-08-06T02:21:48.6284855Z   KERNEL_REPO: https://github.com/LineageOS/android_kernel_motorola_sm8475.git
+2026-08-06T02:21:48.6285485Z   CCACHE_DIR: /root/.ccache
+2026-08-06T02:21:48.6285882Z ##[endgroup]
+2026-08-06T02:21:48.7116993Z Syncing repository: Evil-Freedom/zeekr-orangefox
+2026-08-06T02:21:48.7119585Z ##[group]Getting Git version info
+2026-08-06T02:21:48.7120786Z Working directory is '/home/runner/work/zeekr-orangefox/zeekr-orangefox/device_tree'
+2026-08-06T02:21:48.7122441Z [command]/usr/bin/git version
+2026-08-06T02:21:48.7181801Z git version 2.54.0
+2026-08-06T02:21:48.7200644Z ##[endgroup]
+2026-08-06T02:21:48.7212931Z Temporarily overriding HOME='/home/runner/work/_temp/932ef8c3-9786-4bfe-80bf-be267b1cdaf5' before making global git config changes
+2026-08-06T02:21:48.7215402Z Adding repository directory to the temporary git global config as a safe directory
+2026-08-06T02:21:48.7218949Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/zeekr-orangefox/zeekr-orangefox/device_tree
+2026-08-06T02:21:48.7256833Z ##[group]Initializing the repository
+2026-08-06T02:21:48.7258122Z [command]/usr/bin/git init /home/runner/work/zeekr-orangefox/zeekr-orangefox/device_tree
+2026-08-06T02:21:48.7359193Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-08-06T02:21:48.7360824Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-08-06T02:21:48.7362386Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-08-06T02:21:48.7363600Z hint: call:
+2026-08-06T02:21:48.7364461Z hint:
+2026-08-06T02:21:48.7365565Z hint: 	git config --global init.defaultBranch <name>
+2026-08-06T02:21:48.7366684Z hint:
+2026-08-06T02:21:48.7367492Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-08-06T02:21:48.7368769Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-08-06T02:21:48.7369814Z hint:
+2026-08-06T02:21:48.7370730Z hint: 	git branch -m <name>
+2026-08-06T02:21:48.7371409Z hint:
+2026-08-06T02:21:48.7372279Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-08-06T02:21:48.7373993Z Initialized empty Git repository in /home/runner/work/zeekr-orangefox/zeekr-orangefox/device_tree/.git/
+2026-08-06T02:21:48.7376761Z [command]/usr/bin/git remote add origin https://github.com/Evil-Freedom/zeekr-orangefox
+2026-08-06T02:21:48.7541764Z ##[endgroup]
+2026-08-06T02:21:48.7542527Z ##[group]Disabling automatic garbage collection
+2026-08-06T02:21:48.7543175Z [command]/usr/bin/git config --local gc.auto 0
+2026-08-06T02:21:48.7574880Z ##[endgroup]
+2026-08-06T02:21:48.7575939Z ##[group]Setting up auth
+2026-08-06T02:21:48.7580908Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-08-06T02:21:48.7610510Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-08-06T02:21:48.7877040Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-08-06T02:21:48.7908196Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-08-06T02:21:48.8112141Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-08-06T02:21:48.8144141Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-08-06T02:21:48.8347325Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-08-06T02:21:48.8409881Z ##[endgroup]
+2026-08-06T02:21:48.8410912Z ##[group]Fetching the repository
+2026-08-06T02:21:48.8417473Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +6a8ed676fd1e3121f34155b083e9cf05df87522c:refs/remotes/origin/main
+2026-08-06T02:21:49.2303465Z From https://github.com/Evil-Freedom/zeekr-orangefox
+2026-08-06T02:21:49.2304480Z  * [new ref]         6a8ed676fd1e3121f34155b083e9cf05df87522c -> origin/main
+2026-08-06T02:21:49.2325315Z ##[endgroup]
+2026-08-06T02:21:49.2326688Z ##[group]Determining the checkout info
+2026-08-06T02:21:49.2328127Z ##[endgroup]
+2026-08-06T02:21:49.2333084Z [command]/usr/bin/git sparse-checkout disable
+2026-08-06T02:21:49.2520379Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-08-06T02:21:49.2551968Z ##[group]Checking out the ref
+2026-08-06T02:21:49.2555657Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-08-06T02:21:49.2693795Z Switched to a new branch 'main'
+2026-08-06T02:21:49.2695506Z branch 'main' set up to track 'origin/main'.
+2026-08-06T02:21:49.2738571Z ##[endgroup]
+2026-08-06T02:21:49.2742015Z [command]/usr/bin/git log -1 --format=%H
+2026-08-06T02:21:49.2768328Z 6a8ed676fd1e3121f34155b083e9cf05df87522c
+2026-08-06T02:21:49.3040067Z ##[group]Run sudo apt-get update
+2026-08-06T02:21:49.3041287Z [36;1msudo apt-get update[0m
+2026-08-06T02:21:49.3043223Z [36;1msudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib \[0m
+2026-08-06T02:21:49.3045943Z [36;1m  gcc-multilib git gnupg gperf imagemagick lib32ncurses-dev lib32readline-dev \[0m
+2026-08-06T02:21:49.3048915Z [36;1m  lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libxml2 \[0m
+2026-08-06T02:21:49.3051635Z [36;1m  libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip \[0m
+2026-08-06T02:21:49.3054041Z [36;1m  zlib1g-dev python3 python3-pip openjdk-17-jdk repo sshpass[0m
+2026-08-06T02:21:49.3055797Z [36;1msudo apt-get clean[0m
+2026-08-06T02:21:49.3165323Z shell: /usr/bin/bash -e {0}
+2026-08-06T02:21:49.3166136Z env:
+2026-08-06T02:21:49.3166945Z   DEVICE_16: zeekr
+2026-08-06T02:21:49.3167614Z   DEVICE_14: zeekr14
+2026-08-06T02:21:49.3168759Z   KERNEL_REPO: https://github.com/LineageOS/android_kernel_motorola_sm8475.git
+2026-08-06T02:21:49.3170071Z   CCACHE_DIR: /root/.ccache
+2026-08-06T02:21:49.3170819Z ##[endgroup]
+2026-08-06T02:21:49.5836153Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-08-06T02:21:49.6030403Z Get:6 https://packages.microsoft.com/repos/azure-cli jammy InRelease [3596 B]
+2026-08-06T02:21:49.6175994Z Hit:2 http://azure.archive.ubuntu.com/ubuntu jammy InRelease
+2026-08-06T02:21:49.6178936Z Get:7 https://packages.microsoft.com/ubuntu/22.04/prod jammy InRelease [3632 B]
+2026-08-06T02:21:49.6297380Z Get:3 http://azure.archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+2026-08-06T02:21:49.6336990Z Get:4 http://azure.archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+2026-08-06T02:21:49.6353314Z Get:5 http://azure.archive.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
+2026-08-06T02:21:49.6666574Z Get:8 https://packages.microsoft.com/repos/azure-cli jammy/main amd64 Packages [3451 B]
+2026-08-06T02:21:49.7899193Z Get:9 https://packages.microsoft.com/ubuntu/22.04/prod jammy/main all Packages [1333 B]
+2026-08-06T02:21:49.7915402Z Get:10 https://packages.microsoft.com/ubuntu/22.04/prod jammy/main amd64 Packages [572 kB]
+2026-08-06T02:21:49.7918888Z Get:11 https://dl.google.com/linux/chrome-stable/deb stable InRelease [2548 B]
+2026-08-06T02:21:49.7967924Z Get:12 https://packages.microsoft.com/ubuntu/22.04/prod jammy/main arm64 Packages [352 kB]
+2026-08-06T02:21:49.8088714Z Get:13 https://packages.microsoft.com/ubuntu/22.04/prod jammy/main armhf Packages [22.9 kB]
+2026-08-06T02:21:49.8659319Z Get:14 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [3714 kB]
+2026-08-06T02:21:49.8829138Z Get:15 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main Translation-en [554 kB]
+2026-08-06T02:21:49.8856577Z Get:16 http://azure.archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [6403 kB]
+2026-08-06T02:21:49.9143995Z Get:17 http://azure.archive.ubuntu.com/ubuntu jammy-updates/restricted Translation-en [1226 kB]
+2026-08-06T02:21:49.9216851Z Get:18 http://azure.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1279 kB]
+2026-08-06T02:21:49.9267925Z Get:19 http://azure.archive.ubuntu.com/ubuntu jammy-updates/universe Translation-en [322 kB]
+2026-08-06T02:21:49.9289911Z Get:20 http://azure.archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [76.5 kB]
+2026-08-06T02:21:49.9300987Z Get:21 http://azure.archive.ubuntu.com/ubuntu jammy-updates/multiverse Translation-en [15.9 kB]
+2026-08-06T02:21:50.0206191Z Get:22 http://azure.archive.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3445 kB]
+2026-08-06T02:21:50.0368369Z Get:23 http://azure.archive.ubuntu.com/ubuntu jammy-security/main Translation-en [485 kB]
+2026-08-06T02:21:50.0853718Z Get:24 http://azure.archive.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [6165 kB]
+2026-08-06T02:21:50.1233585Z Get:30 https://dl.google.com/linux/chrome-stable/deb stable/main amd64 Packages [1409 B]
+2026-08-06T02:21:50.1895882Z Get:25 http://azure.archive.ubuntu.com/ubuntu jammy-security/restricted Translation-en [1182 kB]
+2026-08-06T02:21:50.1954183Z Get:26 http://azure.archive.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1046 kB]
+2026-08-06T02:21:50.2005003Z Get:27 http://azure.archive.ubuntu.com/ubuntu jammy-security/universe Translation-en [234 kB]
+2026-08-06T02:21:50.2022800Z Get:28 http://azure.archive.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [69.1 kB]
+2026-08-06T02:21:50.2033868Z Get:29 http://azure.archive.ubuntu.com/ubuntu jammy-security/multiverse Translation-en [12.9 kB]
+2026-08-06T02:21:56.0419731Z Fetched 27.6 MB in 3s (10.1 MB/s)
+2026-08-06T02:21:56.9731766Z Reading package lists...
+2026-08-06T02:21:57.0278219Z Reading package lists...
+2026-08-06T02:21:57.2738347Z Building dependency tree...
+2026-08-06T02:21:57.2748014Z Reading state information...
+2026-08-06T02:21:57.4591589Z bc is already the newest version (1.07.1-3build1).
+2026-08-06T02:21:57.4592052Z bc set to manually installed.
+2026-08-06T02:21:57.4592455Z bison is already the newest version (2:3.8.2+dfsg-1build1).
+2026-08-06T02:21:57.4592878Z build-essential is already the newest version (12.9ubuntu3).
+2026-08-06T02:21:57.4593264Z build-essential set to manually installed.
+2026-08-06T02:21:57.4593612Z flex is already the newest version (2.6.4-8build2).
+2026-08-06T02:21:57.4594051Z squashfs-tools is already the newest version (1:4.5-3build1).
+2026-08-06T02:21:57.4594466Z squashfs-tools set to manually installed.
+2026-08-06T02:21:57.4594820Z zip is already the newest version (3.0-12build2).
+2026-08-06T02:21:57.4595238Z sshpass is already the newest version (1.09-1).
+2026-08-06T02:21:57.4595845Z curl is already the newest version (7.81.0-1ubuntu1.25).
+2026-08-06T02:21:57.4596272Z gnupg is already the newest version (2.2.27-3ubuntu2.5).
+2026-08-06T02:21:57.4597836Z libxml2 is already the newest version (2.9.13+dfsg-1ubuntu0.12).
+2026-08-06T02:21:57.4598282Z libxml2 set to manually installed.
+2026-08-06T02:21:57.4598688Z python3 is already the newest version (3.10.6-1~22.04.1).
+2026-08-06T02:21:57.4599143Z rsync is already the newest version (3.2.7-0ubuntu0.22.04.7).
+2026-08-06T02:21:57.4599654Z zlib1g-dev is already the newest version (1:1.2.11.dfsg-2ubuntu9.2).
+2026-08-06T02:21:57.4600207Z imagemagick is already the newest version (8:6.9.11.60+dfsg-1.3ubuntu0.22.04.5).
+2026-08-06T02:21:57.4600787Z python3-pip is already the newest version (22.0.2+dfsg-1ubuntu0.7).
+2026-08-06T02:21:57.4601285Z git is already the newest version (1:2.54.0-0ppa1~ubuntu22.04.1).
+2026-08-06T02:21:57.4601717Z The following additional packages will be installed:
+2026-08-06T02:21:57.4602273Z   ca-certificates-java g++-11-multilib gcc-11-multilib lib32asan6 lib32atomic1
+2026-08-06T02:21:57.4602875Z   lib32gcc-11-dev lib32gomp1 lib32itm1 lib32ncurses6 lib32ncursesw6
+2026-08-06T02:21:57.4603523Z   lib32quadmath0 lib32readline8 lib32stdc++-11-dev lib32tinfo6 lib32ubsan1
+2026-08-06T02:21:57.4607527Z   libasound2-dev libasyncns0 libatk-wrapper-java libatk-wrapper-java-jni
+2026-08-06T02:21:57.4608239Z   libc-dev-bin libc6 libc6-dev libc6-dev-i386 libc6-dev-x32 libc6-i386
+2026-08-06T02:21:57.4608795Z   libc6-x32 libcaca-dev libcaca0 libflac8 libgl-dev libglu1-mesa
+2026-08-06T02:21:57.4609391Z   libglu1-mesa-dev libglx-dev libhiredis0.14 libopengl0 libopus0 libpcsclite1
+2026-08-06T02:21:57.4610047Z   libpulse-dev libpulse-mainloop-glib0 libpulse0 libsdl1.2debian libslang2-dev
+2026-08-06T02:21:57.4610689Z   libsndfile1 libssl3 libvorbisenc2 libx32asan6 libx32atomic1 libx32gcc-11-dev
+2026-08-06T02:21:57.4611361Z   libx32gcc-s1 libx32gomp1 libx32itm1 libx32quadmath0 libx32stdc++-11-dev
+2026-08-06T02:21:57.4611959Z   libx32stdc++6 libx32ubsan1 libxcb-shape0 libxv1 libxxf86dga1
+2026-08-06T02:21:57.4612509Z   openjdk-17-jdk-headless openjdk-17-jre openjdk-17-jre-headless
+2026-08-06T02:21:57.4613360Z   python3-kerberos x11-utils
+2026-08-06T02:21:57.4613939Z Suggested packages:
+2026-08-06T02:21:57.4614358Z   distcc | icecc lib32stdc++6-11-dbg libx32stdc++6-11-dbg ncurses-doc
+2026-08-06T02:21:57.4615309Z   libasound2-doc glibc-doc manpages-dev opus-tools pcscd pulseaudio libssl-doc
+2026-08-06T02:21:57.4616149Z   openjdk-17-demo openjdk-17-source visualvm libnss-mdns fonts-ipafont-gothic
+2026-08-06T02:21:57.4616929Z   fonts-ipafont-mincho fonts-wqy-microhei | fonts-wqy-zenhei fonts-indic
+2026-08-06T02:21:57.4617422Z   mesa-utils
+2026-08-06T02:21:57.4617676Z Recommended packages:
+2026-08-06T02:21:57.4617999Z   manpages-dev libc-devtools libnss-nis libnss-nisplus
+2026-08-06T02:21:57.5219802Z The following NEW packages will be installed:
+2026-08-06T02:21:57.5220337Z   ca-certificates-java ccache g++-11-multilib g++-multilib gcc-11-multilib
+2026-08-06T02:21:57.5220983Z   gcc-multilib gperf lib32asan6 lib32atomic1 lib32gcc-11-dev lib32gomp1
+2026-08-06T02:21:57.5221424Z   lib32itm1 lib32ncurses-dev lib32ncurses6 lib32ncursesw6 lib32quadmath0
+2026-08-06T02:21:57.5221818Z   lib32readline-dev lib32readline8 lib32stdc++-11-dev lib32tinfo6 lib32ubsan1
+2026-08-06T02:21:57.5222419Z   lib32z1-dev libasound2-dev libasyncns0 libatk-wrapper-java
+2026-08-06T02:21:57.5222843Z   libatk-wrapper-java-jni libc6-dev-i386 libc6-dev-x32 libc6-x32 libcaca-dev
+2026-08-06T02:21:57.5223348Z   libcaca0 libflac8 libgl-dev libglu1-mesa libglu1-mesa-dev libglx-dev
+2026-08-06T02:21:57.5223731Z   libhiredis0.14 liblz4-tool libncurses5-dev libopengl0 libopus0 libpcsclite1
+2026-08-06T02:21:57.5224449Z   libpulse-dev libpulse-mainloop-glib0 libpulse0 libsdl1.2-dev libsdl1.2debian
+2026-08-06T02:21:57.5225015Z   libslang2-dev libsndfile1 libvorbisenc2 libx32asan6 libx32atomic1
+2026-08-06T02:21:57.5225420Z   libx32gcc-11-dev libx32gcc-s1 libx32gomp1 libx32itm1 libx32quadmath0
+2026-08-06T02:21:57.5225782Z   libx32stdc++-11-dev libx32stdc++6 libx32ubsan1 libxcb-shape0 libxml2-utils
+2026-08-06T02:21:57.5228399Z   libxv1 libxxf86dga1 lzop openjdk-17-jdk openjdk-17-jdk-headless
+2026-08-06T02:21:57.5229665Z   openjdk-17-jre openjdk-17-jre-headless pngcrush python3-kerberos repo
+2026-08-06T02:21:57.5230300Z   schedtool x11-utils xsltproc
+2026-08-06T02:21:57.5235018Z The following packages will be upgraded:
+2026-08-06T02:21:57.5239765Z   libc-dev-bin libc6 libc6-dev libc6-i386 libssl-dev libssl3
+2026-08-06T02:21:57.5419413Z 6 upgraded, 75 newly installed, 0 to remove and 85 not upgraded.
+2026-08-06T02:21:57.5419928Z Need to get 162 MB of archives.
+2026-08-06T02:21:57.5420343Z After this operation, 390 MB of additional disk space will be used.
+2026-08-06T02:21:57.5420869Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-08-06T02:21:57.6539257Z Get:2 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc6-dev amd64 2.35-0ubuntu3.14 [2100 kB]
+2026-08-06T02:21:58.0767914Z Get:3 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc-dev-bin amd64 2.35-0ubuntu3.14 [20.3 kB]
+2026-08-06T02:21:58.1245776Z Get:4 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc6-i386 amd64 2.35-0ubuntu3.14 [2838 kB]
+2026-08-06T02:21:58.3260637Z Get:5 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc6 amd64 2.35-0ubuntu3.14 [3234 kB]
+2026-08-06T02:21:58.5288688Z Get:6 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libssl-dev amd64 3.0.2-0ubuntu1.26 [2377 kB]
+2026-08-06T02:21:58.6841589Z Get:7 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libssl3 amd64 3.0.2-0ubuntu1.26 [1906 kB]
+2026-08-06T02:21:58.8313254Z Get:8 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpcsclite1 amd64 1.9.5-3ubuntu1 [19.8 kB]
+2026-08-06T02:21:58.8795645Z Get:9 http://azure.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 openjdk-17-jre-headless amd64 17.0.19+10-1~22.04.2 [48.4 MB]
+2026-08-06T02:22:02.0601342Z Get:10 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 ca-certificates-java all 20190909ubuntu1.3 [12.3 kB]
+2026-08-06T02:22:02.1075019Z Get:11 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 libhiredis0.14 amd64 0.14.1-2 [32.8 kB]
+2026-08-06T02:22:02.1564373Z Get:12 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 ccache amd64 4.5.1-1 [495 kB]
+2026-08-06T02:22:02.2102516Z Get:13 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc6-dev-i386 amd64 2.35-0ubuntu3.14 [1444 kB]
+2026-08-06T02:22:02.3172916Z Get:14 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc6-x32 amd64 2.35-0ubuntu3.14 [2978 kB]
+2026-08-06T02:22:02.5483136Z Get:15 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc6-dev-x32 amd64 2.35-0ubuntu3.14 [1631 kB]
+2026-08-06T02:22:02.6561399Z Get:16 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libx32gcc-s1 amd64 12.3.0-1ubuntu1~22.04.3 [54.0 kB]
+2026-08-06T02:22:02.7045415Z Get:17 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 lib32gomp1 amd64 12.3.0-1ubuntu1~22.04.3 [133 kB]
+2026-08-06T02:22:02.7546549Z Get:18 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libx32gomp1 amd64 12.3.0-1ubuntu1~22.04.3 [127 kB]
+2026-08-06T02:22:02.8055782Z Get:19 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 lib32itm1 amd64 12.3.0-1ubuntu1~22.04.3 [32.0 kB]
+2026-08-06T02:22:02.8543664Z Get:20 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libx32itm1 amd64 12.3.0-1ubuntu1~22.04.3 [30.2 kB]
+2026-08-06T02:22:02.9019122Z Get:21 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 lib32atomic1 amd64 12.3.0-1ubuntu1~22.04.3 [8516 B]
+2026-08-06T02:22:02.9491906Z Get:22 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libx32atomic1 amd64 12.3.0-1ubuntu1~22.04.3 [10.2 kB]
+2026-08-06T02:22:02.9971962Z Get:23 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 lib32asan6 amd64 11.4.0-1ubuntu1~22.04.3 [2154 kB]
+2026-08-06T02:22:03.1468283Z Get:24 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libx32asan6 amd64 11.4.0-1ubuntu1~22.04.3 [2129 kB]
+2026-08-06T02:22:03.2966890Z Get:25 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 lib32ubsan1 amd64 12.3.0-1ubuntu1~22.04.3 [959 kB]
+2026-08-06T02:22:03.3927062Z Get:26 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libx32stdc++6 amd64 12.3.0-1ubuntu1~22.04.3 [682 kB]
+2026-08-06T02:22:03.4510360Z Get:27 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libx32ubsan1 amd64 12.3.0-1ubuntu1~22.04.3 [963 kB]
+2026-08-06T02:22:03.5460995Z Get:28 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 lib32quadmath0 amd64 12.3.0-1ubuntu1~22.04.3 [244 kB]
+2026-08-06T02:22:03.5961998Z Get:29 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libx32quadmath0 amd64 12.3.0-1ubuntu1~22.04.3 [156 kB]
+2026-08-06T02:22:03.6445402Z Get:30 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 lib32gcc-11-dev amd64 11.4.0-1ubuntu1~22.04.3 [2339 kB]
+2026-08-06T02:22:03.7975654Z Get:31 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libx32gcc-11-dev amd64 11.4.0-1ubuntu1~22.04.3 [2107 kB]
+2026-08-06T02:22:03.9467532Z Get:32 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 gcc-11-multilib amd64 11.4.0-1ubuntu1~22.04.3 [880 B]
+2026-08-06T02:22:03.9944103Z Get:33 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 lib32stdc++-11-dev amd64 11.4.0-1ubuntu1~22.04.3 [989 kB]
+2026-08-06T02:22:04.0912395Z Get:34 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libx32stdc++-11-dev amd64 11.4.0-1ubuntu1~22.04.3 [906 kB]
+2026-08-06T02:22:04.1860146Z Get:35 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 g++-11-multilib amd64 11.4.0-1ubuntu1~22.04.3 [894 B]
+2026-08-06T02:22:04.2340743Z Get:36 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 gcc-multilib amd64 4:11.2.0-1ubuntu1 [1382 B]
+2026-08-06T02:22:04.2818071Z Get:37 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 g++-multilib amd64 4:11.2.0-1ubuntu1 [854 B]
+2026-08-06T02:22:04.3338994Z Get:38 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 gperf amd64 3.1-1build1 [103 kB]
+2026-08-06T02:22:04.3823950Z Get:39 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 lib32tinfo6 amd64 6.3-2ubuntu0.2 [103 kB]
+2026-08-06T02:22:04.4359442Z Get:40 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 lib32ncurses6 amd64 6.3-2ubuntu0.2 [116 kB]
+2026-08-06T02:22:04.4845034Z Get:41 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 lib32ncursesw6 amd64 6.3-2ubuntu0.2 [157 kB]
+2026-08-06T02:22:04.5337067Z Get:42 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 lib32ncurses-dev amd64 6.3-2ubuntu0.2 [350 kB]
+2026-08-06T02:22:04.5923216Z Get:43 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 lib32readline8 amd64 8.1.2-1 [154 kB]
+2026-08-06T02:22:04.6432172Z Get:44 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 lib32readline-dev amd64 8.1.2-1 [161 kB]
+2026-08-06T02:22:04.6935199Z Get:45 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 lib32z1-dev amd64 1:1.2.11.dfsg-2ubuntu9.2 [62.1 kB]
+2026-08-06T02:22:04.7418998Z Get:46 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libasound2-dev amd64 1.2.6.1-1ubuntu1.2 [110 kB]
+2026-08-06T02:22:04.7925659Z Get:47 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libasyncns0 amd64 0.8-6build2 [12.8 kB]
+2026-08-06T02:22:04.8400513Z Get:48 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libxcb-shape0 amd64 1.14-3ubuntu3 [6158 B]
+2026-08-06T02:22:04.8875113Z Get:49 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libxv1 amd64 2:1.0.11-1build2 [11.2 kB]
+2026-08-06T02:22:04.9351423Z Get:50 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libxxf86dga1 amd64 2:1.1.5-0ubuntu3 [12.6 kB]
+2026-08-06T02:22:04.9826690Z Get:51 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 x11-utils amd64 7.7+5build2 [206 kB]
+2026-08-06T02:22:05.0323214Z Get:52 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libatk-wrapper-java all 0.38.0-5build1 [53.1 kB]
+2026-08-06T02:22:05.0801179Z Get:53 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libatk-wrapper-java-jni amd64 0.38.0-5build1 [49.0 kB]
+2026-08-06T02:22:05.1279095Z Get:54 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcaca0 amd64 0.99.beta19-2.2ubuntu4.2 [224 kB]
+2026-08-06T02:22:05.1779610Z Get:55 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libslang2-dev amd64 2.3.2-5build4 [437 kB]
+2026-08-06T02:22:05.2318540Z Get:56 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcaca-dev amd64 0.99.beta19-2.2ubuntu4.2 [772 kB]
+2026-08-06T02:22:05.2921339Z Get:57 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libflac8 amd64 1.3.3-2ubuntu0.2 [111 kB]
+2026-08-06T02:22:05.3405087Z Get:58 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libglx-dev amd64 1.4.0-1 [14.1 kB]
+2026-08-06T02:22:05.3883542Z Get:59 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libgl-dev amd64 1.4.0-1 [101 kB]
+2026-08-06T02:22:05.4369268Z Get:60 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libopengl0 amd64 1.4.0-1 [36.5 kB]
+2026-08-06T02:22:05.4861690Z Get:61 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libglu1-mesa amd64 9.0.2-1 [145 kB]
+2026-08-06T02:22:05.5351237Z Get:62 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libglu1-mesa-dev amd64 9.0.2-1 [231 kB]
+2026-08-06T02:22:05.5855176Z Get:63 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libncurses5-dev amd64 6.3-2ubuntu0.2 [788 B]
+2026-08-06T02:22:05.6341288Z Get:64 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libopus0 amd64 1.3.1-0.1build2 [203 kB]
+2026-08-06T02:22:05.6833648Z Get:65 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libvorbisenc2 amd64 1.3.7-1build2 [82.6 kB]
+2026-08-06T02:22:05.7322410Z Get:66 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsndfile1 amd64 1.0.31-2ubuntu0.2 [196 kB]
+2026-08-06T02:22:05.7819304Z Get:67 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpulse0 amd64 1:15.99.1+dfsg1-1ubuntu2.2 [298 kB]
+2026-08-06T02:22:05.8332120Z Get:68 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpulse-mainloop-glib0 amd64 1:15.99.1+dfsg1-1ubuntu2.2 [12.4 kB]
+2026-08-06T02:22:05.8820457Z Get:69 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpulse-dev amd64 1:15.99.1+dfsg1-1ubuntu2.2 [75.6 kB]
+2026-08-06T02:22:05.9309306Z Get:70 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 libsdl1.2debian amd64 1.2.15+dfsg2-6 [177 kB]
+2026-08-06T02:22:05.9808482Z Get:71 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 libsdl1.2-dev amd64 1.2.15+dfsg2-6 [708 kB]
+2026-08-06T02:22:06.0398284Z Get:72 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libxml2-utils amd64 2.9.13+dfsg-1ubuntu0.12 [40.2 kB]
+2026-08-06T02:22:06.0882671Z Get:73 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 lzop amd64 1.04-2build2 [83.7 kB]
+2026-08-06T02:22:06.1372661Z Get:74 http://azure.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 openjdk-17-jre amd64 17.0.19+10-1~22.04.2 [238 kB]
+2026-08-06T02:22:06.1890938Z Get:75 http://azure.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 openjdk-17-jdk-headless amd64 17.0.19+10-1~22.04.2 [71.5 MB]
+2026-08-06T02:22:11.1618106Z Get:76 http://azure.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 openjdk-17-jdk amd64 17.0.19+10-1~22.04.2 [2477 kB]
+2026-08-06T02:22:11.3164440Z Get:77 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 pngcrush amd64 1.8.13-0.1 [52.8 kB]
+2026-08-06T02:22:11.3665071Z Get:78 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 python3-kerberos amd64 1.1.14-3.1build5 [23.0 kB]
+2026-08-06T02:22:11.4168512Z Get:79 http://azure.archive.ubuntu.com/ubuntu jammy/multiverse amd64 repo all 2.17.3-3 [118 kB]
+2026-08-06T02:22:11.4653469Z Get:80 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 xsltproc amd64 1.1.34-4ubuntu0.22.04.5 [14.7 kB]
+2026-08-06T02:22:11.5131803Z Get:81 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 liblz4-tool all 1.9.3-2build2 [2342 B]
+2026-08-06T02:22:11.5625394Z Get:82 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 schedtool amd64 1.3.0-4 [22.0 kB]
+2026-08-06T02:22:11.9056942Z Preconfiguring packages ...
+2026-08-06T02:22:11.9771143Z Fetched 162 MB in 14s (11.5 MB/s)
+2026-08-06T02:22:12.0212736Z (Reading database ... 
+2026-08-06T02:22:12.0213222Z (Reading database ... 5%
+2026-08-06T02:22:12.0213734Z (Reading database ... 10%
+2026-08-06T02:22:12.0214057Z (Reading database ... 15%
+2026-08-06T02:22:12.0214374Z (Reading database ... 20%
+2026-08-06T02:22:12.0214667Z (Reading database ... 25%
+2026-08-06T02:22:12.0214941Z (Reading database ... 30%
+2026-08-06T02:22:12.0215219Z (Reading database ... 35%
+2026-08-06T02:22:12.0215398Z (Reading database ... 40%
+2026-08-06T02:22:12.0215583Z (Reading database ... 45%
+2026-08-06T02:22:12.0215763Z (Reading database ... 50%
+2026-08-06T02:22:12.1218677Z (Reading database ... 55%
+2026-08-06T02:22:12.1455501Z (Reading database ... 60%
+2026-08-06T02:22:12.2153573Z (Reading database ... 65%
+2026-08-06T02:22:12.3719455Z (Reading database ... 70%
+2026-08-06T02:22:12.6251338Z (Reading database ... 75%
+2026-08-06T02:22:12.9757503Z (Reading database ... 80%
+2026-08-06T02:22:13.3667117Z (Reading database ... 85%
+2026-08-06T02:22:13.7628609Z (Reading database ... 90%
+2026-08-06T02:22:13.9689812Z (Reading database ... 95%
+2026-08-06T02:22:13.9690161Z (Reading database ... 100%
+2026-08-06T02:22:13.9690546Z (Reading database ... 259812 files and directories currently installed.)
+2026-08-06T02:22:13.9753808Z Preparing to unpack .../libc6-dev_2.35-0ubuntu3.14_amd64.deb ...
+2026-08-06T02:22:13.9842111Z Unpacking libc6-dev:amd64 (2.35-0ubuntu3.14) over (2.35-0ubuntu3.13) ...
+2026-08-06T02:22:14.2496857Z Preparing to unpack .../libc-dev-bin_2.35-0ubuntu3.14_amd64.deb ...
+2026-08-06T02:22:14.2520441Z Unpacking libc-dev-bin (2.35-0ubuntu3.14) over (2.35-0ubuntu3.13) ...
+2026-08-06T02:22:14.2948885Z Preparing to unpack .../libc6-i386_2.35-0ubuntu3.14_amd64.deb ...
+2026-08-06T02:22:14.3030926Z Unpacking libc6-i386 (2.35-0ubuntu3.14) over (2.35-0ubuntu3.13) ...
+2026-08-06T02:22:14.4927702Z Preparing to unpack .../libc6_2.35-0ubuntu3.14_amd64.deb ...
+2026-08-06T02:22:14.6133572Z Unpacking libc6:amd64 (2.35-0ubuntu3.14) over (2.35-0ubuntu3.13) ...
+2026-08-06T02:22:14.8432315Z Setting up libc6:amd64 (2.35-0ubuntu3.14) ...
+2026-08-06T02:22:15.2090101Z (Reading database ... 
+2026-08-06T02:22:15.2090737Z (Reading database ... 5%
+2026-08-06T02:22:15.2091315Z (Reading database ... 10%
+2026-08-06T02:22:15.2091565Z (Reading database ... 15%
+2026-08-06T02:22:15.2091767Z (Reading database ... 20%
+2026-08-06T02:22:15.2091937Z (Reading database ... 25%
+2026-08-06T02:22:15.2092109Z (Reading database ... 30%
+2026-08-06T02:22:15.2092284Z (Reading database ... 35%
+2026-08-06T02:22:15.2092453Z (Reading database ... 40%
+2026-08-06T02:22:15.2092624Z (Reading database ... 45%
+2026-08-06T02:22:15.2092799Z (Reading database ... 50%
+2026-08-06T02:22:15.2125740Z (Reading database ... 55%
+2026-08-06T02:22:15.2160543Z (Reading database ... 60%
+2026-08-06T02:22:15.2261101Z (Reading database ... 65%
+2026-08-06T02:22:15.2294986Z (Reading database ... 70%
+2026-08-06T02:22:15.2429364Z (Reading database ... 75%
+2026-08-06T02:22:15.2501833Z (Reading database ... 80%
+2026-08-06T02:22:15.2706644Z (Reading database ... 85%
+2026-08-06T02:22:15.2938553Z (Reading database ... 90%
+2026-08-06T02:22:15.3046697Z (Reading database ... 95%
+2026-08-06T02:22:15.3047028Z (Reading database ... 100%
+2026-08-06T02:22:15.3047461Z (Reading database ... 259812 files and directories currently installed.)
+2026-08-06T02:22:15.3106075Z Preparing to unpack .../libssl-dev_3.0.2-0ubuntu1.26_amd64.deb ...
+2026-08-06T02:22:15.3129370Z Unpacking libssl-dev:amd64 (3.0.2-0ubuntu1.26) over (3.0.2-0ubuntu1.25) ...
+2026-08-06T02:22:15.4662975Z Preparing to unpack .../libssl3_3.0.2-0ubuntu1.26_amd64.deb ...
+2026-08-06T02:22:15.4734249Z Unpacking libssl3:amd64 (3.0.2-0ubuntu1.26) over (3.0.2-0ubuntu1.25) ...
+2026-08-06T02:22:15.5600469Z Setting up libssl3:amd64 (3.0.2-0ubuntu1.26) ...
+2026-08-06T02:22:15.6893532Z Selecting previously unselected package libpcsclite1:amd64.
+2026-08-06T02:22:15.6965417Z (Reading database ... 
+2026-08-06T02:22:15.6965913Z (Reading database ... 5%
+2026-08-06T02:22:15.6966520Z (Reading database ... 10%
+2026-08-06T02:22:15.6966878Z (Reading database ... 15%
+2026-08-06T02:22:15.6967163Z (Reading database ... 20%
+2026-08-06T02:22:15.6967429Z (Reading database ... 25%
+2026-08-06T02:22:15.6967696Z (Reading database ... 30%
+2026-08-06T02:22:15.6967963Z (Reading database ... 35%
+2026-08-06T02:22:15.6968247Z (Reading database ... 40%
+2026-08-06T02:22:15.6968509Z (Reading database ... 45%
+2026-08-06T02:22:15.6968778Z (Reading database ... 50%
+2026-08-06T02:22:15.6997579Z (Reading database ... 55%
+2026-08-06T02:22:15.7030661Z (Reading database ... 60%
+2026-08-06T02:22:15.7134479Z (Reading database ... 65%
+2026-08-06T02:22:15.7172250Z (Reading database ... 70%
+2026-08-06T02:22:15.7310920Z (Reading database ... 75%
+2026-08-06T02:22:15.7376780Z (Reading database ... 80%
+2026-08-06T02:22:15.7560030Z (Reading database ... 85%
+2026-08-06T02:22:15.7762035Z (Reading database ... 90%
+2026-08-06T02:22:15.7871465Z (Reading database ... 95%
+2026-08-06T02:22:15.7871724Z (Reading database ... 100%
+2026-08-06T02:22:15.7872040Z (Reading database ... 259812 files and directories currently installed.)
+2026-08-06T02:22:15.7933706Z Preparing to unpack .../00-libpcsclite1_1.9.5-3ubuntu1_amd64.deb ...
+2026-08-06T02:22:15.7943108Z Unpacking libpcsclite1:amd64 (1.9.5-3ubuntu1) ...
+2026-08-06T02:22:15.8143743Z Selecting previously unselected package openjdk-17-jre-headless:amd64.
+2026-08-06T02:22:15.8320231Z Preparing to unpack .../01-openjdk-17-jre-headless_17.0.19+10-1~22.04.2_amd64.deb ...
+2026-08-06T02:22:15.8329002Z Unpacking openjdk-17-jre-headless:amd64 (17.0.19+10-1~22.04.2) ...
+2026-08-06T02:22:17.1942662Z Selecting previously unselected package ca-certificates-java.
+2026-08-06T02:22:17.2122167Z Preparing to unpack .../02-ca-certificates-java_20190909ubuntu1.3_all.deb ...
+2026-08-06T02:22:17.2146967Z Unpacking ca-certificates-java (20190909ubuntu1.3) ...
+2026-08-06T02:22:17.2348287Z Selecting previously unselected package libhiredis0.14:amd64.
+2026-08-06T02:22:17.2525963Z Preparing to unpack .../03-libhiredis0.14_0.14.1-2_amd64.deb ...
+2026-08-06T02:22:17.3847542Z Unpacking libhiredis0.14:amd64 (0.14.1-2) ...
+2026-08-06T02:22:17.6035756Z Selecting previously unselected package ccache.
+2026-08-06T02:22:17.6219329Z Preparing to unpack .../04-ccache_4.5.1-1_amd64.deb ...
+2026-08-06T02:22:17.8717997Z Unpacking ccache (4.5.1-1) ...
+2026-08-06T02:22:17.9007233Z Selecting previously unselected package libc6-dev-i386.
+2026-08-06T02:22:17.9184144Z Preparing to unpack .../05-libc6-dev-i386_2.35-0ubuntu3.14_amd64.deb ...
+2026-08-06T02:22:17.9193154Z Unpacking libc6-dev-i386 (2.35-0ubuntu3.14) ...
+2026-08-06T02:22:18.1320165Z Selecting previously unselected package libc6-x32.
+2026-08-06T02:22:18.1503452Z Preparing to unpack .../06-libc6-x32_2.35-0ubuntu3.14_amd64.deb ...
+2026-08-06T02:22:18.1512658Z Unpacking libc6-x32 (2.35-0ubuntu3.14) ...
+2026-08-06T02:22:18.4050009Z Selecting previously unselected package libc6-dev-x32.
+2026-08-06T02:22:18.4232782Z Preparing to unpack .../07-libc6-dev-x32_2.35-0ubuntu3.14_amd64.deb ...
+2026-08-06T02:22:18.4349382Z Unpacking libc6-dev-x32 (2.35-0ubuntu3.14) ...
+2026-08-06T02:22:18.5393034Z Selecting previously unselected package libx32gcc-s1.
+2026-08-06T02:22:18.5572573Z Preparing to unpack .../08-libx32gcc-s1_12.3.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:18.5581967Z Unpacking libx32gcc-s1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:18.5777464Z Selecting previously unselected package lib32gomp1.
+2026-08-06T02:22:18.5956060Z Preparing to unpack .../09-lib32gomp1_12.3.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:18.5967387Z Unpacking lib32gomp1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:18.6169770Z Selecting previously unselected package libx32gomp1.
+2026-08-06T02:22:18.6346711Z Preparing to unpack .../10-libx32gomp1_12.3.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:18.6355144Z Unpacking libx32gomp1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:18.6550138Z Selecting previously unselected package lib32itm1.
+2026-08-06T02:22:18.6726053Z Preparing to unpack .../11-lib32itm1_12.3.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:18.6735764Z Unpacking lib32itm1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:18.8112031Z Selecting previously unselected package libx32itm1.
+2026-08-06T02:22:18.8292114Z Preparing to unpack .../12-libx32itm1_12.3.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:18.8301941Z Unpacking libx32itm1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:18.8497085Z Selecting previously unselected package lib32atomic1.
+2026-08-06T02:22:18.8674187Z Preparing to unpack .../13-lib32atomic1_12.3.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:18.8683211Z Unpacking lib32atomic1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:18.8867979Z Selecting previously unselected package libx32atomic1.
+2026-08-06T02:22:18.9044958Z Preparing to unpack .../14-libx32atomic1_12.3.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:18.9053635Z Unpacking libx32atomic1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:18.9238725Z Selecting previously unselected package lib32asan6.
+2026-08-06T02:22:18.9414278Z Preparing to unpack .../15-lib32asan6_11.4.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:18.9423276Z Unpacking lib32asan6 (11.4.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:19.1267172Z Selecting previously unselected package libx32asan6.
+2026-08-06T02:22:19.1446979Z Preparing to unpack .../16-libx32asan6_11.4.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:19.1455904Z Unpacking libx32asan6 (11.4.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:19.3606317Z Selecting previously unselected package lib32ubsan1.
+2026-08-06T02:22:19.3787911Z Preparing to unpack .../17-lib32ubsan1_12.3.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:19.3797538Z Unpacking lib32ubsan1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:19.4209607Z Selecting previously unselected package libx32stdc++6.
+2026-08-06T02:22:19.4388253Z Preparing to unpack .../18-libx32stdc++6_12.3.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:19.4417999Z Unpacking libx32stdc++6 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:19.4738118Z Selecting previously unselected package libx32ubsan1.
+2026-08-06T02:22:19.4919464Z Preparing to unpack .../19-libx32ubsan1_12.3.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:19.4929661Z Unpacking libx32ubsan1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:19.5321417Z Selecting previously unselected package lib32quadmath0.
+2026-08-06T02:22:19.5497005Z Preparing to unpack .../20-lib32quadmath0_12.3.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:19.5505403Z Unpacking lib32quadmath0 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:19.5740246Z Selecting previously unselected package libx32quadmath0.
+2026-08-06T02:22:19.5919238Z Preparing to unpack .../21-libx32quadmath0_12.3.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:19.5928268Z Unpacking libx32quadmath0 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:19.6121148Z Selecting previously unselected package lib32gcc-11-dev.
+2026-08-06T02:22:19.6300281Z Preparing to unpack .../22-lib32gcc-11-dev_11.4.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:19.6310406Z Unpacking lib32gcc-11-dev (11.4.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:19.6971157Z Selecting previously unselected package libx32gcc-11-dev.
+2026-08-06T02:22:19.7148747Z Preparing to unpack .../23-libx32gcc-11-dev_11.4.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:19.7157830Z Unpacking libx32gcc-11-dev (11.4.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:19.7787829Z Selecting previously unselected package gcc-11-multilib.
+2026-08-06T02:22:19.7971399Z Preparing to unpack .../24-gcc-11-multilib_11.4.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:19.7979902Z Unpacking gcc-11-multilib (11.4.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:19.8159809Z Selecting previously unselected package lib32stdc++-11-dev.
+2026-08-06T02:22:19.8343119Z Preparing to unpack .../25-lib32stdc++-11-dev_11.4.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:19.8350678Z Unpacking lib32stdc++-11-dev (11.4.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:19.9224145Z Selecting previously unselected package libx32stdc++-11-dev.
+2026-08-06T02:22:19.9408058Z Preparing to unpack .../26-libx32stdc++-11-dev_11.4.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:19.9416936Z Unpacking libx32stdc++-11-dev (11.4.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:20.0292232Z Selecting previously unselected package g++-11-multilib.
+2026-08-06T02:22:20.0469975Z Preparing to unpack .../27-g++-11-multilib_11.4.0-1ubuntu1~22.04.3_amd64.deb ...
+2026-08-06T02:22:20.0478833Z Unpacking g++-11-multilib (11.4.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:20.0651383Z Selecting previously unselected package gcc-multilib.
+2026-08-06T02:22:20.0839309Z Preparing to unpack .../28-gcc-multilib_4%3a11.2.0-1ubuntu1_amd64.deb ...
+2026-08-06T02:22:20.0846538Z Unpacking gcc-multilib (4:11.2.0-1ubuntu1) ...
+2026-08-06T02:22:20.1014399Z Selecting previously unselected package g++-multilib.
+2026-08-06T02:22:20.1190683Z Preparing to unpack .../29-g++-multilib_4%3a11.2.0-1ubuntu1_amd64.deb ...
+2026-08-06T02:22:20.1199593Z Unpacking g++-multilib (4:11.2.0-1ubuntu1) ...
+2026-08-06T02:22:20.1377889Z Selecting previously unselected package gperf.
+2026-08-06T02:22:20.1560071Z Preparing to unpack .../30-gperf_3.1-1build1_amd64.deb ...
+2026-08-06T02:22:20.1568277Z Unpacking gperf (3.1-1build1) ...
+2026-08-06T02:22:20.1870516Z Selecting previously unselected package lib32tinfo6.
+2026-08-06T02:22:20.2050154Z Preparing to unpack .../31-lib32tinfo6_6.3-2ubuntu0.2_amd64.deb ...
+2026-08-06T02:22:20.2058829Z Unpacking lib32tinfo6 (6.3-2ubuntu0.2) ...
+2026-08-06T02:22:20.2270053Z Selecting previously unselected package lib32ncurses6.
+2026-08-06T02:22:20.2453135Z Preparing to unpack .../32-lib32ncurses6_6.3-2ubuntu0.2_amd64.deb ...
+2026-08-06T02:22:20.2462691Z Unpacking lib32ncurses6 (6.3-2ubuntu0.2) ...
+2026-08-06T02:22:20.2671185Z Selecting previously unselected package lib32ncursesw6.
+2026-08-06T02:22:20.2848165Z Preparing to unpack .../33-lib32ncursesw6_6.3-2ubuntu0.2_amd64.deb ...
+2026-08-06T02:22:20.2857135Z Unpacking lib32ncursesw6 (6.3-2ubuntu0.2) ...
+2026-08-06T02:22:20.3068745Z Selecting previously unselected package lib32ncurses-dev.
+2026-08-06T02:22:20.3248761Z Preparing to unpack .../34-lib32ncurses-dev_6.3-2ubuntu0.2_amd64.deb ...
+2026-08-06T02:22:20.3257194Z Unpacking lib32ncurses-dev (6.3-2ubuntu0.2) ...
+2026-08-06T02:22:20.3528445Z Selecting previously unselected package lib32readline8.
+2026-08-06T02:22:20.3704462Z Preparing to unpack .../35-lib32readline8_8.1.2-1_amd64.deb ...
+2026-08-06T02:22:20.3714746Z Unpacking lib32readline8 (8.1.2-1) ...
+2026-08-06T02:22:20.3927386Z Selecting previously unselected package lib32readline-dev.
+2026-08-06T02:22:20.4102437Z Preparing to unpack .../36-lib32readline-dev_8.1.2-1_amd64.deb ...
+2026-08-06T02:22:20.4111233Z Unpacking lib32readline-dev (8.1.2-1) ...
+2026-08-06T02:22:20.4321321Z Selecting previously unselected package lib32z1-dev.
+2026-08-06T02:22:20.4488640Z Preparing to unpack .../37-lib32z1-dev_1%3a1.2.11.dfsg-2ubuntu9.2_amd64.deb ...
+2026-08-06T02:22:20.4496225Z Unpacking lib32z1-dev (1:1.2.11.dfsg-2ubuntu9.2) ...
+2026-08-06T02:22:20.4682765Z Selecting previously unselected package libasound2-dev:amd64.
+2026-08-06T02:22:20.4854647Z Preparing to unpack .../38-libasound2-dev_1.2.6.1-1ubuntu1.2_amd64.deb ...
+2026-08-06T02:22:20.4883012Z Unpacking libasound2-dev:amd64 (1.2.6.1-1ubuntu1.2) ...
+2026-08-06T02:22:20.5221304Z Selecting previously unselected package libasyncns0:amd64.
+2026-08-06T02:22:20.5408096Z Preparing to unpack .../39-libasyncns0_0.8-6build2_amd64.deb ...
+2026-08-06T02:22:20.5417565Z Unpacking libasyncns0:amd64 (0.8-6build2) ...
+2026-08-06T02:22:20.5621720Z Selecting previously unselected package libxcb-shape0:amd64.
+2026-08-06T02:22:20.5806116Z Preparing to unpack .../40-libxcb-shape0_1.14-3ubuntu3_amd64.deb ...
+2026-08-06T02:22:20.5815824Z Unpacking libxcb-shape0:amd64 (1.14-3ubuntu3) ...
+2026-08-06T02:22:20.6007666Z Selecting previously unselected package libxv1:amd64.
+2026-08-06T02:22:20.6191310Z Preparing to unpack .../41-libxv1_2%3a1.0.11-1build2_amd64.deb ...
+2026-08-06T02:22:20.6201330Z Unpacking libxv1:amd64 (2:1.0.11-1build2) ...
+2026-08-06T02:22:20.6400404Z Selecting previously unselected package libxxf86dga1:amd64.
+2026-08-06T02:22:20.6584952Z Preparing to unpack .../42-libxxf86dga1_2%3a1.1.5-0ubuntu3_amd64.deb ...
+2026-08-06T02:22:20.6593872Z Unpacking libxxf86dga1:amd64 (2:1.1.5-0ubuntu3) ...
+2026-08-06T02:22:20.6792440Z Selecting previously unselected package x11-utils.
+2026-08-06T02:22:20.6971531Z Preparing to unpack .../43-x11-utils_7.7+5build2_amd64.deb ...
+2026-08-06T02:22:20.6981243Z Unpacking x11-utils (7.7+5build2) ...
+2026-08-06T02:22:20.7301925Z Selecting previously unselected package libatk-wrapper-java.
+2026-08-06T02:22:20.7483146Z Preparing to unpack .../44-libatk-wrapper-java_0.38.0-5build1_all.deb ...
+2026-08-06T02:22:20.7493293Z Unpacking libatk-wrapper-java (0.38.0-5build1) ...
+2026-08-06T02:22:20.7733113Z Selecting previously unselected package libatk-wrapper-java-jni:amd64.
+2026-08-06T02:22:20.7910946Z Preparing to unpack .../45-libatk-wrapper-java-jni_0.38.0-5build1_amd64.deb ...
+2026-08-06T02:22:20.7921162Z Unpacking libatk-wrapper-java-jni:amd64 (0.38.0-5build1) ...
+2026-08-06T02:22:20.8119207Z Selecting previously unselected package libcaca0:amd64.
+2026-08-06T02:22:20.8298487Z Preparing to unpack .../46-libcaca0_0.99.beta19-2.2ubuntu4.2_amd64.deb ...
+2026-08-06T02:22:20.8310436Z Unpacking libcaca0:amd64 (0.99.beta19-2.2ubuntu4.2) ...
+2026-08-06T02:22:20.8558490Z Selecting previously unselected package libslang2-dev:amd64.
+2026-08-06T02:22:20.8736099Z Preparing to unpack .../47-libslang2-dev_2.3.2-5build4_amd64.deb ...
+2026-08-06T02:22:20.8746201Z Unpacking libslang2-dev:amd64 (2.3.2-5build4) ...
+2026-08-06T02:22:20.9100806Z Selecting previously unselected package libcaca-dev.
+2026-08-06T02:22:20.9282775Z Preparing to unpack .../48-libcaca-dev_0.99.beta19-2.2ubuntu4.2_amd64.deb ...
+2026-08-06T02:22:20.9291504Z Unpacking libcaca-dev (0.99.beta19-2.2ubuntu4.2) ...
+2026-08-06T02:22:21.5542730Z Selecting previously unselected package libflac8:amd64.
+2026-08-06T02:22:21.5737323Z Preparing to unpack .../49-libflac8_1.3.3-2ubuntu0.2_amd64.deb ...
+2026-08-06T02:22:21.6860766Z Unpacking libflac8:amd64 (1.3.3-2ubuntu0.2) ...
+2026-08-06T02:22:21.9969112Z Selecting previously unselected package libglx-dev:amd64.
+2026-08-06T02:22:22.0147783Z Preparing to unpack .../50-libglx-dev_1.4.0-1_amd64.deb ...
+2026-08-06T02:22:22.0156789Z Unpacking libglx-dev:amd64 (1.4.0-1) ...
+2026-08-06T02:22:22.0361119Z Selecting previously unselected package libgl-dev:amd64.
+2026-08-06T02:22:22.0544448Z Preparing to unpack .../51-libgl-dev_1.4.0-1_amd64.deb ...
+2026-08-06T02:22:22.0555343Z Unpacking libgl-dev:amd64 (1.4.0-1) ...
+2026-08-06T02:22:22.1513526Z Selecting previously unselected package libopengl0:amd64.
+2026-08-06T02:22:22.1694935Z Preparing to unpack .../52-libopengl0_1.4.0-1_amd64.deb ...
+2026-08-06T02:22:22.1707628Z Unpacking libopengl0:amd64 (1.4.0-1) ...
+2026-08-06T02:22:22.1914165Z Selecting previously unselected package libglu1-mesa:amd64.
+2026-08-06T02:22:22.2094681Z Preparing to unpack .../53-libglu1-mesa_9.0.2-1_amd64.deb ...
+2026-08-06T02:22:22.2103408Z Unpacking libglu1-mesa:amd64 (9.0.2-1) ...
+2026-08-06T02:22:22.2308039Z Selecting previously unselected package libglu1-mesa-dev:amd64.
+2026-08-06T02:22:22.2488254Z Preparing to unpack .../54-libglu1-mesa-dev_9.0.2-1_amd64.deb ...
+2026-08-06T02:22:22.2495526Z Unpacking libglu1-mesa-dev:amd64 (9.0.2-1) ...
+2026-08-06T02:22:22.2729477Z Selecting previously unselected package libncurses5-dev:amd64.
+2026-08-06T02:22:22.2907971Z Preparing to unpack .../55-libncurses5-dev_6.3-2ubuntu0.2_amd64.deb ...
+2026-08-06T02:22:22.3130551Z Unpacking libncurses5-dev:amd64 (6.3-2ubuntu0.2) ...
+2026-08-06T02:22:22.3317899Z Selecting previously unselected package libopus0:amd64.
+2026-08-06T02:22:22.3498680Z Preparing to unpack .../56-libopus0_1.3.1-0.1build2_amd64.deb ...
+2026-08-06T02:22:22.3508179Z Unpacking libopus0:amd64 (1.3.1-0.1build2) ...
+2026-08-06T02:22:22.3732138Z Selecting previously unselected package libvorbisenc2:amd64.
+2026-08-06T02:22:22.3909583Z Preparing to unpack .../57-libvorbisenc2_1.3.7-1build2_amd64.deb ...
+2026-08-06T02:22:22.3919606Z Unpacking libvorbisenc2:amd64 (1.3.7-1build2) ...
+2026-08-06T02:22:22.5833972Z Selecting previously unselected package libsndfile1:amd64.
+2026-08-06T02:22:22.6012648Z Preparing to unpack .../58-libsndfile1_1.0.31-2ubuntu0.2_amd64.deb ...
+2026-08-06T02:22:22.6021946Z Unpacking libsndfile1:amd64 (1.0.31-2ubuntu0.2) ...
+2026-08-06T02:22:22.7966066Z Selecting previously unselected package libpulse0:amd64.
+2026-08-06T02:22:22.8148142Z Preparing to unpack .../59-libpulse0_1%3a15.99.1+dfsg1-1ubuntu2.2_amd64.deb ...
+2026-08-06T02:22:22.8214899Z Unpacking libpulse0:amd64 (1:15.99.1+dfsg1-1ubuntu2.2) ...
+2026-08-06T02:22:22.8503154Z Selecting previously unselected package libpulse-mainloop-glib0:amd64.
+2026-08-06T02:22:22.8684662Z Preparing to unpack .../60-libpulse-mainloop-glib0_1%3a15.99.1+dfsg1-1ubuntu2.2_amd64.deb ...
+2026-08-06T02:22:22.8694464Z Unpacking libpulse-mainloop-glib0:amd64 (1:15.99.1+dfsg1-1ubuntu2.2) ...
+2026-08-06T02:22:22.8882099Z Selecting previously unselected package libpulse-dev:amd64.
+2026-08-06T02:22:22.9066832Z Preparing to unpack .../61-libpulse-dev_1%3a15.99.1+dfsg1-1ubuntu2.2_amd64.deb ...
+2026-08-06T02:22:22.9075521Z Unpacking libpulse-dev:amd64 (1:15.99.1+dfsg1-1ubuntu2.2) ...
+2026-08-06T02:22:22.9435715Z Selecting previously unselected package libsdl1.2debian:amd64.
+2026-08-06T02:22:22.9622874Z Preparing to unpack .../62-libsdl1.2debian_1.2.15+dfsg2-6_amd64.deb ...
+2026-08-06T02:22:22.9632500Z Unpacking libsdl1.2debian:amd64 (1.2.15+dfsg2-6) ...
+2026-08-06T02:22:23.0250153Z Selecting previously unselected package libsdl1.2-dev.
+2026-08-06T02:22:23.0432984Z Preparing to unpack .../63-libsdl1.2-dev_1.2.15+dfsg2-6_amd64.deb ...
+2026-08-06T02:22:23.0441662Z Unpacking libsdl1.2-dev (1.2.15+dfsg2-6) ...
+2026-08-06T02:22:23.3401298Z Selecting previously unselected package libxml2-utils.
+2026-08-06T02:22:23.3582114Z Preparing to unpack .../64-libxml2-utils_2.9.13+dfsg-1ubuntu0.12_amd64.deb ...
+2026-08-06T02:22:23.3591465Z Unpacking libxml2-utils (2.9.13+dfsg-1ubuntu0.12) ...
+2026-08-06T02:22:23.5281506Z Selecting previously unselected package lzop.
+2026-08-06T02:22:23.5465731Z Preparing to unpack .../65-lzop_1.04-2build2_amd64.deb ...
+2026-08-06T02:22:23.5474509Z Unpacking lzop (1.04-2build2) ...
+2026-08-06T02:22:23.5690223Z Selecting previously unselected package openjdk-17-jre:amd64.
+2026-08-06T02:22:23.5873718Z Preparing to unpack .../66-openjdk-17-jre_17.0.19+10-1~22.04.2_amd64.deb ...
+2026-08-06T02:22:23.5882708Z Unpacking openjdk-17-jre:amd64 (17.0.19+10-1~22.04.2) ...
+2026-08-06T02:22:23.7821254Z Selecting previously unselected package openjdk-17-jdk-headless:amd64.
+2026-08-06T02:22:23.8002706Z Preparing to unpack .../67-openjdk-17-jdk-headless_17.0.19+10-1~22.04.2_amd64.deb ...
+2026-08-06T02:22:23.8031441Z Unpacking openjdk-17-jdk-headless:amd64 (17.0.19+10-1~22.04.2) ...
+2026-08-06T02:22:24.2901644Z Selecting previously unselected package openjdk-17-jdk:amd64.
+2026-08-06T02:22:24.3081010Z Preparing to unpack .../68-openjdk-17-jdk_17.0.19+10-1~22.04.2_amd64.deb ...
+2026-08-06T02:22:24.3089650Z Unpacking openjdk-17-jdk:amd64 (17.0.19+10-1~22.04.2) ...
+2026-08-06T02:22:24.3457770Z Selecting previously unselected package pngcrush.
+2026-08-06T02:22:24.3639070Z Preparing to unpack .../69-pngcrush_1.8.13-0.1_amd64.deb ...
+2026-08-06T02:22:24.3647987Z Unpacking pngcrush (1.8.13-0.1) ...
+2026-08-06T02:22:24.3881418Z Selecting previously unselected package python3-kerberos.
+2026-08-06T02:22:24.4056547Z Preparing to unpack .../70-python3-kerberos_1.1.14-3.1build5_amd64.deb ...
+2026-08-06T02:22:24.4063699Z Unpacking python3-kerberos (1.1.14-3.1build5) ...
+2026-08-06T02:22:24.4269461Z Selecting previously unselected package repo.
+2026-08-06T02:22:24.4450695Z Preparing to unpack .../71-repo_2.17.3-3_all.deb ...
+2026-08-06T02:22:24.4600006Z Unpacking repo (2.17.3-3) ...
+2026-08-06T02:22:24.4928792Z Selecting previously unselected package xsltproc.
+2026-08-06T02:22:24.5110184Z Preparing to unpack .../72-xsltproc_1.1.34-4ubuntu0.22.04.5_amd64.deb ...
+2026-08-06T02:22:24.5119320Z Unpacking xsltproc (1.1.34-4ubuntu0.22.04.5) ...
+2026-08-06T02:22:24.5310446Z Selecting previously unselected package liblz4-tool.
+2026-08-06T02:22:24.5492731Z Preparing to unpack .../73-liblz4-tool_1.9.3-2build2_all.deb ...
+2026-08-06T02:22:24.5501440Z Unpacking liblz4-tool (1.9.3-2build2) ...
+2026-08-06T02:22:24.5681582Z Selecting previously unselected package schedtool.
+2026-08-06T02:22:24.5860464Z Preparing to unpack .../74-schedtool_1.3.0-4_amd64.deb ...
+2026-08-06T02:22:24.5869489Z Unpacking schedtool (1.3.0-4) ...
+2026-08-06T02:22:24.6405473Z Setting up libcaca0:amd64 (0.99.beta19-2.2ubuntu4.2) ...
+2026-08-06T02:22:24.6428083Z Setting up pngcrush (1.8.13-0.1) ...
+2026-08-06T02:22:24.6449104Z Setting up xsltproc (1.1.34-4ubuntu0.22.04.5) ...
+2026-08-06T02:22:24.6472276Z Setting up libxcb-shape0:amd64 (1.14-3ubuntu3) ...
+2026-08-06T02:22:24.6492008Z Setting up libxxf86dga1:amd64 (2:1.1.5-0ubuntu3) ...
+2026-08-06T02:22:24.6511891Z Setting up python3-kerberos (1.1.14-3.1build5) ...
+2026-08-06T02:22:24.6531894Z Setting up gperf (3.1-1build1) ...
+2026-08-06T02:22:24.6552875Z Setting up libopengl0:amd64 (1.4.0-1) ...
+2026-08-06T02:22:24.6573183Z Setting up libflac8:amd64 (1.3.3-2ubuntu0.2) ...
+2026-08-06T02:22:24.6593413Z Setting up libc6-x32 (2.35-0ubuntu3.14) ...
+2026-08-06T02:22:24.6621563Z Setting up libopus0:amd64 (1.3.1-0.1build2) ...
+2026-08-06T02:22:24.6641537Z Setting up libxv1:amd64 (2:1.0.11-1build2) ...
+2026-08-06T02:22:24.6661949Z Setting up libssl-dev:amd64 (3.0.2-0ubuntu1.26) ...
+2026-08-06T02:22:24.6681788Z Setting up libpcsclite1:amd64 (1.9.5-3ubuntu1) ...
+2026-08-06T02:22:24.6702120Z Setting up libx32gomp1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:24.6722767Z Setting up liblz4-tool (1.9.3-2build2) ...
+2026-08-06T02:22:24.6742171Z Setting up libasyncns0:amd64 (0.8-6build2) ...
+2026-08-06T02:22:24.6762805Z Setting up lzop (1.04-2build2) ...
+2026-08-06T02:22:24.6782856Z Setting up libncurses5-dev:amd64 (6.3-2ubuntu0.2) ...
+2026-08-06T02:22:24.6802622Z Setting up x11-utils (7.7+5build2) ...
+2026-08-06T02:22:24.6889819Z Setting up libc6-i386 (2.35-0ubuntu3.14) ...
+2026-08-06T02:22:24.6918477Z Setting up libglx-dev:amd64 (1.4.0-1) ...
+2026-08-06T02:22:24.6940572Z Setting up libx32quadmath0 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:24.6960784Z Setting up libglu1-mesa:amd64 (9.0.2-1) ...
+2026-08-06T02:22:24.6981345Z Setting up libatk-wrapper-java (0.38.0-5build1) ...
+2026-08-06T02:22:24.7001090Z Setting up ca-certificates-java (20190909ubuntu1.3) ...
+2026-08-06T02:22:24.7134276Z head: cannot open '/etc/ssl/certs/java/cacerts' for reading: No such file or directory
+2026-08-06T02:22:24.8977585Z Adding debian:D-TRUST_Root_Class_3_CA_2_EV_2009.pem
+2026-08-06T02:22:24.9117631Z Adding debian:Microsoft_ECC_Root_Certificate_Authority_2017.pem
+2026-08-06T02:22:24.9177335Z Adding debian:Buypass_Class_2_Root_CA.pem
+2026-08-06T02:22:24.9188687Z Adding debian:TunTrust_Root_CA.pem
+2026-08-06T02:22:24.9234141Z Adding debian:ANF_Secure_Server_Root_CA.pem
+2026-08-06T02:22:24.9296242Z Adding debian:Atos_TrustedRoot_Root_CA_ECC_TLS_2021.pem
+2026-08-06T02:22:24.9304766Z Adding debian:D-TRUST_EV_Root_CA_1_2020.pem
+2026-08-06T02:22:24.9305290Z Adding debian:TUBITAK_Kamu_SM_SSL_Kok_Sertifikasi_-_Surum_1.pem
+2026-08-06T02:22:24.9327346Z Adding debian:Amazon_Root_CA_4.pem
+2026-08-06T02:22:24.9327905Z Adding debian:TWCA_Root_Certification_Authority.pem
+2026-08-06T02:22:24.9357989Z Adding debian:SSL.com_EV_Root_Certification_Authority_RSA_R2.pem
+2026-08-06T02:22:24.9386495Z Adding debian:Buypass_Class_3_Root_CA.pem
+2026-08-06T02:22:24.9404946Z Adding debian:GlobalSign_Root_CA_-_R3.pem
+2026-08-06T02:22:24.9430981Z Adding debian:Certainly_Root_R1.pem
+2026-08-06T02:22:24.9468945Z Adding debian:ePKI_Root_Certification_Authority.pem
+2026-08-06T02:22:24.9498605Z Adding debian:vTrus_ECC_Root_CA.pem
+2026-08-06T02:22:24.9538262Z Adding debian:Atos_TrustedRoot_Root_CA_RSA_TLS_2021.pem
+2026-08-06T02:22:24.9549185Z Adding debian:Certum_EC-384_CA.pem
+2026-08-06T02:22:24.9568105Z Adding debian:Starfield_Root_Certificate_Authority_-_G2.pem
+2026-08-06T02:22:24.9585698Z Adding debian:SSL.com_Root_Certification_Authority_ECC.pem
+2026-08-06T02:22:24.9617501Z Adding debian:AC_RAIZ_FNMT-RCM.pem
+2026-08-06T02:22:24.9640713Z Adding debian:T-TeleSec_GlobalRoot_Class_2.pem
+2026-08-06T02:22:24.9661235Z Adding debian:DigiCert_Global_Root_G3.pem
+2026-08-06T02:22:24.9690261Z Adding debian:HARICA_TLS_RSA_Root_CA_2021.pem
+2026-08-06T02:22:24.9719142Z Adding debian:DigiCert_Trusted_Root_G4.pem
+2026-08-06T02:22:24.9737311Z Adding debian:COMODO_ECC_Certification_Authority.pem
+2026-08-06T02:22:24.9762601Z Adding debian:Entrust_Root_Certification_Authority.pem
+2026-08-06T02:22:24.9796847Z Adding debian:Telia_Root_CA_v2.pem
+2026-08-06T02:22:24.9820447Z Adding debian:ISRG_Root_X1.pem
+2026-08-06T02:22:24.9846965Z Adding debian:GlobalSign_Root_R46.pem
+2026-08-06T02:22:24.9866843Z Adding debian:Amazon_Root_CA_1.pem
+2026-08-06T02:22:24.9909073Z Adding debian:SecureSign_Root_CA14.pem
+2026-08-06T02:22:24.9916983Z Adding debian:AC_RAIZ_FNMT-RCM_SERVIDORES_SEGUROS.pem
+2026-08-06T02:22:24.9939272Z Adding debian:OISTE_WISeKey_Global_Root_GB_CA.pem
+2026-08-06T02:22:24.9963224Z Adding debian:NetLock_Arany_=Class_Gold=_Főtanúsítvány.pem
+2026-08-06T02:22:24.9985848Z Adding debian:Starfield_Services_Root_Certificate_Authority_-_G2.pem
+2026-08-06T02:22:25.0023937Z Adding debian:Certum_Trusted_Network_CA_2.pem
+2026-08-06T02:22:25.0045896Z Adding debian:UCA_Global_G2_Root.pem
+2026-08-06T02:22:25.0063106Z Adding debian:emSign_Root_CA_-_G1.pem
+2026-08-06T02:22:25.0088484Z Adding debian:TrustAsia_Global_Root_CA_G4.pem
+2026-08-06T02:22:25.0091966Z Adding debian:GlobalSign_ECC_Root_CA_-_R5.pem
+2026-08-06T02:22:25.0125801Z Adding debian:SSL.com_Root_Certification_Authority_RSA.pem
+2026-08-06T02:22:25.0137437Z Adding debian:GlobalSign_Root_E46.pem
+2026-08-06T02:22:25.0157594Z Adding debian:D-TRUST_Root_Class_3_CA_2_2009.pem
+2026-08-06T02:22:25.0194030Z Adding debian:TWCA_CYBER_Root_CA.pem
+2026-08-06T02:22:25.0199231Z Adding debian:ISRG_Root_X2.pem
+2026-08-06T02:22:25.0223886Z Adding debian:Hongkong_Post_Root_CA_3.pem
+2026-08-06T02:22:25.0248900Z Adding debian:Microsoft_RSA_Root_Certificate_Authority_2017.pem
+2026-08-06T02:22:25.0284844Z Adding debian:IdenTrust_Public_Sector_Root_CA_1.pem
+2026-08-06T02:22:25.0305204Z Adding debian:Telekom_Security_TLS_RSA_Root_2023.pem
+2026-08-06T02:22:25.0331263Z Adding debian:Autoridad_de_Certificacion_Firmaprofesional_CIF_A62634068.pem
+2026-08-06T02:22:25.0369776Z Adding debian:USERTrust_RSA_Certification_Authority.pem
+2026-08-06T02:22:25.0383641Z Adding debian:vTrus_Root_CA.pem
+2026-08-06T02:22:25.0407528Z Adding debian:D-TRUST_BR_Root_CA_2_2023.pem
+2026-08-06T02:22:25.0426560Z Adding debian:ssl-cert-snakeoil.pem
+2026-08-06T02:22:25.0446145Z Adding debian:TrustAsia_TLS_ECC_Root_CA.pem
+2026-08-06T02:22:25.0470374Z Adding debian:TWCA_Global_Root_CA.pem
+2026-08-06T02:22:25.0491417Z Adding debian:Atos_TrustedRoot_2011.pem
+2026-08-06T02:22:25.0514830Z Adding debian:IdenTrust_Commercial_Root_CA_1.pem
+2026-08-06T02:22:25.0555206Z Adding debian:Certigna_Root_CA.pem
+2026-08-06T02:22:25.0581561Z Adding debian:QuoVadis_Root_CA_1_G3.pem
+2026-08-06T02:22:25.0595512Z Adding debian:Sectigo_Public_Server_Authentication_Root_E46.pem
+2026-08-06T02:22:25.0620168Z Adding debian:SZAFIR_ROOT_CA2.pem
+2026-08-06T02:22:25.0629852Z Adding debian:HARICA_TLS_ECC_Root_CA_2021.pem
+2026-08-06T02:22:25.0641565Z Adding debian:Amazon_Root_CA_3.pem
+2026-08-06T02:22:25.0653133Z Adding debian:GTS_Root_R4.pem
+2026-08-06T02:22:25.0672226Z Adding debian:DigiCert_Global_Root_G2.pem
+2026-08-06T02:22:25.0684974Z Adding debian:SSL.com_TLS_ECC_Root_CA_2022.pem
+2026-08-06T02:22:25.0716329Z Adding debian:D-TRUST_EV_Root_CA_2_2023.pem
+2026-08-06T02:22:25.0743108Z Adding debian:UCA_Extended_Validation_Root.pem
+2026-08-06T02:22:25.0770675Z Adding debian:Certum_Trusted_Root_CA.pem
+2026-08-06T02:22:25.0788852Z Adding debian:BJCA_Global_Root_CA2.pem
+2026-08-06T02:22:25.0796047Z Adding debian:Certainly_Root_E1.pem
+2026-08-06T02:22:25.0815851Z Adding debian:Certum_Trusted_Network_CA.pem
+2026-08-06T02:22:25.0841510Z Adding debian:SecureSign_Root_CA12.pem
+2026-08-06T02:22:25.0849322Z Adding debian:DigiCert_TLS_ECC_P384_Root_G5.pem
+2026-08-06T02:22:25.0858966Z Adding debian:SecureSign_Root_CA15.pem
+2026-08-06T02:22:25.0889017Z Adding debian:BJCA_Global_Root_CA1.pem
+2026-08-06T02:22:25.0916757Z Adding debian:OISTE_Server_Root_RSA_G1.pem
+2026-08-06T02:22:25.0933082Z Adding debian:e-Szigno_Root_CA_2017.pem
+2026-08-06T02:22:25.0951242Z Adding debian:Go_Daddy_Root_Certificate_Authority_-_G2.pem
+2026-08-06T02:22:25.0978707Z Adding debian:Izenpe.com.pem
+2026-08-06T02:22:25.0994466Z Adding debian:Hellenic_Academic_and_Research_Institutions_ECC_RootCA_2015.pem
+2026-08-06T02:22:25.1017318Z Adding debian:DigiCert_TLS_RSA4096_Root_G5.pem
+2026-08-06T02:22:25.1049969Z Adding debian:CFCA_EV_ROOT.pem
+2026-08-06T02:22:25.1080650Z Adding debian:CA_Disig_Root_R2.pem
+2026-08-06T02:22:25.1091456Z Adding debian:Security_Communication_ECC_RootCA1.pem
+2026-08-06T02:22:25.1119791Z Adding debian:GlobalSign_ECC_Root_CA_-_R4.pem
+2026-08-06T02:22:25.1125628Z Adding debian:e-Szigno_TLS_Root_CA_2023.pem
+2026-08-06T02:22:25.1157022Z Adding debian:OISTE_WISeKey_Global_Root_GC_CA.pem
+2026-08-06T02:22:25.1173023Z Adding debian:T-TeleSec_GlobalRoot_Class_3.pem
+2026-08-06T02:22:25.1187252Z Adding debian:emSign_ECC_Root_CA_-_G3.pem
+2026-08-06T02:22:25.1188061Z Adding debian:GDCA_TrustAUTH_R5_ROOT.pem
+2026-08-06T02:22:25.1214897Z Adding debian:TrustAsia_Global_Root_CA_G3.pem
+2026-08-06T02:22:25.1260790Z Adding debian:ACCVRAIZ1.pem
+2026-08-06T02:22:25.1280212Z Adding debian:USERTrust_ECC_Certification_Authority.pem
+2026-08-06T02:22:25.1298665Z Adding debian:SSL.com_TLS_RSA_Root_CA_2022.pem
+2026-08-06T02:22:25.1311402Z Adding debian:DigiCert_Assured_ID_Root_G3.pem
+2026-08-06T02:22:25.1338168Z Adding debian:QuoVadis_Root_CA_2_G3.pem
+2026-08-06T02:22:25.1353967Z Adding debian:DigiCert_Assured_ID_Root_G2.pem
+2026-08-06T02:22:25.1377822Z Adding debian:TrustAsia_TLS_RSA_Root_CA.pem
+2026-08-06T02:22:25.1405050Z Adding debian:QuoVadis_Root_CA_3_G3.pem
+2026-08-06T02:22:25.1428664Z Adding debian:Sectigo_Public_Server_Authentication_Root_R46.pem
+2026-08-06T02:22:25.1440774Z Adding debian:emSign_ECC_Root_CA_-_C3.pem
+2026-08-06T02:22:25.1468958Z Adding debian:NAVER_Global_Root_Certification_Authority.pem
+2026-08-06T02:22:25.1492367Z Adding debian:COMODO_RSA_Certification_Authority.pem
+2026-08-06T02:22:25.1524111Z Adding debian:Actalis_Authentication_Root_CA.pem
+2026-08-06T02:22:25.1530270Z Adding debian:GTS_Root_R3.pem
+2026-08-06T02:22:25.1545705Z Adding debian:D-TRUST_BR_Root_CA_1_2020.pem
+2026-08-06T02:22:25.1571650Z Adding debian:SwissSign_RSA_TLS_Root_CA_2022_-_1.pem
+2026-08-06T02:22:25.1593156Z Adding debian:HiPKI_Root_CA_-_G1.pem
+2026-08-06T02:22:25.1618850Z Adding debian:Hellenic_Academic_and_Research_Institutions_RootCA_2015.pem
+2026-08-06T02:22:25.1635292Z Adding debian:Security_Communication_RootCA2.pem
+2026-08-06T02:22:25.1658077Z Adding debian:Amazon_Root_CA_2.pem
+2026-08-06T02:22:25.1681157Z Adding debian:GTS_Root_R1.pem
+2026-08-06T02:22:25.1696882Z Adding debian:Microsec_e-Szigno_Root_CA_2009.pem
+2026-08-06T02:22:25.1707533Z Adding debian:SSL.com_EV_Root_Certification_Authority_ECC.pem
+2026-08-06T02:22:25.1716469Z Adding debian:OISTE_Server_Root_ECC_G1.pem
+2026-08-06T02:22:25.1740129Z Adding debian:GlobalSign_Root_CA_-_R6.pem
+2026-08-06T02:22:25.1745986Z Adding debian:Telekom_Security_TLS_ECC_Root_2020.pem
+2026-08-06T02:22:25.1758568Z Adding debian:emSign_Root_CA_-_C1.pem
+2026-08-06T02:22:25.1776847Z Adding debian:certSIGN_Root_CA_G2.pem
+2026-08-06T02:22:25.2042070Z done.
+2026-08-06T02:22:25.2067518Z Setting up libxml2-utils (2.9.13+dfsg-1ubuntu0.12) ...
+2026-08-06T02:22:25.2089620Z Setting up libasound2-dev:amd64 (1.2.6.1-1ubuntu1.2) ...
+2026-08-06T02:22:25.2109886Z Setting up libc-dev-bin (2.35-0ubuntu3.14) ...
+2026-08-06T02:22:25.2129929Z Setting up lib32atomic1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.2151348Z Setting up libgl-dev:amd64 (1.4.0-1) ...
+2026-08-06T02:22:25.2171857Z Setting up libvorbisenc2:amd64 (1.3.7-1build2) ...
+2026-08-06T02:22:25.2194508Z Setting up schedtool (1.3.0-4) ...
+2026-08-06T02:22:25.2215222Z Setting up libhiredis0.14:amd64 (0.14.1-2) ...
+2026-08-06T02:22:25.2236140Z Setting up libx32atomic1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.2257278Z Setting up lib32itm1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.2277249Z Setting up repo (2.17.3-3) ...
+2026-08-06T02:22:25.3710491Z Setting up libx32gcc-s1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.3749632Z Setting up ccache (4.5.1-1) ...
+2026-08-06T02:22:25.3772361Z Updating symlinks in /usr/lib/ccache ...
+2026-08-06T02:22:25.3851517Z Setting up libx32itm1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.3872022Z Setting up lib32ubsan1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.3896029Z Setting up libatk-wrapper-java-jni:amd64 (0.38.0-5build1) ...
+2026-08-06T02:22:25.3917285Z Setting up lib32gomp1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.3938828Z Setting up libx32asan6 (11.4.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.3959731Z Setting up libglu1-mesa-dev:amd64 (9.0.2-1) ...
+2026-08-06T02:22:25.3979721Z Setting up lib32asan6 (11.4.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.3999991Z Setting up lib32tinfo6 (6.3-2ubuntu0.2) ...
+2026-08-06T02:22:25.4019943Z Setting up lib32quadmath0 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.4040217Z Setting up libc6-dev:amd64 (2.35-0ubuntu3.14) ...
+2026-08-06T02:22:25.4062548Z Setting up libsndfile1:amd64 (1.0.31-2ubuntu0.2) ...
+2026-08-06T02:22:25.4083452Z Setting up libx32stdc++6 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.4104668Z Setting up libslang2-dev:amd64 (2.3.2-5build4) ...
+2026-08-06T02:22:25.4125447Z Setting up libc6-dev-i386 (2.35-0ubuntu3.14) ...
+2026-08-06T02:22:25.4145958Z Setting up libx32ubsan1 (12.3.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.4166633Z Setting up libpulse0:amd64 (1:15.99.1+dfsg1-1ubuntu2.2) ...
+2026-08-06T02:22:25.4236031Z Setting up lib32readline8 (8.1.2-1) ...
+2026-08-06T02:22:25.4257288Z Setting up lib32ncurses6 (6.3-2ubuntu0.2) ...
+2026-08-06T02:22:25.4345536Z Setting up lib32ncursesw6 (6.3-2ubuntu0.2) ...
+2026-08-06T02:22:25.4368624Z Setting up libc6-dev-x32 (2.35-0ubuntu3.14) ...
+2026-08-06T02:22:25.4389136Z Setting up libx32gcc-11-dev (11.4.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.4410016Z Setting up libpulse-mainloop-glib0:amd64 (1:15.99.1+dfsg1-1ubuntu2.2) ...
+2026-08-06T02:22:25.4430900Z Setting up libsdl1.2debian:amd64 (1.2.15+dfsg2-6) ...
+2026-08-06T02:22:25.4451691Z Setting up libx32stdc++-11-dev (11.4.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.4472156Z Setting up lib32z1-dev (1:1.2.11.dfsg-2ubuntu9.2) ...
+2026-08-06T02:22:25.4492128Z Setting up libpulse-dev:amd64 (1:15.99.1+dfsg1-1ubuntu2.2) ...
+2026-08-06T02:22:25.4512764Z Setting up libcaca-dev (0.99.beta19-2.2ubuntu4.2) ...
+2026-08-06T02:22:25.4533241Z Setting up lib32gcc-11-dev (11.4.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.4554044Z Setting up lib32stdc++-11-dev (11.4.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.4574603Z Setting up lib32ncurses-dev (6.3-2ubuntu0.2) ...
+2026-08-06T02:22:25.4595441Z Setting up libsdl1.2-dev (1.2.15+dfsg2-6) ...
+2026-08-06T02:22:25.4615754Z Setting up gcc-11-multilib (11.4.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.4636536Z Setting up gcc-multilib (4:11.2.0-1ubuntu1) ...
+2026-08-06T02:22:25.4656780Z Setting up lib32readline-dev (8.1.2-1) ...
+2026-08-06T02:22:25.4678324Z Setting up g++-11-multilib (11.4.0-1ubuntu1~22.04.3) ...
+2026-08-06T02:22:25.4699143Z Setting up g++-multilib (4:11.2.0-1ubuntu1) ...
+2026-08-06T02:22:25.4735521Z Setting up openjdk-17-jre-headless:amd64 (17.0.19+10-1~22.04.2) ...
+2026-08-06T02:22:25.5713824Z Setting up openjdk-17-jre:amd64 (17.0.19+10-1~22.04.2) ...
+2026-08-06T02:22:25.5782267Z Setting up openjdk-17-jdk-headless:amd64 (17.0.19+10-1~22.04.2) ...
+2026-08-06T02:22:25.7083181Z Setting up openjdk-17-jdk:amd64 (17.0.19+10-1~22.04.2) ...
+2026-08-06T02:22:25.7198822Z Processing triggers for ca-certificates (20260601~22.04.1) ...
+2026-08-06T02:22:25.7296776Z Updating certificates in /etc/ssl/certs...
+2026-08-06T02:22:26.1527730Z 0 added, 0 removed; done.
+2026-08-06T02:22:26.1528601Z Running hooks in /etc/ca-certificates/update.d...
+2026-08-06T02:22:26.2082042Z /etc/ssl/certs/adoptium/cacerts successfully populated.
+2026-08-06T02:22:26.2102073Z 
+2026-08-06T02:22:26.3759386Z done.
+2026-08-06T02:22:26.3773586Z Updating Mono key store
+2026-08-06T02:22:26.3982515Z Mono Certificate Store Sync - version 6.12.0.200
+2026-08-06T02:22:26.3983110Z Populate Mono certificate store from a concatenated list of certificates.
+2026-08-06T02:22:26.3983620Z Copyright 2002, 2003 Motus Technologies. Copyright 2004-2008 Novell. BSD licensed.
+2026-08-06T02:22:26.3983873Z 
+2026-08-06T02:22:26.4205975Z Importing into legacy system store:
+2026-08-06T02:22:26.5362230Z I already trust 121, your new list has 121
+2026-08-06T02:22:26.5410886Z Import process completed.
+2026-08-06T02:22:26.5423452Z 
+2026-08-06T02:22:26.5423583Z Importing into BTLS system store:
+2026-08-06T02:22:26.6646761Z I already trust 121, your new list has 121
+2026-08-06T02:22:26.6667605Z Import process completed.
+2026-08-06T02:22:26.6713657Z Done
+2026-08-06T02:22:26.6715550Z done.
+2026-08-06T02:22:26.6784935Z Processing triggers for install-info (6.8-4build1) ...
+2026-08-06T02:22:26.7906565Z Processing triggers for mailcap (3.70+nmu1ubuntu1.22.04.1) ...
+2026-08-06T02:22:26.8909185Z Processing triggers for hicolor-icon-theme (0.17-2) ...
+2026-08-06T02:22:27.7067363Z Processing triggers for libc-bin (2.35-0ubuntu3.13) ...
+2026-08-06T02:22:30.2829344Z Processing triggers for man-db (2.10.2-1) ...
+2026-08-06T02:22:30.2849116Z Not building database; man-db/auto-update is not 'true'.
+2026-08-06T02:22:30.6767012Z 
+2026-08-06T02:22:30.6767516Z Running kernel seems to be up-to-date.
+2026-08-06T02:22:30.6767827Z 
+2026-08-06T02:22:30.6767961Z Services to be restarted:
+2026-08-06T02:22:30.6808034Z  systemctl restart chrony.service
+2026-08-06T02:22:30.6844773Z  systemctl restart containerd.service
+2026-08-06T02:22:30.6882080Z  systemctl restart cron.service
+2026-08-06T02:22:30.7023670Z  systemctl restart haveged.service
+2026-08-06T02:22:30.7098331Z  systemctl restart hv-kvp-daemon.service
+2026-08-06T02:22:30.7136503Z  systemctl restart irqbalance.service
+2026-08-06T02:22:30.7174668Z  systemctl restart mono-xsp4.service
+2026-08-06T02:22:30.7212529Z  systemctl restart multipathd.service
+2026-08-06T02:22:30.7287069Z  systemctl restart packagekit.service
+2026-08-06T02:22:30.7324773Z  systemctl restart php8.1-fpm.service
+2026-08-06T02:22:30.7363127Z  systemctl restart polkit.service
+2026-08-06T02:22:30.7400430Z  systemctl restart rsyslog.service
+2026-08-06T02:22:30.7438813Z  systemctl restart serial-getty@ttyS0.service
+2026-08-06T02:22:30.7477333Z  systemctl restart ssh.service
+2026-08-06T02:22:30.7515629Z  systemctl restart systemd-journald.service
+2026-08-06T02:22:30.7594399Z  /etc/needrestart/restart.d/systemd-manager
+2026-08-06T02:22:30.7634155Z  systemctl restart systemd-networkd.service
+2026-08-06T02:22:30.7673502Z  systemctl restart systemd-resolved.service
+2026-08-06T02:22:30.7713588Z  systemctl restart systemd-udevd.service
+2026-08-06T02:22:30.7787118Z 
+2026-08-06T02:22:30.7789101Z Service restarts being deferred:
+2026-08-06T02:22:30.7789539Z  /etc/needrestart/restart.d/dbus.service
+2026-08-06T02:22:30.7789901Z  systemctl restart docker.service
+2026-08-06T02:22:30.7790220Z  systemctl restart getty@tty1.service
+2026-08-06T02:22:30.7790575Z  systemctl restart hosted-compute-agent.service
+2026-08-06T02:22:30.7790984Z  systemctl restart networkd-dispatcher.service
+2026-08-06T02:22:30.7791378Z  systemctl restart systemd-logind.service
+2026-08-06T02:22:30.7791720Z  systemctl restart user@1001.service
+2026-08-06T02:22:30.7797124Z  systemctl restart walinuxagent.service
+2026-08-06T02:22:30.7797407Z 
+2026-08-06T02:22:30.7797533Z No containers need to be restarted.
+2026-08-06T02:22:30.7797764Z 
+2026-08-06T02:22:30.7797912Z No user sessions are running outdated binaries.
+2026-08-06T02:22:30.7798129Z 
+2026-08-06T02:22:30.7798292Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-08-06T02:22:32.1458680Z ##[group]Run mkdir -p "$HOME/fox14"
+2026-08-06T02:22:32.1458965Z [36;1mmkdir -p "$HOME/fox14"[0m
+2026-08-06T02:22:32.1459162Z [36;1mcd "$HOME"[0m
+2026-08-06T02:22:32.1459412Z [36;1mgit clone https://gitlab.com/OrangeFox/sync.git fox14_sync[0m
+2026-08-06T02:22:32.1459693Z [36;1mcd fox14_sync[0m
+2026-08-06T02:22:32.1459948Z [36;1m./orangefox_sync.sh --branch 14.1 --path "$HOME/fox14" || \[0m
+2026-08-06T02:22:32.1460269Z [36;1m  ./orangefox_sync.sh --branch 14.1 --path "$HOME/fox14"[0m
+2026-08-06T02:22:32.1509474Z shell: /usr/bin/bash -e {0}
+2026-08-06T02:22:32.1509681Z env:
+2026-08-06T02:22:32.1509845Z   DEVICE_16: zeekr
+2026-08-06T02:22:32.1510005Z   DEVICE_14: zeekr14
+2026-08-06T02:22:32.1510286Z   KERNEL_REPO: https://github.com/LineageOS/android_kernel_motorola_sm8475.git
+2026-08-06T02:22:32.1510601Z   CCACHE_DIR: /root/.ccache
+2026-08-06T02:22:32.1510799Z ##[endgroup]
+2026-08-06T02:22:32.1602146Z Cloning into 'fox14_sync'...
+2026-08-06T02:22:33.0182241Z ./orangefox_sync.sh, v20260603
+2026-08-06T02:22:33.0194484Z **************
+2026-08-06T02:22:33.0194754Z *** Syncing will take a *VERY* long time
+2026-08-06T02:22:33.0195077Z **************
+2026-08-06T02:22:33.0195669Z -- Starting the script ...
+2026-08-06T02:22:33.0196063Z -- The new build system will be located in "/home/runner/fox14"
+2026-08-06T02:22:33.0208393Z -- Initialising the twrp-14 minimal manifest repo ...
+2026-08-06T02:22:35.1681027Z 
+2026-08-06T02:22:35.1681553Z ... A new version of repo (2.65) is available.
+2026-08-06T02:22:35.1681944Z ... New version is available at: /home/runner/fox14/.repo/repo/repo
+2026-08-06T02:22:35.1682257Z ... The launcher is run from: /usr/bin/repo
+2026-08-06T02:22:35.1682570Z !!! The launcher is not writable.  Please talk to your sysadmin or distro
+2026-08-06T02:22:35.1682874Z !!! to get an update installed.
+2026-08-06T02:22:35.1683291Z 
+2026-08-06T02:22:35.8549961Z 
+2026-08-06T02:22:35.8550681Z repo has been initialized in /home/runner/fox14
+2026-08-06T02:22:35.8795296Z -- Done.
+2026-08-06T02:22:35.8795658Z -- Syncing the twrp-14 minimal manifest repo ...
+2026-08-06T02:22:36.0001823Z 
+2026-08-06T02:22:36.0002365Z ... A new version of repo (2.65) is available.
+2026-08-06T02:22:36.0002753Z ... New version is available at: /home/runner/fox14/.repo/repo/repo
+2026-08-06T02:22:36.0003064Z ... The launcher is run from: /usr/bin/repo
+2026-08-06T02:22:36.0003363Z !!! The launcher is not writable.  Please talk to your sysadmin or distro
+2026-08-06T02:22:36.0003657Z !!! to get an update installed.
+2026-08-06T02:22:36.0003789Z 
+2026-08-06T02:41:24.6388603Z Finalizing sync state...
+2026-08-06T02:41:24.6389036Z repo sync has finished successfully.
+2026-08-06T02:41:24.6796684Z -- Done.
+2026-08-06T02:41:24.6797237Z -- Patching the twrp-14 minimal manifest for building OrangeFox for native android-14 devices ...
+2026-08-06T02:41:24.6932363Z patching file core/Makefile
+2026-08-06T02:41:24.6940943Z patching file core/config.mk
+2026-08-06T02:41:24.6945917Z patching file make/envsetup.sh
+2026-08-06T02:41:24.6954511Z -- The twrp-14 minimal manifest has been patched successfully
+2026-08-06T02:41:24.6955154Z -- Patching the twrp-14 system/vold for building OrangeFox for native android-14 devices ...
+2026-08-06T02:41:24.6967866Z patching file Android.bp
+2026-08-06T02:41:24.6970941Z patching file Decrypt.cpp
+2026-08-06T02:41:24.6974236Z patching file KeystoreInfo.cpp
+2026-08-06T02:41:24.6976704Z patching file Weaver1.cpp
+2026-08-06T02:41:24.6979545Z patching file Weaver1.h
+2026-08-06T02:41:24.6983802Z -- The twrp-14 system/vold has been patched successfully
+2026-08-06T02:41:24.6984448Z -- Patching the twrp-14 .repo/manifests for building OrangeFox for native android-14 devices ...
+2026-08-06T02:41:24.7022648Z patching file remove-minimal.xml
+2026-08-06T02:41:24.7025413Z -- The twrp-14 .repo/manifests has been patched successfully
+2026-08-06T02:41:24.8839737Z 
+2026-08-06T02:41:24.8841534Z ... A new version of repo (2.65) is available.
+2026-08-06T02:41:24.8842539Z ... New version is available at: /home/runner/fox14/.repo/repo/repo
+2026-08-06T02:41:24.8843082Z ... The launcher is run from: /usr/bin/repo
+2026-08-06T02:41:24.8843653Z !!! The launcher is not writable.  Please talk to your sysadmin or distro
+2026-08-06T02:41:24.8844187Z !!! to get an update installed.
+2026-08-06T02:41:24.8844407Z 
+2026-08-06T02:41:29.1774895Z Finalizing sync state...
+2026-08-06T02:41:29.1775174Z repo sync has finished successfully.
+2026-08-06T02:41:29.2045928Z -- Patching the twrp-14 vendor/twrp ...
+2026-08-06T02:41:29.2086723Z -- The twrp-14 vendor/twrp has been patched successfully
+2026-08-06T02:41:29.2089031Z -- Cloning se_omapi ...
+2026-08-06T02:41:29.2101002Z Cloning into 'external/se_omapi'...
+2026-08-06T02:41:30.2019701Z -- se_omapi has been cloned successfully
+2026-08-06T02:41:30.2034004Z -- Moving the TWRP recovery sources to /tmp
+2026-08-06T02:41:30.2073601Z -- Pulling the OrangeFox recovery sources ...
+2026-08-06T02:41:30.2084386Z Cloning into 'recovery'...
+2026-08-06T02:41:34.6787362Z -- The OrangeFox sources have been cloned successfully
+2026-08-06T02:41:34.6787799Z -- Cleaning up the TWRP recovery sources from /tmp
+2026-08-06T02:41:35.0051095Z -- Preparing for cloning the OrangeFox vendor tree ...
+2026-08-06T02:41:35.0070875Z -- Pulling the OrangeFox vendor tree ...
+2026-08-06T02:41:35.0082506Z Cloning into 'recovery'...
+2026-08-06T02:41:41.6522765Z -- The OrangeFox vendor tree has been cloned successfully
+2026-08-06T02:41:41.6540932Z -- Stop time =Thu Aug  6 02:41:41 UTC 2026
+2026-08-06T02:41:41.6541279Z -- Start time=Thu Aug  6 02:22:33 UTC 2026
+2026-08-06T02:41:41.6541711Z -- Now, clone your device trees to the correct locations!
+2026-08-06T02:41:41.6603538Z ##[group]Run cd "$HOME/fox14"
+2026-08-06T02:41:41.6603811Z [36;1mcd "$HOME/fox14"[0m
+2026-08-06T02:41:41.6604004Z [36;1mmkdir -p kernel/motorola[0m
+2026-08-06T02:41:41.6604319Z [36;1mgit clone --depth=1 --branch lineage-21 "$KERNEL_REPO" kernel/motorola/sm8475[0m
+2026-08-06T02:41:41.7576746Z shell: /usr/bin/bash -e {0}
+2026-08-06T02:41:41.7576965Z env:
+2026-08-06T02:41:41.7577131Z   DEVICE_16: zeekr
+2026-08-06T02:41:41.7577297Z   DEVICE_14: zeekr14
+2026-08-06T02:41:41.7577584Z   KERNEL_REPO: https://github.com/LineageOS/android_kernel_motorola_sm8475.git
+2026-08-06T02:41:41.7577899Z   CCACHE_DIR: /root/.ccache
+2026-08-06T02:41:41.7578081Z ##[endgroup]
+2026-08-06T02:41:41.7668171Z Cloning into 'kernel/motorola/sm8475'...
+2026-08-06T02:42:39.8976554Z Updating files:  25% (20878/80313)
+2026-08-06T02:42:39.9370909Z Updating files:  26% (20882/80313)
+2026-08-06T02:42:39.9727051Z Updating files:  27% (21685/80313)
+2026-08-06T02:42:40.0096253Z Updating files:  28% (22488/80313)
+2026-08-06T02:42:40.0491059Z Updating files:  29% (23291/80313)
+2026-08-06T02:42:40.0963953Z Updating files:  30% (24094/80313)
+2026-08-06T02:42:40.1494886Z Updating files:  31% (24898/80313)
+2026-08-06T02:42:40.2162803Z Updating files:  32% (25701/80313)
+2026-08-06T02:42:40.2707371Z Updating files:  33% (26504/80313)
+2026-08-06T02:42:40.3200478Z Updating files:  34% (27307/80313)
+2026-08-06T02:42:40.3774068Z Updating files:  35% (28110/80313)
+2026-08-06T02:42:40.4419457Z Updating files:  36% (28913/80313)
+2026-08-06T02:42:40.7672638Z Updating files:  37% (29716/80313)
+2026-08-06T02:42:40.8318395Z Updating files:  38% (30519/80313)
+2026-08-06T02:42:40.8867539Z Updating files:  39% (31323/80313)
+2026-08-06T02:42:40.8974324Z Updating files:  40% (32126/80313)
+2026-08-06T02:42:40.9215586Z Updating files:  40% (32398/80313)
+2026-08-06T02:42:40.9748623Z Updating files:  41% (32929/80313)
+2026-08-06T02:42:41.0302672Z Updating files:  42% (33732/80313)
+2026-08-06T02:42:41.0911389Z Updating files:  43% (34535/80313)
+2026-08-06T02:42:41.1536727Z Updating files:  44% (35338/80313)
+2026-08-06T02:42:41.2134631Z Updating files:  45% (36141/80313)
+2026-08-06T02:42:41.2742493Z Updating files:  46% (36944/80313)
+2026-08-06T02:42:41.3387219Z Updating files:  47% (37748/80313)
+2026-08-06T02:42:41.3935991Z Updating files:  48% (38551/80313)
+2026-08-06T02:42:41.4454422Z Updating files:  49% (39354/80313)
+2026-08-06T02:42:41.5066604Z Updating files:  50% (40157/80313)
+2026-08-06T02:42:41.5702874Z Updating files:  51% (40960/80313)
+2026-08-06T02:42:41.6522709Z Updating files:  52% (41763/80313)
+2026-08-06T02:42:41.7324138Z Updating files:  53% (42566/80313)
+2026-08-06T02:42:41.8103970Z Updating files:  54% (43370/80313)
+2026-08-06T02:42:41.8836492Z Updating files:  55% (44173/80313)
+2026-08-06T02:42:41.8974663Z Updating files:  56% (44976/80313)
+2026-08-06T02:42:41.9617524Z Updating files:  56% (45142/80313)
+2026-08-06T02:42:42.0210945Z Updating files:  57% (45779/80313)
+2026-08-06T02:42:42.0766565Z Updating files:  58% (46582/80313)
+2026-08-06T02:42:42.1444843Z Updating files:  59% (47385/80313)
+2026-08-06T02:42:42.2003551Z Updating files:  60% (48188/80313)
+2026-08-06T02:42:42.2907754Z Updating files:  61% (48991/80313)
+2026-08-06T02:42:42.3557678Z Updating files:  62% (49795/80313)
+2026-08-06T02:42:42.4251635Z Updating files:  63% (50598/80313)
+2026-08-06T02:42:42.4978180Z Updating files:  64% (51401/80313)
+2026-08-06T02:42:42.6094032Z Updating files:  65% (52204/80313)
+2026-08-06T02:42:42.6606577Z Updating files:  66% (53007/80313)
+2026-08-06T02:42:42.7186204Z Updating files:  67% (53810/80313)
+2026-08-06T02:42:42.7810021Z Updating files:  68% (54613/80313)
+2026-08-06T02:42:42.8490370Z Updating files:  69% (55416/80313)
+2026-08-06T02:42:42.8974619Z Updating files:  70% (56220/80313)
+2026-08-06T02:42:42.9223858Z Updating files:  70% (56645/80313)
+2026-08-06T02:42:42.9787796Z Updating files:  71% (57023/80313)
+2026-08-06T02:42:43.0506017Z Updating files:  72% (57826/80313)
+2026-08-06T02:42:43.1110417Z Updating files:  73% (58629/80313)
+2026-08-06T02:42:43.1741707Z Updating files:  74% (59432/80313)
+2026-08-06T02:42:43.2471023Z Updating files:  75% (60235/80313)
+2026-08-06T02:42:43.3074383Z Updating files:  76% (61038/80313)
+2026-08-06T02:42:43.3417763Z Updating files:  77% (61842/80313)
+2026-08-06T02:42:43.3785935Z Updating files:  78% (62645/80313)
+2026-08-06T02:42:43.4232418Z Updating files:  79% (63448/80313)
+2026-08-06T02:42:43.4602581Z Updating files:  80% (64251/80313)
+2026-08-06T02:42:43.5023414Z Updating files:  81% (65054/80313)
+2026-08-06T02:42:43.5407798Z Updating files:  82% (65857/80313)
+2026-08-06T02:42:43.5819186Z Updating files:  83% (66660/80313)
+2026-08-06T02:42:43.6479299Z Updating files:  84% (67463/80313)
+2026-08-06T02:42:43.7068477Z Updating files:  85% (68267/80313)
+2026-08-06T02:42:43.7757300Z Updating files:  86% (69070/80313)
+2026-08-06T02:42:43.8347459Z Updating files:  87% (69873/80313)
+2026-08-06T02:42:43.8738056Z Updating files:  88% (70676/80313)
+2026-08-06T02:42:43.8974556Z Updating files:  89% (71479/80313)
+2026-08-06T02:42:43.9295899Z Updating files:  89% (71879/80313)
+2026-08-06T02:42:44.0032671Z Updating files:  90% (72282/80313)
+2026-08-06T02:42:44.0516943Z Updating files:  91% (73085/80313)
+2026-08-06T02:42:44.1320893Z Updating files:  92% (73888/80313)
+2026-08-06T02:42:44.2072676Z Updating files:  93% (74692/80313)
+2026-08-06T02:42:44.2536940Z Updating files:  94% (75495/80313)
+2026-08-06T02:42:44.2982211Z Updating files:  95% (76298/80313)
+2026-08-06T02:42:44.3386959Z Updating files:  96% (77101/80313)
+2026-08-06T02:42:44.3728769Z Updating files:  97% (77904/80313)
+2026-08-06T02:42:44.4077387Z Updating files:  98% (78707/80313)
+2026-08-06T02:42:44.4962209Z Updating files:  99% (79510/80313)
+2026-08-06T02:42:44.4962592Z Updating files: 100% (80313/80313)
+2026-08-06T02:42:44.4962898Z Updating files: 100% (80313/80313), done.
+2026-08-06T02:42:44.5739200Z ##[group]Run cd "$HOME/fox14"
+2026-08-06T02:42:44.5739445Z [36;1mcd "$HOME/fox14"[0m
+2026-08-06T02:42:44.5739652Z [36;1mmkdir -p device/motorola[0m
+2026-08-06T02:42:44.5740053Z [36;1mcp -r "$GITHUB_WORKSPACE/device_tree/device/motorola/zeekr14" device/motorola/[0m
+2026-08-06T02:42:44.5740389Z [36;1mls -la device/motorola/[0m
+2026-08-06T02:42:44.5794342Z shell: /usr/bin/bash -e {0}
+2026-08-06T02:42:44.5794555Z env:
+2026-08-06T02:42:44.5794705Z   DEVICE_16: zeekr
+2026-08-06T02:42:44.5794865Z   DEVICE_14: zeekr14
+2026-08-06T02:42:44.5795141Z   KERNEL_REPO: https://github.com/LineageOS/android_kernel_motorola_sm8475.git
+2026-08-06T02:42:44.5795452Z   CCACHE_DIR: /root/.ccache
+2026-08-06T02:42:44.5795628Z ##[endgroup]
+2026-08-06T02:42:44.6074497Z cp: cannot stat '/home/runner/work/zeekr-orangefox/zeekr-orangefox/device_tree/device/motorola/zeekr14': No such file or directory
+2026-08-06T02:42:44.6085845Z ##[error]Process completed with exit code 1.
+2026-08-06T02:42:44.6201898Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-08-06T02:42:44.6203100Z Post job cleanup.
+2026-08-06T02:42:44.9644363Z [command]/usr/bin/git version
+2026-08-06T02:42:44.9679952Z git version 2.54.0
+2026-08-06T02:42:44.9712925Z Temporarily overriding HOME='/home/runner/work/_temp/6e8ff480-f5c7-4c3c-8a83-6a2f9d782200' before making global git config changes
+2026-08-06T02:42:44.9714316Z Adding repository directory to the temporary git global config as a safe directory
+2026-08-06T02:42:44.9717883Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/zeekr-orangefox/zeekr-orangefox/device_tree
+2026-08-06T02:42:44.9759440Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-08-06T02:42:44.9792951Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-08-06T02:42:45.0070988Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-08-06T02:42:45.0095566Z http.https://github.com/.extraheader
+2026-08-06T02:42:45.0105303Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-08-06T02:42:45.0137342Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-08-06T02:42:45.0361569Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-08-06T02:42:45.0404349Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-08-06T02:42:45.0744009Z Cleaning up orphan processes
+2026-08-06T02:42:45.1109810Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
