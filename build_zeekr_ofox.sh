@@ -47,7 +47,12 @@ build_one() {
   cp -r "$DEVICE_TREE_SRC/motorola/$DEVICE_DIR" "device/motorola/$DEVICE_DIR"
 
   source build/envsetup.sh
-  lunch "${LUNCH}-eng"
+  export FOX_BUILD_DEVICE=zeekr
+  if [ "$BRANCH" = "14.1" ]; then
+    lunch "${LUNCH}-ap2a-eng"   # 14.1 分支需带 Android 14 版本标识
+  else
+    lunch "${LUNCH}-eng"
+  fi
   mka recoveryimage
 
   echo "=================================================="

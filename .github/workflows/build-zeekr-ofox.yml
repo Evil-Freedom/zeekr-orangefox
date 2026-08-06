@@ -86,7 +86,8 @@ jobs:
           cd "$HOME/fox16"
           test -f build/envsetup.sh || { echo "❌ build/envsetup.sh 不存在，源码同步失败"; ls -la "$HOME/fox16" | head -30; exit 1; }
           source build/envsetup.sh
-          lunch twrp_${{ env.DEVICE_16 }}-eng || lunch twrp_${{ env.DEVICE_16 }}-bp2a-eng
+          export FOX_BUILD_DEVICE=zeekr
+          lunch twrp_${{ env.DEVICE_16 }}-bp2a-eng || lunch twrp_${{ env.DEVICE_16 }}-eng
           mka recoveryimage 2>&1 | tee /tmp/build16.log
         timeout-minutes: 480
 
@@ -161,7 +162,9 @@ jobs:
         run: |
           cd "$HOME/fox14"
           source build/envsetup.sh
-          lunch twrp_zeekr14-eng
+          # 14.1 分支必须用 ap2a-eng（带 Android 14 版本标识），并设置 FOX_BUILD_DEVICE
+          export FOX_BUILD_DEVICE=zeekr
+          lunch twrp_zeekr14-ap2a-eng
           mka recoveryimage 2>&1 | tee /tmp/build14.log
         timeout-minutes: 480
 
