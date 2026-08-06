@@ -21,20 +21,22 @@ build_one() {
   local DEVICE_DIR="$3"  # device 子目录名 (zeekr | zeekr-14)
   local KERNEL_BR="$4"   # lineage-23.2 | lineage-21
   local LUNCH="$5"       # twrp_zeekr | twrp_zeekr14
+  local SYNC_REPO="${6:-https://gitlab.com/OrangeFox/sync.git}"  # 16.0 必须传 GitHub 源
 
   echo "=================================================="
   echo " [zeekr] OrangeFox $BRANCH 编译开始"
-  echo " 工作目录: $WORK"
+  echo " 工作目录: $WORK  同步源: $SYNC_REPO"
   echo "=================================================="
 
   mkdir -p "$WORK"
   if [ ! -d "$WORK/sync/.git" ]; then
-    git clone https://gitlab.com/OrangeFox/sync.git "$WORK/sync"
+    git clone "$SYNC_REPO" "$WORK/sync"
   fi
   cd "$WORK/sync"
   ./orangefox_sync.sh --branch "$BRANCH" --path "$WORK/fox"
 
   cd "$WORK/fox"
+  test -f build/envsetup.sh || { echo "❌ build/envsetup.sh 不存在，源码同步失败"; ls -la "$WORK/fox" | head -30; exit 1; }
   if [ ! -d "$KERNEL_DIR" ]; then
     mkdir -p kernel/motorola
     git clone --depth=1 --branch "$KERNEL_BR" "$KERNEL_REPO" "$KERNEL_DIR"
@@ -55,9 +57,10 @@ build_one() {
 }
 
 case "$TARGET" in
-  16)   build_one "16.0" "$HOME/OrangeFox_16"  "zeekr"    "lineage-23.2" "twrp_zeekr" ;;
-  14)   build_one "14.1" "$HOME/OrangeFox_14"  "zeekr-14" "lineage-21"   "twrp_zeekr14" ;;
-  all)  build_one "16.0" "$HOME/OrangeFox_16"  "zeekr"    "lineage-23.2" "twrp_zeekr"
-        build_one "14.1" "$HOME/OrangeFox_14"  "zeekr-14" "lineage-21"   "twrp_zeekr14" ;;
+  # 注意：16.0 分支的同步源是 GitHub 的 OrangeFox16/sync；14.1 是 GitLab 的 OrangeFox/sync
+  16)   build_one "16.0" "$HOME/OrangeFox_16"  "zeekr"    "lineage-23.2" "twrp_zeekr"   "https://github.com/OrangeFox16/sync.git" ;;
+  14)   build_one "14.1" "$HOME/OrangeFox_14"  "zeekr-14" "lineage-21"   "twrp_zeekr14" "https://gitlab.com/OrangeFox/sync.git" ;;
+  all)  build_one "16.0" "$HOME/OrangeFox_16"  "zeekr"    "lineage-23.2" "twrp_zeekr"   "https://github.com/OrangeFox16/sync.git"
+        build_one "14.1" "$HOME/OrangeFox_14"  "zeekr-14" "lineage-21"   "twrp_zeekr14" "https://gitlab.com/OrangeFox/sync.git" ;;
   *)    echo "用法: bash $0 [16|14|all]"; exit 1 ;;
 esac

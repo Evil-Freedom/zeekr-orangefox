@@ -4,7 +4,7 @@
 
 | 目标 | 代码基 | 内核 | 对应设备树 | 说明 |
 |------|--------|------|-----------|------|
-| **zeekr（安卓16 新版）** | OrangeFox `16.0`（GitLab `sync --branch 16.0`） | `lineage-23.2`（Linux 5.10） | `device/motorola/zeekr` | 面向安卓16 ROM |
+| **zeekr（安卓16 新版）** | OrangeFox `16.0`（**GitHub** `OrangeFox16/sync --branch 16.0`） | `lineage-23.2`（Linux 5.10） | `device/motorola/zeekr` | 面向安卓16 ROM |
 | **zeekr14（老版复刻）** | OrangeFox `14.1`（GitLab `sync --branch 14.1`） | `lineage-21`（Linux 5.10） | `device/motorola/zeekr-14` | 复刻 V-3.1 世代（fox_14.1 代码基） |
 
 > **重要声明**

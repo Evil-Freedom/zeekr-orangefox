@@ -21,7 +21,7 @@ on:
 
 concurrency:
   group: ofox-build-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 env:
   DEVICE_16: zeekr
@@ -55,7 +55,7 @@ jobs:
         run: |
           mkdir -p "$HOME/fox16"
           cd "$HOME"
-          git clone https://gitlab.com/OrangeFox/sync.git fox16_sync
+          git clone https://github.com/OrangeFox16/sync.git fox16_sync
           cd fox16_sync
           ./orangefox_sync.sh --branch 16.0 --path "$HOME/fox16" || \
             ./orangefox_sync.sh --branch 16.0 --path "$HOME/fox16"
@@ -77,6 +77,7 @@ jobs:
       - name: 编译 OrangeFox (安卓16)
         run: |
           cd "$HOME/fox16"
+          test -f build/envsetup.sh || { echo "❌ build/envsetup.sh 不存在，源码同步失败"; ls -la "$HOME/fox16" | head -30; exit 1; }
           source build/envsetup.sh
           lunch twrp_${{ env.DEVICE_16 }}-eng || lunch twrp_${{ env.DEVICE_16 }}-bp2a-eng
           mka recoveryimage 2>&1 | tee /tmp/build16.log
