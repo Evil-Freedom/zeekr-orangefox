@@ -141,6 +141,11 @@ jobs:
           export OUT_DIR="$HOME/fox16-out"
           rm -rf "$OUT_DIR"
           mkdir -p "$OUT_DIR"
+          # Android 16 soong sandbox 默认把源码树挂成只读, ccache 写临时文件
+          # (与源码树同分区) 会撞 "Read-only file system" (ninja 编译阶段才报)。
+          # AOSP 官方开关: BUILD_BROKEN_SRC_DIR_IS_WRITABLE=true 构建期整个源码树可写。
+          # BoardConfig.mk 已加同值, 这里 export 环境变量双保险 (soong_ui 从 env 读取)。
+          export BUILD_BROKEN_SRC_DIR_IS_WRITABLE=true
           # RUNNER_TEMP (/home/runner/work/_temp) 是 step 内可用的可写 shell 变量，
           # 绝不走 actions/cache 恢复路径，规避 Read-only file system。
           export CCACHE_DIR="$RUNNER_TEMP/.ccache"

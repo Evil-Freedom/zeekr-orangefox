@@ -18,6 +18,10 @@ BUILD_BROKEN_DUP_RULES := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 BUILD_BROKEN_NINJA_USES_ENV_VARS += RTIC_MPGEN
 BUILD_BROKEN_PLUGIN_VALIDATION := soong-libaosprecovery_defaults soong-libguitwrp_defaults soong-libminuitwrp_defaults soong-vold_defaults
+# Android 16(及更高)的 soong sandbox 把源码树挂成只读，ccache 写临时文件
+# (哪怕放在 RUNNER_TEMP，只要与源码树同分区) 就会撞 "Read-only file system"。
+# 这是 AOSP 官方提供的标准开关：构建期间将整个源码树声明为可写。
+BUILD_BROKEN_SRC_DIR_IS_WRITABLE := true
 
 # ===== 架构 =====
 TARGET_ARCH := arm64
