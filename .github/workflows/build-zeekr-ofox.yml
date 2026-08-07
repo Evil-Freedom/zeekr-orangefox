@@ -27,10 +27,10 @@ env:
   DEVICE_16: zeekr
   DEVICE_14: zeekr-14
   KERNEL_REPO: https://github.com/LineageOS/android_kernel_motorola_sm8475.git
-  # CCACHE_DIR 不在 env 里定义: GitHub 不允许 runner 上下文出现在 env 值中
-  # (会导致整条 workflow 配置非法, jobs=0, run 直接 failure)。
-  # 改为: cache path 用 ${{ github.workspace }}/.ccache (github 上下文合法),
-  #       编译步骤内 export CCACHE_DIR="$GITHUB_WORKSPACE/.ccache" (运行时 shell 变量)。
+  # ccache 不使用 actions/cache: 该步骤会把恢复目标目录搞成只读挂载,
+  # 导致 ccache 建 tmp 失败 (Read-only file system)。GITHUB_WORKSPACE 本身也是只读 checkout。
+  # 正确做法: 编译步骤内 export CCACHE_DIR="$RUNNER_TEMP/.ccache"
+  # (RUNNER_TEMP=/home/runner/work/_temp, step 内可用的可写 shell 变量, 每 job 全新)。
 
 jobs:
   build-android16:
@@ -81,13 +81,9 @@ jobs:
             zlib1g-dev python3 python3-pip openjdk-17-jdk repo sshpass
           sudo apt-get clean
 
-      - name: ccache 缓存恢复
-        uses: actions/cache@v4
-        with:
-          path: ${{ github.workspace }}/.ccache
-          # 原先 key 用 run_id，每次必然 miss 且不断新增缓存条目。
-          key: ccache-a16-${{ github.sha }}
-          restore-keys: ccache-a16-
+      # 不使用 actions/cache 缓存 ccache: 该步骤会把恢复目标目录搞成只读挂载，
+      # 导致 ccache 建 tmp 失败（Read-only file system）。ccache 改放 RUNNER_TEMP
+      # （/home/runner/work/_temp，每 job 全新且可写），牺牲跨 run 缓存加速换确定性。
 
       - name: 同步 OrangeFox 16.0 源码
         run: |
@@ -120,7 +116,9 @@ jobs:
         run: |
           cd "$HOME/fox16"
           test -f build/envsetup.sh || { echo "❌ build/envsetup.sh 不存在，源码同步失败"; ls -la "$HOME/fox16" | head -30; exit 1; }
-          export CCACHE_DIR="$GITHUB_WORKSPACE/.ccache"
+          # RUNNER_TEMP (/home/runner/work/_temp) 是 step 内可用的可写 shell 变量，
+          # 绝不走 actions/cache 恢复路径，规避 Read-only file system。
+          export CCACHE_DIR="$RUNNER_TEMP/.ccache"
           mkdir -p "$CCACHE_DIR" && chmod 777 "$CCACHE_DIR"
           export USE_CCACHE=1
           export CCACHE_EXEC=$(command -v ccache)
@@ -204,12 +202,8 @@ jobs:
             zlib1g-dev python3 python3-pip openjdk-17-jdk repo sshpass
           sudo apt-get clean
 
-      - name: ccache 缓存恢复
-        uses: actions/cache@v4
-        with:
-          path: ${{ github.workspace }}/.ccache
-          key: ccache-a14-${{ github.sha }}
-          restore-keys: ccache-a14-
+      # 不使用 actions/cache 缓存 ccache: 同上，恢复目标目录会变只读挂载。
+      # ccache 放 RUNNER_TEMP，每 job 全新可写。
 
       - name: 同步 OrangeFox 14.1 源码
         run: |
@@ -240,7 +234,7 @@ jobs:
       - name: 编译 OrangeFox (老版)
         run: |
           cd "$HOME/fox14"
-          export CCACHE_DIR="$GITHUB_WORKSPACE/.ccache"
+          export CCACHE_DIR="$RUNNER_TEMP/.ccache"
           mkdir -p "$CCACHE_DIR" && chmod 777 "$CCACHE_DIR"
           export USE_CCACHE=1
           export CCACHE_EXEC=$(command -v ccache)
