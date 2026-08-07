@@ -27,8 +27,10 @@ env:
   DEVICE_16: zeekr
   DEVICE_14: zeekr-14
   KERNEL_REPO: https://github.com/LineageOS/android_kernel_motorola_sm8475.git
-  # 注意: CCACHE_DIR 不能放在顶层 env —— runner 上下文在 workflow 级 env 不可用,
-  # 会导致整条 workflow 配置非法(jobs=0, run 直接 failure)。已下移到各 job 的 env。
+  # CCACHE_DIR 不在 env 里定义: GitHub 不允许 runner 上下文出现在 env 值中
+  # (会导致整条 workflow 配置非法, jobs=0, run 直接 failure)。
+  # 改为: cache path 用 ${{ github.workspace }}/.ccache (github 上下文合法),
+  #       编译步骤内 export CCACHE_DIR="$GITHUB_WORKSPACE/.ccache" (运行时 shell 变量)。
 
 jobs:
   build-android16:
@@ -38,8 +40,6 @@ jobs:
     # GitHub 托管 runner 单 job 硬上限 6 小时(360分钟)，写 600 无效。
     # 设 345 让 job 在被强杀前自己超时退出，这样后面的日志/缓存步骤还能跑。
     timeout-minutes: 345
-    env:
-      CCACHE_DIR: ${{ runner.temp }}/.ccache
     steps:
       - name: 检出设备树仓库
         uses: actions/checkout@v4
@@ -84,7 +84,7 @@ jobs:
       - name: ccache 缓存恢复
         uses: actions/cache@v4
         with:
-          path: ${{ runner.temp }}/.ccache
+          path: ${{ github.workspace }}/.ccache
           # 原先 key 用 run_id，每次必然 miss 且不断新增缓存条目。
           key: ccache-a16-${{ github.sha }}
           restore-keys: ccache-a16-
@@ -120,6 +120,7 @@ jobs:
         run: |
           cd "$HOME/fox16"
           test -f build/envsetup.sh || { echo "❌ build/envsetup.sh 不存在，源码同步失败"; ls -la "$HOME/fox16" | head -30; exit 1; }
+          export CCACHE_DIR="$GITHUB_WORKSPACE/.ccache"
           mkdir -p "$CCACHE_DIR" && chmod 777 "$CCACHE_DIR"
           export USE_CCACHE=1
           export CCACHE_EXEC=$(command -v ccache)
@@ -166,8 +167,6 @@ jobs:
     if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.build_target == 'both' || github.event.inputs.build_target == 'zeekr14') }}
     runs-on: ubuntu-22.04
     timeout-minutes: 345
-    env:
-      CCACHE_DIR: ${{ runner.temp }}/.ccache
     steps:
       - name: 检出设备树仓库
         uses: actions/checkout@v4
@@ -208,7 +207,7 @@ jobs:
       - name: ccache 缓存恢复
         uses: actions/cache@v4
         with:
-          path: ${{ runner.temp }}/.ccache
+          path: ${{ github.workspace }}/.ccache
           key: ccache-a14-${{ github.sha }}
           restore-keys: ccache-a14-
 
@@ -241,6 +240,7 @@ jobs:
       - name: 编译 OrangeFox (老版)
         run: |
           cd "$HOME/fox14"
+          export CCACHE_DIR="$GITHUB_WORKSPACE/.ccache"
           mkdir -p "$CCACHE_DIR" && chmod 777 "$CCACHE_DIR"
           export USE_CCACHE=1
           export CCACHE_EXEC=$(command -v ccache)
