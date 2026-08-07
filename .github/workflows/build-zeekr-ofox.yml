@@ -84,17 +84,8 @@ jobs:
       # 不使用 actions/cache 缓存 ccache: 该步骤会把恢复目标目录搞成只读挂载，
       # 导致 ccache 建 tmp 失败（Read-only file system）。ccache 改放 RUNNER_TEMP
       # （/home/runner/work/_temp，每 job 全新且可写），牺牲跨 run 缓存加速换确定性。
-      # 源码树缓存(fox16)不在此列: repo 增量同步对缓存目录只有读操作(读已有 object 后
-      # 增量拉取)，ccache 那种"运行时要写临时文件"的场景才会撞上只读挂载。
-
-      - name: 恢复源码缓存 (fox16)
-        uses: actions/cache/restore@v4
-        with:
-          path: /home/runner/fox16
-          key: fox16-src-a16-${{ github.sha }}
-          restore-keys: |
-            fox16-src-a16-
-            fox16-src-
+      # 也不缓存 fox16 源码树: 全量 989 project 约 88G, 远超 GitHub cache 10G 上限,
+      # 保存时 zstd 压缩会直接写爆磁盘(实测 ENOSPC)。
 
       - name: 同步 OrangeFox 16.0 源码
         run: |
@@ -102,8 +93,9 @@ jobs:
           # 989 个 project 从零拉 2.5h 拉不完(实测超时被杀)。
           # 改为直接 repo init + 加速 repo sync:
           #   -c 只拉当前分支 / -j8 并发 4->8 / --no-tags 跳过 tags / --optimized-fetch
-          #   复用已有对象 / --prune 清理; 配合 fox16 源码树缓存, 二次起基本几分钟。
+          #   复用已有对象 / --prune 清理。
           # 16.0 分支的 manifest 补丁脚本中为空操作(BASE_VER=16 走 : 分支), 无需补丁。
+          # 同步完成后删除 .repo (对象库 40-60G): 编译不需要它, 只占磁盘。
           mkdir -p "$HOME/fox16"
           cd "$HOME/fox16"
           if [ ! -d .repo ]; then
@@ -119,6 +111,9 @@ jobs:
             exit "$rc"
           fi
           test -f build/envsetup.sh || { echo "❌ 同步后 build/envsetup.sh 仍缺失"; exit 1; }
+          # 释放 .repo 对象库, 给编译 out/ 腾磁盘
+          du -sh .repo 2>/dev/null || true
+          rm -rf .repo
           df -h /
         timeout-minutes: 150
 
@@ -142,13 +137,17 @@ jobs:
         run: |
           cd "$HOME/fox16"
           test -f build/envsetup.sh || { echo "❌ build/envsetup.sh 不存在，源码同步失败"; ls -la "$HOME/fox16" | head -30; exit 1; }
+          # out/ 放独立目录 ~/fox16-out, 与源码树分离, 便于磁盘管理; 每次全新。
+          export OUT_DIR="$HOME/fox16-out"
+          rm -rf "$OUT_DIR"
+          mkdir -p "$OUT_DIR"
           # RUNNER_TEMP (/home/runner/work/_temp) 是 step 内可用的可写 shell 变量，
           # 绝不走 actions/cache 恢复路径，规避 Read-only file system。
           export CCACHE_DIR="$RUNNER_TEMP/.ccache"
           mkdir -p "$CCACHE_DIR" && chmod 777 "$CCACHE_DIR"
           export USE_CCACHE=1
           export CCACHE_EXEC=$(command -v ccache)
-          ccache -M 12G
+          ccache -M 6G
           ccache -z
           source build/envsetup.sh
           export FOX_BUILD_DEVICE=zeekr
@@ -157,14 +156,8 @@ jobs:
           mka recoveryimage 2>&1 | tee /tmp/build16.log
           rc=${PIPESTATUS[0]}
           if [ "$rc" -ne 0 ]; then echo "❌ mka recoveryimage 失败 exit=$rc"; exit "$rc"; fi
+          df -h /
         timeout-minutes: 170
-
-      - name: 保存源码缓存 (fox16)
-        if: always()
-        uses: actions/cache/save@v4
-        with:
-          path: /home/runner/fox16
-          key: fox16-src-a16-${{ github.sha }}
 
       - name: 构建后状态 (诊断用)
         if: always()
@@ -176,7 +169,8 @@ jobs:
       - name: 收集产物
         if: always()
         run: |
-          OUT="$HOME/fox16/out/target/product/${{ env.DEVICE_16 }}"
+          # out/ 已外置到 ~/fox16-out (编译步骤 export OUT_DIR)
+          OUT="$HOME/fox16-out/target/product/${{ env.DEVICE_16 }}"
           echo "===== 产物目录 ====="
           ls -la "$OUT" 2>/dev/null | head -50
           mkdir -p "$GITHUB_WORKSPACE/artifacts/zeekr-a16"
