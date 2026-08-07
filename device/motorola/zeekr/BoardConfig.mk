@@ -85,7 +85,10 @@ BOARD_VENDOR_DLKMIMAGE_FILE_SYSTEM_TYPE := ext4
 # 动态分区 product 级开关：OrangeFox 要求 PRODUCT_USE_DYNAMIC_PARTITIONS=true 才允许
 # OF_ENABLE_ALL_PARTITION_TOOLS，否则 bootable/recovery/orangefox.mk:485 报
 # "requires dynamic partitions; quitting"。zeekr 是 super 分区(9GB)设备，本就动态分区。
-PRODUCT_USE_DYNAMIC_PARTITIONS := true
+# 注意：OrangeFox 16.0 的 build/make 已将 PRODUCT_USE_DYNAMIC_PARTITIONS 声明为 readonly，
+# 设备树里用 := 直接赋值会报 "cannot assign to readonly variable"。改用 ?=（仅未定义时赋值，
+# super 设备 AOSP 默认即 true），既满足 OF 的 dynamic partitions 前置条件，又不触发 readonly 冲突。
+PRODUCT_USE_DYNAMIC_PARTITIONS ?= true
 
 # ===== 文件系统 =====
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
