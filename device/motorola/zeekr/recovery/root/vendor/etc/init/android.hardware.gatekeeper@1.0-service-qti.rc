@@ -1,0 +1,17 @@
+# Copyright (c) 2021 Qualcomm Technologies, Inc.
+# All Rights Reserved.
+# Confidential and Proprietary - Qualcomm Technologies, Inc.
+
+# zeekr FBE v2 解密：Gatekeeper HIDL @1.0 服务启动
+# 原设备树只带了二进制，缺 rc 与启动触发，导致 servicemanager 收不到 HAL、
+# FBE v2 密钥解包失败（报“密码错误”）。此处与 keymint 对齐：
+# hwservicemanager 就绪且 qseecomd 注册完 listener 后自动拉起。
+on property:hwservicemanager.ready=true && property:vendor.sys.listeners.registered=true
+    start gatekeeper-1-0
+
+service gatekeeper-1-0 /system/bin/android.hardware.gatekeeper@1.0-service-qti
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
+    disabled
+    seclabel u:r:recovery:s0

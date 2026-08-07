@@ -101,6 +101,10 @@ TW_INCLUDE_FBE_METADATA_DECRYPT := true
 TW_USE_FSCRYPT_POLICY := 2
 # 安卓15起 FBE 默认使用硬件包裹密钥(wrapped key)，不开这项 A16 的 /data 解不开
 TW_INCLUDE_CRYPTO_WRAPPED_KEY := true
+# FBE v2 解密需等 QSEE listener 注册完成再解包密钥，并挂 binderfs 供 HAL/servicemanager 使用
+TARGET_USES_BINDERFS := true
+WAIT_FOR_QSEECOM := true
+TARGET_KEYMASTER_WAIT_FOR_QSEE := true
 
 # ===== Recovery 基础 =====
 # 不能开 BOARD_EXCLUDE_KERNEL_FROM_RECOVERY_IMAGE：

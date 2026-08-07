@@ -25,7 +25,16 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-import /init.recovery.qcom_decrypt.rc
+# FBE v2 解密链（QSEE / KeyMint / Gatekeeper）
+# 原 import /init.recovery.qcom_decrypt.rc 指向的文件不存在，导致解密 HAL 全挂不起。
+# 改为自包含：先挂 binderfs，再起 qseecomd；qseecomd 设 vendor.sys.listeners.registered=true 后，
+# KeyMint 与 Gatekeeper 由各自 vendor/etc/init/*.rc 按属性自动拉起。
+on init
+    mkdir /dev/binderfs 0700 root root
+    mount binder binder /dev/binderfs stats=global
+    symlink /dev/binderfs/binder /dev/binder
+    symlink /dev/binderfs/hwbinder /dev/hwbinder
+    symlink /dev/binderfs/vndbinder /dev/vndbinder
 
 on early-init
     start set_permissive
@@ -54,6 +63,8 @@ on post-fs
     start boot-hal-1-2
 
 on boot
+    # 先起 QSEE，注册 listener 后 KeyMint/Gatekeeper 才能绑定
+    start qseecomd
     start health-hal-2-1
 
 service set_permissive /system/bin/set_permissive.sh
@@ -68,4 +79,10 @@ service runatboot /system/bin/runatboot.sh
     group root
     disabled
     oneshot
+    seclabel u:r:recovery:s0
+
+service qseecomd /system/bin/qseecomd
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
