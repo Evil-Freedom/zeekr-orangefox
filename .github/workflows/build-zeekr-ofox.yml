@@ -84,15 +84,41 @@ jobs:
       # 不使用 actions/cache 缓存 ccache: 该步骤会把恢复目标目录搞成只读挂载，
       # 导致 ccache 建 tmp 失败（Read-only file system）。ccache 改放 RUNNER_TEMP
       # （/home/runner/work/_temp，每 job 全新且可写），牺牲跨 run 缓存加速换确定性。
+      # 源码树缓存(fox16)不在此列: repo 增量同步对缓存目录只有读操作(读已有 object 后
+      # 增量拉取)，ccache 那种"运行时要写临时文件"的场景才会撞上只读挂载。
+
+      - name: 恢复源码缓存 (fox16)
+        uses: actions/cache/restore@v4
+        with:
+          path: /home/runner/fox16
+          key: fox16-src-a16-${{ github.sha }}
+          restore-keys: |
+            fox16-src-a16-
+            fox16-src-
 
       - name: 同步 OrangeFox 16.0 源码
         run: |
+          # 不使用 orangefox_sync.sh: 其内部 repo sync 无参数(并发4、全引用、tags),
+          # 989 个 project 从零拉 2.5h 拉不完(实测超时被杀)。
+          # 改为直接 repo init + 加速 repo sync:
+          #   -c 只拉当前分支 / -j8 并发 4->8 / --no-tags 跳过 tags / --optimized-fetch
+          #   复用已有对象 / --prune 清理; 配合 fox16 源码树缓存, 二次起基本几分钟。
+          # 16.0 分支的 manifest 补丁脚本中为空操作(BASE_VER=16 走 : 分支), 无需补丁。
           mkdir -p "$HOME/fox16"
-          cd "$HOME"
-          git clone https://github.com/OrangeFox16/sync.git fox16_sync
-          cd fox16_sync
-          ./orangefox_sync.sh --branch 16.0 --path "$HOME/fox16" || \
-            ./orangefox_sync.sh --branch 16.0 --path "$HOME/fox16"
+          cd "$HOME/fox16"
+          if [ ! -d .repo ]; then
+            repo init --depth=1 -u https://github.com/OrangeFox16/platform_manifest_twrp_aosp.git -b twrp-16
+          fi
+          # 自更新 repo(确保支持 --optimized-fetch); 失败不影响继续(用系统 repo 兜底)
+          repo selfupdate 2>/dev/null || true
+          set -o pipefail
+          repo sync -c -j8 --no-tags --optimized-fetch --prune 2>&1 | tee /tmp/repo_sync16.log | tail -80
+          rc=${PIPESTATUS[0]}
+          if [ "$rc" -ne 0 ]; then
+            echo "❌ repo sync 失败 exit=$rc (详见 /tmp/repo_sync16.log)"
+            exit "$rc"
+          fi
+          test -f build/envsetup.sh || { echo "❌ 同步后 build/envsetup.sh 仍缺失"; exit 1; }
           df -h /
         timeout-minutes: 150
 
@@ -133,6 +159,13 @@ jobs:
           if [ "$rc" -ne 0 ]; then echo "❌ mka recoveryimage 失败 exit=$rc"; exit "$rc"; fi
         timeout-minutes: 170
 
+      - name: 保存源码缓存 (fox16)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: /home/runner/fox16
+          key: fox16-src-a16-${{ github.sha }}
+
       - name: 构建后状态 (诊断用)
         if: always()
         run: |
@@ -151,6 +184,7 @@ jobs:
           cp "$OUT/recovery.img" "$GITHUB_WORKSPACE/artifacts/zeekr-a16/" 2>/dev/null || true
           # 失败时也把日志带出来，否则下次还是瞎猜
           cp /tmp/build16.log "$GITHUB_WORKSPACE/artifacts/zeekr-a16/" 2>/dev/null || true
+          cp /tmp/repo_sync16.log "$GITHUB_WORKSPACE/artifacts/zeekr-a16/" 2>/dev/null || true
 
       - name: 上传产物
         if: always()
