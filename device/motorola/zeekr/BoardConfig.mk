@@ -82,6 +82,11 @@ $(foreach p, $(BOARD_PARTITION_LIST), $(eval BOARD_$(p)IMAGE_FILE_SYSTEM_TYPE :=
 $(foreach p, $(BOARD_PARTITION_LIST), $(eval TARGET_COPY_OUT_$(p) := $(call to-lower, $(p))))
 BOARD_VENDOR_DLKMIMAGE_FILE_SYSTEM_TYPE := ext4
 
+# 动态分区 product 级开关：OrangeFox 要求 PRODUCT_USE_DYNAMIC_PARTITIONS=true 才允许
+# OF_ENABLE_ALL_PARTITION_TOOLS，否则 bootable/recovery/orangefox.mk:485 报
+# "requires dynamic partitions; quitting"。zeekr 是 super 分区(9GB)设备，本就动态分区。
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+
 # ===== 文件系统 =====
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
 TARGET_USERIMAGES_USE_EXT4 := true
