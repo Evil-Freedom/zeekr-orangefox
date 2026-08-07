@@ -95,6 +95,8 @@ TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
 TW_USE_FSCRYPT_POLICY := 2
+# 安卓15起 FBE 默认使用硬件包裹密钥(wrapped key)，不开这项 A16 的 /data 解不开
+TW_INCLUDE_CRYPTO_WRAPPED_KEY := true
 
 # ===== Recovery 基础 =====
 BOARD_EXCLUDE_KERNEL_FROM_RECOVERY_IMAGE := true

@@ -10,7 +10,7 @@
 # 以避免引入 ROM 专属依赖。仅保留 recovery 真正需要的配置。
 #
 
-DEVICE_PATH := device/motorola/zeekr
+DEVICE_PATH := device/motorola/zeekr-14
 
 # 允许 minimal manifest 构建
 ALLOW_MISSING_DEPENDENCIES := true

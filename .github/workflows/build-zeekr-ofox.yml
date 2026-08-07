@@ -6,11 +6,11 @@ on:
       build_target:
         description: '要编译的目标：zeekr(安卓16) / zeekr14(老版V-3.1世代) / both(全部)'
         type: choice
-        default: both
+        default: zeekr
         options:
-          - both
           - zeekr
           - zeekr14
+          - both
   push:
     branches: [main, master]
     paths:
@@ -27,19 +27,48 @@ env:
   DEVICE_16: zeekr
   DEVICE_14: zeekr-14
   KERNEL_REPO: https://github.com/LineageOS/android_kernel_motorola_sm8475.git
-  CCACHE_DIR: /root/.ccache
+  # 必须放在 runner 用户可写的路径。原先写 /root/.ccache，runner 以非 root 运行，
+  # ccache 静默失效、actions/cache 也读不到，等于完全没有缓存。
+  CCACHE_DIR: /home/runner/.ccache
 
 jobs:
   build-android16:
     name: "安卓16 新版 OrangeFox (zeekr)"
     if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.build_target == 'both' || github.event.inputs.build_target == 'zeekr') || github.event_name != 'workflow_dispatch' }}
     runs-on: ubuntu-22.04
-    timeout-minutes: 600
+    # GitHub 托管 runner 单 job 硬上限 6 小时(360分钟)，写 600 无效。
+    # 设 345 让 job 在被强杀前自己超时退出，这样后面的日志/缓存步骤还能跑。
+    timeout-minutes: 345
     steps:
       - name: 检出设备树仓库
         uses: actions/checkout@v4
         with:
           path: device_tree
+
+      - name: 释放磁盘空间
+        run: |
+          echo "===== 清理前 ====="
+          df -h /
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+            /usr/local/share/boost /usr/share/swift /usr/local/graalvm \
+            /usr/local/share/powershell /usr/local/lib/node_modules \
+            /opt/hostedtoolcache/CodeQL "$AGENT_TOOLSDIRECTORY" || true
+          sudo docker image prune --all --force || true
+          sudo apt-get clean
+          echo "===== 清理后 ====="
+          df -h /
+
+      - name: 创建 swap 防 OOM
+        run: |
+          # runner 只有 7GB 内存，安卓16 的 soong 分析阶段峰值远超这个数，
+          # 上一次构建就是 soong_build 自举完成后静默 OOM，runner 被回收(exit 143)。
+          sudo swapoff -a || true
+          sudo rm -f /mnt/swapfile
+          sudo fallocate -l 12G /mnt/swapfile
+          sudo chmod 600 /mnt/swapfile
+          sudo mkswap /mnt/swapfile
+          sudo swapon /mnt/swapfile
+          free -h
 
       - name: 安装编译依赖
         run: |
@@ -54,8 +83,9 @@ jobs:
       - name: ccache 缓存恢复
         uses: actions/cache@v4
         with:
-          path: /root/.ccache
-          key: ccache-a16-${{ github.run_id }}
+          path: /home/runner/.ccache
+          # 原先 key 用 run_id，每次必然 miss 且不断新增缓存条目。
+          key: ccache-a16-${{ github.sha }}
           restore-keys: ccache-a16-
 
       - name: 同步 OrangeFox 16.0 源码
@@ -66,13 +96,17 @@ jobs:
           cd fox16_sync
           ./orangefox_sync.sh --branch 16.0 --path "$HOME/fox16" || \
             ./orangefox_sync.sh --branch 16.0 --path "$HOME/fox16"
-        timeout-minutes: 300
+          df -h /
+        timeout-minutes: 150
 
       - name: 克隆内核 (安卓16 lineage-23.2)
         run: |
           cd "$HOME/fox16"
           mkdir -p kernel/motorola
           git clone --depth=1 --branch lineage-23.2 "$KERNEL_REPO" kernel/motorola/sm8475
+          # 校验 BoardConfig 里引用的 defconfig 确实存在，早失败好过编到一半才报错
+          test -f kernel/motorola/sm8475/arch/arm64/configs/vendor/ext_config/moto-waipio-zeekr.config \
+            || { echo "❌ 内核缺少 moto-waipio-zeekr.config"; exit 1; }
 
       - name: 部署设备树
         run: |
@@ -85,37 +119,74 @@ jobs:
         run: |
           cd "$HOME/fox16"
           test -f build/envsetup.sh || { echo "❌ build/envsetup.sh 不存在，源码同步失败"; ls -la "$HOME/fox16" | head -30; exit 1; }
+          export USE_CCACHE=1
+          export CCACHE_EXEC=$(command -v ccache)
+          ccache -M 20G
+          ccache -z
           source build/envsetup.sh
           export FOX_BUILD_DEVICE=zeekr
           lunch twrp_${{ env.DEVICE_16 }}-bp2a-eng || lunch twrp_${{ env.DEVICE_16 }}-eng
           mka recoveryimage 2>&1 | tee /tmp/build16.log
-        timeout-minutes: 480
+        timeout-minutes: 170
+
+      - name: 构建后状态 (诊断用)
+        if: always()
+        run: |
+          echo "===== 磁盘 ====="; df -h /
+          echo "===== 内存/swap ====="; free -h
+          echo "===== ccache ====="; ccache -s || true
 
       - name: 收集产物
+        if: always()
         run: |
           OUT="$HOME/fox16/out/target/product/${{ env.DEVICE_16 }}"
           echo "===== 产物目录 ====="
           ls -la "$OUT" 2>/dev/null | head -50
           mkdir -p "$GITHUB_WORKSPACE/artifacts/zeekr-a16"
-          find "$OUT" -maxdepth 1 -name 'OrangeFox-*.zip' -exec cp {} "$GITHUB_WORKSPACE/artifacts/zeekr-a16/" \;
+          find "$OUT" -maxdepth 1 -name 'OrangeFox-*.zip' -exec cp {} "$GITHUB_WORKSPACE/artifacts/zeekr-a16/" \; 2>/dev/null || true
           cp "$OUT/recovery.img" "$GITHUB_WORKSPACE/artifacts/zeekr-a16/" 2>/dev/null || true
+          # 失败时也把日志带出来，否则下次还是瞎猜
+          cp /tmp/build16.log "$GITHUB_WORKSPACE/artifacts/zeekr-a16/" 2>/dev/null || true
 
       - name: 上传产物
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: OrangeFox-zeekr-Android16
           path: artifacts/zeekr-a16/
+          if-no-files-found: warn
 
   build-legacy:
     name: "老版 OrangeFox (fox_14.1, V-3.1世代)"
-    if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.build_target == 'both' || github.event.inputs.build_target == 'zeekr14') || github.event_name != 'workflow_dispatch' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.build_target == 'both' || github.event.inputs.build_target == 'zeekr14') }}
     runs-on: ubuntu-22.04
-    timeout-minutes: 600
+    timeout-minutes: 345
     steps:
       - name: 检出设备树仓库
         uses: actions/checkout@v4
         with:
           path: device_tree
+
+      - name: 释放磁盘空间
+        run: |
+          df -h /
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+            /usr/local/share/boost /usr/share/swift /usr/local/graalvm \
+            /usr/local/share/powershell /usr/local/lib/node_modules \
+            /opt/hostedtoolcache/CodeQL "$AGENT_TOOLSDIRECTORY" || true
+          sudo docker image prune --all --force || true
+          sudo apt-get clean
+          df -h /
+
+      - name: 创建 swap 防 OOM
+        run: |
+          sudo swapoff -a || true
+          sudo rm -f /mnt/swapfile
+          sudo fallocate -l 12G /mnt/swapfile
+          sudo chmod 600 /mnt/swapfile
+          sudo mkswap /mnt/swapfile
+          sudo swapon /mnt/swapfile
+          free -h
 
       - name: 安装编译依赖
         run: |
@@ -130,8 +201,8 @@ jobs:
       - name: ccache 缓存恢复
         uses: actions/cache@v4
         with:
-          path: /root/.ccache
-          key: ccache-a14-${{ github.run_id }}
+          path: /home/runner/.ccache
+          key: ccache-a14-${{ github.sha }}
           restore-keys: ccache-a14-
 
       - name: 同步 OrangeFox 14.1 源码
@@ -142,7 +213,8 @@ jobs:
           cd fox14_sync
           ./orangefox_sync.sh --branch 14.1 --path "$HOME/fox14" || \
             ./orangefox_sync.sh --branch 14.1 --path "$HOME/fox14"
-        timeout-minutes: 300
+          df -h /
+        timeout-minutes: 150
 
       - name: 克隆内核 (安卓14 lineage-21)
         run: |
@@ -154,31 +226,47 @@ jobs:
         run: |
           cd "$HOME/fox14"
           mkdir -p device/motorola
-          # 老版设备树目录 zeekr-14 保持原名（设备树内部继承路径写死为 zeekr-14）
+          # 目录名必须保持 zeekr-14：twrp_zeekr14.mk 的 PRODUCT_DEVICE 已改成 zeekr-14，
+          # 构建系统靠目录名定位 BoardConfig.mk，改名就会 Invalid lunch combo。
           cp -r "$GITHUB_WORKSPACE/device_tree/device/motorola/${{ env.DEVICE_14 }}" device/motorola/
           ls -la device/motorola/
 
       - name: 编译 OrangeFox (老版)
         run: |
           cd "$HOME/fox14"
+          export USE_CCACHE=1
+          export CCACHE_EXEC=$(command -v ccache)
+          ccache -M 20G
+          ccache -z
           source build/envsetup.sh
-          # 14.1 分支必须用 ap2a-eng（带 Android 14 版本标识），并设置 FOX_BUILD_DEVICE
           export FOX_BUILD_DEVICE=zeekr
-          lunch twrp_zeekr14-ap2a-eng
+          lunch twrp_zeekr14-ap2a-eng || lunch twrp_zeekr14-eng
           mka recoveryimage 2>&1 | tee /tmp/build14.log
-        timeout-minutes: 480
+        timeout-minutes: 170
+
+      - name: 构建后状态 (诊断用)
+        if: always()
+        run: |
+          echo "===== 磁盘 ====="; df -h /
+          echo "===== 内存/swap ====="; free -h
+          echo "===== ccache ====="; ccache -s || true
 
       - name: 收集产物
+        if: always()
         run: |
-          OUT="$HOME/fox14/out/target/product/${{ env.DEVICE_16 }}"
+          # 产物目录取自 PRODUCT_DEVICE(zeekr-14)，原先误用 DEVICE_16 导致永远找不到产物
+          OUT="$HOME/fox14/out/target/product/${{ env.DEVICE_14 }}"
           echo "===== 产物目录 ====="
           ls -la "$OUT" 2>/dev/null | head -50
           mkdir -p "$GITHUB_WORKSPACE/artifacts/zeekr-legacy"
-          find "$OUT" -maxdepth 1 -name 'OrangeFox-*.zip' -exec cp {} "$GITHUB_WORKSPACE/artifacts/zeekr-legacy/" \;
+          find "$OUT" -maxdepth 1 -name 'OrangeFox-*.zip' -exec cp {} "$GITHUB_WORKSPACE/artifacts/zeekr-legacy/" \; 2>/dev/null || true
           cp "$OUT/recovery.img" "$GITHUB_WORKSPACE/artifacts/zeekr-legacy/" 2>/dev/null || true
+          cp /tmp/build14.log "$GITHUB_WORKSPACE/artifacts/zeekr-legacy/" 2>/dev/null || true
 
       - name: 上传产物
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: OrangeFox-zeekr-Legacy14
           path: artifacts/zeekr-legacy/
+          if-no-files-found: warn
