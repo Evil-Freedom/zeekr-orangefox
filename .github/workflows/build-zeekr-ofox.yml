@@ -29,7 +29,10 @@ env:
   KERNEL_REPO: https://github.com/LineageOS/android_kernel_motorola_sm8475.git
   # 必须放在 runner 用户可写的路径。原先写 /root/.ccache，runner 以非 root 运行，
   # ccache 静默失效、actions/cache 也读不到，等于完全没有缓存。
-  CCACHE_DIR: /home/runner/.ccache
+  # 2026-08-07 修正：/home/runner/.ccache 被 actions/cache 恢复成只读，导致
+  # "Failed to create directory .../.ccache/tmp: Read-only file system"，每条编译命令
+  # 都失败、ninja 直接停。runner.temp 是确定性可写目录，绕开该只读挂载。
+  CCACHE_DIR: ${{ runner.temp }}/.ccache
 
 jobs:
   build-android16:
@@ -83,7 +86,7 @@ jobs:
       - name: ccache 缓存恢复
         uses: actions/cache@v4
         with:
-          path: /home/runner/.ccache
+          path: ${{ runner.temp }}/.ccache
           # 原先 key 用 run_id，每次必然 miss 且不断新增缓存条目。
           key: ccache-a16-${{ github.sha }}
           restore-keys: ccache-a16-
@@ -119,14 +122,18 @@ jobs:
         run: |
           cd "$HOME/fox16"
           test -f build/envsetup.sh || { echo "❌ build/envsetup.sh 不存在，源码同步失败"; ls -la "$HOME/fox16" | head -30; exit 1; }
+          mkdir -p "$CCACHE_DIR" && chmod 777 "$CCACHE_DIR"
           export USE_CCACHE=1
           export CCACHE_EXEC=$(command -v ccache)
-          ccache -M 20G
+          ccache -M 12G
           ccache -z
           source build/envsetup.sh
           export FOX_BUILD_DEVICE=zeekr
           lunch twrp_${{ env.DEVICE_16 }}-bp2a-eng || lunch twrp_${{ env.DEVICE_16 }}-eng
+          set -eo pipefail
           mka recoveryimage 2>&1 | tee /tmp/build16.log
+          rc=${PIPESTATUS[0]}
+          if [ "$rc" -ne 0 ]; then echo "❌ mka recoveryimage 失败 exit=$rc"; exit "$rc"; fi
         timeout-minutes: 170
 
       - name: 构建后状态 (诊断用)
@@ -201,7 +208,7 @@ jobs:
       - name: ccache 缓存恢复
         uses: actions/cache@v4
         with:
-          path: /home/runner/.ccache
+          path: ${{ runner.temp }}/.ccache
           key: ccache-a14-${{ github.sha }}
           restore-keys: ccache-a14-
 
@@ -234,14 +241,18 @@ jobs:
       - name: 编译 OrangeFox (老版)
         run: |
           cd "$HOME/fox14"
+          mkdir -p "$CCACHE_DIR" && chmod 777 "$CCACHE_DIR"
           export USE_CCACHE=1
           export CCACHE_EXEC=$(command -v ccache)
-          ccache -M 20G
+          ccache -M 12G
           ccache -z
           source build/envsetup.sh
           export FOX_BUILD_DEVICE=zeekr
           lunch twrp_zeekr14-ap2a-eng || lunch twrp_zeekr14-eng
+          set -eo pipefail
           mka recoveryimage 2>&1 | tee /tmp/build14.log
+          rc=${PIPESTATUS[0]}
+          if [ "$rc" -ne 0 ]; then echo "❌ mka recoveryimage 失败 exit=$rc"; exit "$rc"; fi
         timeout-minutes: 170
 
       - name: 构建后状态 (诊断用)
