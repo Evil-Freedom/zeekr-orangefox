@@ -27,12 +27,8 @@ env:
   DEVICE_16: zeekr
   DEVICE_14: zeekr-14
   KERNEL_REPO: https://github.com/LineageOS/android_kernel_motorola_sm8475.git
-  # 必须放在 runner 用户可写的路径。原先写 /root/.ccache，runner 以非 root 运行，
-  # ccache 静默失效、actions/cache 也读不到，等于完全没有缓存。
-  # 2026-08-07 修正：/home/runner/.ccache 被 actions/cache 恢复成只读，导致
-  # "Failed to create directory .../.ccache/tmp: Read-only file system"，每条编译命令
-  # 都失败、ninja 直接停。runner.temp 是确定性可写目录，绕开该只读挂载。
-  CCACHE_DIR: ${{ runner.temp }}/.ccache
+  # 注意: CCACHE_DIR 不能放在顶层 env —— runner 上下文在 workflow 级 env 不可用,
+  # 会导致整条 workflow 配置非法(jobs=0, run 直接 failure)。已下移到各 job 的 env。
 
 jobs:
   build-android16:
@@ -42,6 +38,8 @@ jobs:
     # GitHub 托管 runner 单 job 硬上限 6 小时(360分钟)，写 600 无效。
     # 设 345 让 job 在被强杀前自己超时退出，这样后面的日志/缓存步骤还能跑。
     timeout-minutes: 345
+    env:
+      CCACHE_DIR: ${{ runner.temp }}/.ccache
     steps:
       - name: 检出设备树仓库
         uses: actions/checkout@v4
@@ -168,6 +166,8 @@ jobs:
     if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.build_target == 'both' || github.event.inputs.build_target == 'zeekr14') }}
     runs-on: ubuntu-22.04
     timeout-minutes: 345
+    env:
+      CCACHE_DIR: ${{ runner.temp }}/.ccache
     steps:
       - name: 检出设备树仓库
         uses: actions/checkout@v4
