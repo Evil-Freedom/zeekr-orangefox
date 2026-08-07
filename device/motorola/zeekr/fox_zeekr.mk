@@ -10,11 +10,12 @@
 #	Please maintain this if you use this script or any part of it
 #
 
-# ===== 维护者信息（请改成你自己的名字）=====
-OF_MAINTAINER := YourName
-# 屏幕与 UI（Razr 40 Ultra 外屏 1056x1066，密度 420；以下为参考值，需按实机微调）
-OF_SCREEN_W := 1056
-OF_SCREEN_H := 1066
+# ===== 维护者信息 =====
+OF_MAINTAINER := Evil-Freedom
+# 屏幕与 UI：recovery 画面出在内屏（1080x2400），不是 1056x1066 的外屏。
+# 填外屏尺寸会让 OrangeFox 按错误的画布算布局，按钮点不准、状态栏错位。
+OF_SCREEN_W := 1080
+OF_SCREEN_H := 2400
 OF_STATUS_H := 110
 OF_STATUS_INDENT_LEFT := 60
 OF_STATUS_INDENT_RIGHT := 60
@@ -35,7 +36,8 @@ OF_UNBIND_SDCARD_F2FS := 1
 OF_WIPE_METADATA_AFTER_DATAFORMAT := 1
 OF_DYNAMIC_FULL_SIZE := 9487515648
 OF_DISPLAY_FORMAT_FILESYSTEMS_DEBUG_INFO := 1
-OF_FORCE_PREBUILT_KERNEL := 0
+# 用设备树自带的 prebuilt/kernel 打包，不走源码编译
+OF_FORCE_PREBUILT_KERNEL := 1
 OF_NO_RELOAD_AFTER_DECRYPTION := 1
 OF_NO_TREBLE_COMPATIBILITY_CHECK := 1
 OF_AB_DEVICE_WITH_RECOVERY_PARTITION := 1

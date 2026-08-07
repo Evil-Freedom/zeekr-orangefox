@@ -99,21 +99,21 @@ jobs:
           df -h /
         timeout-minutes: 150
 
-      - name: 克隆内核 (安卓16 lineage-23.2)
-        run: |
-          cd "$HOME/fox16"
-          mkdir -p kernel/motorola
-          git clone --depth=1 --branch lineage-23.2 "$KERNEL_REPO" kernel/motorola/sm8475
-          # 校验 BoardConfig 里引用的 defconfig 确实存在，早失败好过编到一半才报错
-          test -f kernel/motorola/sm8475/arch/arm64/configs/vendor/ext_config/moto-waipio-zeekr.config \
-            || { echo "❌ 内核缺少 moto-waipio-zeekr.config"; exit 1; }
+      # 不再克隆/编译内核：设备树自带 prebuilt/kernel，且与 recovery/root 下那批
+      # .ko 是同一次编译产出的。源码编译出来的内核 vermagic 不同，那些 .ko 会全部
+      # 拒载，msm_drm.ko 加载不上就是黑屏。顺带省掉 30-60 分钟和一大块磁盘。
 
       - name: 部署设备树
         run: |
           cd "$HOME/fox16"
           mkdir -p device/motorola
           cp -r "$GITHUB_WORKSPACE/device_tree/device/motorola/${{ env.DEVICE_16 }}" device/motorola/
-          ls -la device/motorola/
+          D="device/motorola/${{ env.DEVICE_16 }}"
+          # 这三样缺一个，编出来的 img 要么起不来要么黑屏，早失败好过编完才发现
+          test -s "$D/prebuilt/kernel" || { echo "❌ prebuilt/kernel 缺失或为空"; exit 1; }
+          test -f "$D/recovery/root/vendor/lib/modules/msm_drm.ko" || { echo "❌ 显示驱动 msm_drm.ko 缺失"; exit 1; }
+          test -f "$D/recovery/root/init.recovery.qcom.rc" || { echo "❌ init.recovery.qcom.rc 缺失"; exit 1; }
+          echo "✅ 内核 $(stat -c%s "$D/prebuilt/kernel") 字节，模块 $(ls "$D/recovery/root/vendor/lib/modules/"*.ko | wc -l) 个"
 
       - name: 编译 OrangeFox (安卓16)
         run: |

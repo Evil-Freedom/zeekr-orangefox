@@ -31,18 +31,17 @@ TARGET_BOARD_PLATFORM := sm8475
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno730
 QCOM_BOARD_PLATFORMS += sm8475
 
-# ===== 内核（安卓16 源码内核，Linux 5.10）=====
-# 内核仓库: https://github.com/LineageOS/android_kernel_motorola_sm8475
-# 需 clone 到 kernel/motorola/sm8475
-TARGET_KERNEL_SOURCE := kernel/motorola/sm8475
-TARGET_KERNEL_ARCH := arm64
-TARGET_KERNEL_HEADER_ARCH := arm64
-# zeekr 的实际 defconfig 为 waipio 公共 defconfig + 追加片段
-# 若内核仓库里片段路径不同，请按实际修改下面一行
-TARGET_KERNEL_CONFIG := vendor/ext_config/moto-waipio-zeekr.config
+# ===== 内核（预编译，取自真机 boot.img）=====
+# 不从源码编译内核：recovery 只需要能起来的内核，而 prebuilt/ 里这颗与
+# recovery/root/vendor/lib/modules 下的 .ko 是同一次编译产出的，版本天然匹配。
+# 换成源码编译的 lineage-23.2 内核，那批 .ko 会因 vermagic 不符而全部拒载 ——
+# msm_drm.ko 加载不上就是黑屏。顺带省掉 CI 里 30-60 分钟的内核编译。
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_BOOT_HEADER_VERSION := 4
 BOARD_KERNEL_PAGESIZE := 4096
+BOARD_KERNEL_CMDLINE += printk.devkmsg=on
+BOARD_KERNEL_CMDLINE += firmware_class.path=/data/vendor/param/firmware
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE)
 BOARD_RAMDISK_USE_LZ4 := true
@@ -99,8 +98,17 @@ TW_USE_FSCRYPT_POLICY := 2
 TW_INCLUDE_CRYPTO_WRAPPED_KEY := true
 
 # ===== Recovery 基础 =====
-BOARD_EXCLUDE_KERNEL_FROM_RECOVERY_IMAGE := true
+# 不能开 BOARD_EXCLUDE_KERNEL_FROM_RECOVERY_IMAGE：
+# 摩托 A/B 机型保留了独立 recovery 分区（fox_zeekr.mk 里
+# OF_AB_DEVICE_WITH_RECOVERY_PARTITION := 1 也印证了这点），
+# 不带内核的 recovery.img 刷进去起不来。
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+
+# 加载 recovery/root/vendor/lib/modules 下的驱动，顺序即依赖顺序。
+# 不开这项就没有 msm_drm.ko（显示）和 goodix/stmicro（触摸）—— 黑屏且没触摸。
+# 只列 recovery 真正需要、且文件确实存在的 19 个；原厂 modules.load 里
+# 另外 283 个属于 vendor_dlkm，recovery 阶段挂不到那个分区，列了只会刷失败日志。
+TW_LOAD_VENDOR_MODULES := "q6_notifier_dlkm.ko spf_core_dlkm.ko gpr_dlkm.ko adsp_loader_dlkm.ko q6_pdr_dlkm.ko snd_event_dlkm.ko msm_drm.ko mmi_annotate.ko mmi_info.ko bm_adsp_ulog.ko mmi_charger.ko mmi_relay.ko sensors_class.ko sx937x_multi.ko stmicro_mmi.ko goodix_brl_mmi.ko qti_glink_charger.ko mmi_sys_temp.ko qpnp_adaptive_charge.ko"
 TW_INCLUDE_FASTBOOTD := true
 TW_SKIP_ADDITIONAL_FSTAB := true
 TARGET_RECOVERY_UI_MARGIN_HEIGHT := 90
