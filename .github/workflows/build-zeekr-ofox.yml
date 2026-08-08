@@ -146,9 +146,8 @@ jobs:
           # AOSP 官方开关: BUILD_BROKEN_SRC_DIR_IS_WRITABLE=true 构建期整个源码树可写。
           # BoardConfig.mk 已加同值, 这里 export 环境变量双保险 (soong_ui 从 env 读取)。
           export BUILD_BROKEN_SRC_DIR_IS_WRITABLE=true
-          # RUNNER_TEMP (/home/runner/work/_temp) 是 step 内可用的可写 shell 变量，
-          # 绝不走 actions/cache 恢复路径，规避 Read-only file system。
-          export CCACHE_DIR="$RUNNER_TEMP/.ccache"
+          # /tmp 不在 soong sandbox 范围内，绝对可写。RUNNER_TEMP 仍会被挂只读。
+          export CCACHE_DIR="/tmp/.ccache"
           mkdir -p "$CCACHE_DIR" && chmod 777 "$CCACHE_DIR"
           export USE_CCACHE=1
           export CCACHE_EXEC=$(command -v ccache)
@@ -267,7 +266,7 @@ jobs:
       - name: 编译 OrangeFox (老版)
         run: |
           cd "$HOME/fox14"
-          export CCACHE_DIR="$RUNNER_TEMP/.ccache"
+          export CCACHE_DIR="/tmp/.ccache"
           mkdir -p "$CCACHE_DIR" && chmod 777 "$CCACHE_DIR"
           export USE_CCACHE=1
           export CCACHE_EXEC=$(command -v ccache)
