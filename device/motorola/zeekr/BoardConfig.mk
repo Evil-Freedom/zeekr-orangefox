@@ -124,7 +124,9 @@ TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 # 不开这项就没有 msm_drm.ko（显示）和 goodix/stmicro（触摸）—— 黑屏且没触摸。
 # 只列 recovery 真正需要、且文件确实存在的 19 个；原厂 modules.load 里
 # 另外 283 个属于 vendor_dlkm，recovery 阶段挂不到那个分区，列了只会刷失败日志。
-TW_LOAD_VENDOR_MODULES := "q6_notifier_dlkm.ko spf_core_dlkm.ko gpr_dlkm.ko adsp_loader_dlkm.ko q6_pdr_dlkm.ko snd_event_dlkm.ko msm_drm.ko mmi_annotate.ko mmi_info.ko bm_adsp_ulog.ko mmi_charger.ko mmi_relay.ko sensors_class.ko sx937x_multi.ko stmicro_mmi.ko goodix_brl_mmi.ko qti_glink_charger.ko mmi_sys_temp.ko qpnp_adaptive_charge.ko"
+# 注意：make 的 := 赋值，值里不要加双引号，否则 soong 导出 JSON 时会把字面引号
+# 塞进 product_config.json 导致解析失败（Expecting ',' delimiter）
+TW_LOAD_VENDOR_MODULES := q6_notifier_dlkm.ko spf_core_dlkm.ko gpr_dlkm.ko adsp_loader_dlkm.ko q6_pdr_dlkm.ko snd_event_dlkm.ko msm_drm.ko mmi_annotate.ko mmi_info.ko bm_adsp_ulog.ko mmi_charger.ko mmi_relay.ko sensors_class.ko sx937x_multi.ko stmicro_mmi.ko goodix_brl_mmi.ko qti_glink_charger.ko mmi_sys_temp.ko qpnp_adaptive_charge.ko
 TW_INCLUDE_FASTBOOTD := true
 TW_SKIP_ADDITIONAL_FSTAB := true
 TARGET_RECOVERY_UI_MARGIN_HEIGHT := 90
@@ -179,7 +181,7 @@ TW_DEFAULT_LANGUAGE := en
 TW_EXTRA_LANGUAGES := true
 TW_USE_TOOLBOX := true
 TW_INCLUDE_ZSTD := true
-TW_INPUT_BLACKLIST := "hbtp_vm"
+TW_INPUT_BLACKLIST := hbtp_vm
 
 # ===== 引入 OrangeFox 配置 =====
 -include $(DEVICE_PATH)/fox_zeekr.mk
