@@ -10,6 +10,8 @@ DEVICE_PATH := device/motorola/zeekr
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true
 
+# Trigger CI: diagnostic workflow v3
+
 # A/B
 AB_OTA_UPDATER := true
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
