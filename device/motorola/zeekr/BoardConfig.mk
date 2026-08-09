@@ -23,6 +23,11 @@ BUILD_BROKEN_PLUGIN_VALIDATION := soong-libaosprecovery_defaults soong-libguitwr
 # 这是 AOSP 官方提供的标准开关：构建期间将整个源码树声明为可写。
 BUILD_BROKEN_SRC_DIR_IS_WRITABLE := true
 
+# AOSP 预编译二进制对齐检查(magiskboot)关闭：
+# Android 16 的 check_elf_file 要求 16384 对齐，上游预编译的 magiskboot 为 4096 对齐。
+# 这是 AOSP 上游预编译在 A16 下的已知不兼容，关闭对齐检查绕过。
+PRODUCT_CHECK_PREBUILT_MAX_PAGE_SIZE := false
+
 # ===== 架构 =====
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
