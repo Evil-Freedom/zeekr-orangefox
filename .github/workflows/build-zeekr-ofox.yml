@@ -174,8 +174,8 @@ jobs:
           grep -E "PRODUCT_CHECK_PREBUILT|PRODUCT_USE_DYNAMIC|PRODUCT_MODEL" device/motorola/zeekr/twrp_zeekr.mk device/motorola/zeekr/BoardConfig.mk 2>/dev/null
           echo "===== source envsetup.sh ====="
           source build/envsetup.sh
-          echo "===== lunch twrp_zeekr-bp2a-eng ====="
-          lunch twrp_zeekr-bp2a-eng 2>&1 | tee /tmp/lunch.log
+          echo "===== lunch twrp_zeekr-eng ====="
+          lunch twrp_zeekr-eng 2>&1 | tee /tmp/lunch.log
           rc=${PIPESTATUS[0]}
           if [ "$rc" -ne 0 ]; then
             echo "❌ lunch 失败 exit=$rc"
@@ -208,7 +208,7 @@ jobs:
           ccache -z
           source build/envsetup.sh
           export FOX_BUILD_DEVICE=zeekr
-          lunch twrp_${{ env.DEVICE_16 }}-bp2a-eng || lunch twrp_${{ env.DEVICE_16 }}-eng
+          lunch twrp_${{ env.DEVICE_16 }}-eng
           set -eo pipefail
           mka recoveryimage 2>&1 | tee /tmp/build16.log
           rc=${PIPESTATUS[0]}
@@ -327,7 +327,7 @@ jobs:
           ccache -z
           source build/envsetup.sh
           export FOX_BUILD_DEVICE=zeekr
-          lunch twrp_zeekr14-ap2a-eng || lunch twrp_zeekr14-eng
+          lunch twrp_zeekr14-eng
           set -eo pipefail
           mka recoveryimage 2>&1 | tee /tmp/build14.log
           rc=${PIPESTATUS[0]}
