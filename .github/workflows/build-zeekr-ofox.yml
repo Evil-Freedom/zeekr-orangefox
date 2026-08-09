@@ -133,6 +133,40 @@ jobs:
           test -f "$D/recovery/root/init.recovery.qcom.rc" || { echo "❌ init.recovery.qcom.rc 缺失"; exit 1; }
           echo "✅ 内核 $(stat -c%s "$D/prebuilt/kernel") 字节，模块 $(ls "$D/recovery/root/vendor/lib/modules/"*.ko | wc -l) 个"
 
+      - name: 🛠️ 幂等修补 magiskboot 16K ELF 对齐检查
+        run: |
+          cd "$HOME/fox16"
+          patched=false
+
+          # 检查并修补 Soong 模块 (Android.bp)
+          while IFS= read -r f; do
+            if grep -q 'name: *"magiskboot"' "$f"; then
+              if ! grep -A20 -B5 'name: *"magiskboot"' "$f" | grep -q 'ignore_max_page_size: *true'; then
+                sed -i '/name: *"magiskboot"/a\    ignore_max_page_size: true,' "$f"
+              fi
+              echo "✅ 已修补 Soong 模块: $f"
+              patched=true
+            fi
+          done < <(find external/magisk-prebuilt bootable/recovery -name Android.bp -type f 2>/dev/null)
+
+          # 检查并修补 Make 模块 (Android.mk)
+          while IFS= read -r f; do
+            if grep -q 'LOCAL_MODULE[[:space:]]*:=[[:space:]]*magiskboot' "$f"; then
+              if ! grep -q 'LOCAL_IGNORE_MAX_PAGE_SIZE[[:space:]]*:=[[:space:]]*true' "$f"; then
+                sed -i '/LOCAL_MODULE[[:space:]]*:=[[:space:]]*magiskboot/a LOCAL_IGNORE_MAX_PAGE_SIZE := true' "$f"
+              fi
+              echo "✅ 已修补 Make 模块: $f"
+              patched=true
+            fi
+          done < <(find external/magisk-prebuilt bootable/recovery -name Android.mk -type f 2>/dev/null)
+
+          # 未找到模块时的安全兜底
+          if [ "$patched" != true ]; then
+            echo "❌ 未找到 magiskboot 模块声明，输出定位信息："
+            find external bootable/recovery \( -name Android.bp -o -name Android.mk \) -type f -exec grep -Il 'magiskboot' {} \; 2>/dev/null
+            exit 1
+          fi
+
       - name: 编译 OrangeFox (安卓16)
         run: |
           cd "$HOME/fox16"

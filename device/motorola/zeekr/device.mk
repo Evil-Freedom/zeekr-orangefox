@@ -1,42 +1,122 @@
 #
-# Minimal recovery device.mk —— Motorola Razr 40 Ultra (zeekr)
-# 仅供 OrangeFox Recovery 构建使用，不要继承完整 LineageOS ROM 的 device.mk
+# Copyright (C) 2023 The Android Open Source Project
+# Copyright (C) 2023 SebaUbuntu's TWRP device tree generator
+#
+# SPDX-License-Identifier: Apache-2.0
 #
 
-# ===== Recovery / TWRP 基础二进制 =====
+# Soong namespaces
+PRODUCT_SOONG_NAMESPACES += \
+    $(LOCAL_PATH)
+
+# API
+BOARD_SHIPPING_API_LEVEL := 31
+BOARD_API_LEVEL := 31
+PRODUCT_SHIPPING_API_LEVEL := 31
+SHIPPING_API_LEVEL := 31
+
+# A/B
+AB_OTA_POSTINSTALL_CONFIG += \
+    RUN_POSTINSTALL_system=true \
+    POSTINSTALL_PATH_system=system/bin/otapreopt_script \
+    FILESYSTEM_TYPE_system=ext4 \
+    POSTINSTALL_OPTIONAL_system=true
+
+AB_OTA_POSTINSTALL_CONFIG += \
+    RUN_POSTINSTALL_vendor=true \
+    POSTINSTALL_PATH_vendor=bin/checkpoint_gc \
+    FILESYSTEM_TYPE_vendor=ext4 \
+    POSTINSTALL_OPTIONAL_vendor=true
+
+# Boot control HAL
 PRODUCT_PACKAGES += \
-    recovery \
-    twrp \
-    libtwrp \
-    busybox \
-    bash \
-    flash_image \
-    fsck.f2fs \
-    mkfs.f2fs \
-    mount.f2fs \
-    e2fsck \
-    mke2fs \
-    tune2fs \
-    resize2fs \
-    sgdisk \
-    parted \
-    mount.exfat \
-    fsck.exfat \
-    mkfs.exfat
+    android.hardware.boot@1.2-impl-qti \
+    android.hardware.boot@1.2-impl-qti.recovery \
+    android.hardware.boot@1.2-service
 
-# ===== EROFS 工具 =====
-# BoardConfig 已把 system/vendor/product/odm/system_ext 声明为 erofs
-# (安卓15起只读分区默认格式)，没有这几个工具 recovery 挂不上也修不了这些分区。
+PRODUCT_PACKAGES_DEBUG += \
+    bootctl
+
+# Fastbootd
 PRODUCT_PACKAGES += \
-    fsck.erofs \
-    dump.erofs \
-    mkfs.erofs
+	android.hardware.fastboot@1.0-impl-mock \
+	android.hardware.fastboot@1.0-impl-mock.recovery \
+	fastbootd
 
-# ===== 设备专属 recovery UI（可选）=====
-# 如果你在 recovery_ui/ 下实现了 Board 类，取消下面两行注释；
-# 若使用 TWRP 默认 UI，则保持注释，并在编译报错“找不到 librecovery_ui_zeekr”时删除这两行。
-# TARGET_RECOVERY_DEVICE_MODULES += librecovery_ui_zeekr
-# PRODUCT_PACKAGES += librecovery_ui_zeekr
+PRODUCT_PACKAGES += \
+    otapreopt_script \
+    checkpoint_gc \
+    update_engine \
+    update_engine_client \
+    update_verifier \
+    update_engine_sideload
 
-# ===== 主题 =====
-TW_THEME := portrait_hdpi
+# Crypto
+PRODUCT_PACKAGES += \
+    qcom_decrypt \
+    qcom_decrypt_fbe
+
+# Dynamic partitions
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+
+# ===== Product 级变量 =====
+# AOSP 预编译二进制对齐检查(magiskboot)关闭：
+# Android 16 的 check_elf_file 要求 16384 对齐，上游预编译的 magiskboot 为 4096 对齐。
+# 这是 AOSP 上游预编译在 A16 下的已知不兼容，关闭对齐检查绕过。
+# 注意：此变量属于 PRODUCT_* 命名空间，必须写在 product makefile (device.mk / twrp_zeekr.mk)
+# 中，严禁写入 BoardConfig.mk（Board 阶段 Soong 解析时 Product 变量尚未生效，静默失效）。
+PRODUCT_CHECK_PREBUILT_MAX_PAGE_SIZE := false
+
+# F2FS utilities
+PRODUCT_PACKAGES += \
+    sg_write_buffer \
+    f2fs_io \
+    check_f2fs
+
+# Fastbootd
+PRODUCT_PACKAGES += \
+    fastbootd \
+    android.hardware.fastboot@1.1-impl-mock
+
+# HACK: Set vendor patch level
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.bootimage.build.date.utc=0 \
+    ro.build.date.utc=0
+
+# OEM otacert
+PRODUCT_EXTRA_RECOVERY_KEYS += \
+    $(LOCAL_PATH)/security/ota
+
+# Take a few libraries from sources
+TARGET_RECOVERY_DEVICE_MODULES += \
+    android.hardware.vibrator-V2-ndk_platform.so \
+    android.hidl.allocator@1.0 \
+    android.hidl.memory@1.0 \
+    android.hidl.memory.token@1.0 \
+    libdmabufheap \
+    libhidlmemory \
+    libion \
+    libnetutils \
+    libxml2 \
+    vendor.display.config@1.0 \
+    vendor.display.config@2.0 \
+    libdisplayconfig.qti
+
+RECOVERY_LIBRARY_SOURCE_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.vibrator-V2-ndk_platform.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/android.hidl.allocator@1.0.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/android.hidl.memory@1.0.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/android.hidl.memory.token@1.0.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libdmabufheap.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libhidlmemory.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libion.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libnetutils.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libxml2.so \
+    $(TARGET_OUT_SYSTEM_EXT_SHARED_LIBRARIES)/vendor.display.config@1.0.so \
+    $(TARGET_OUT_SYSTEM_EXT_SHARED_LIBRARIES)/vendor.display.config@2.0.so \
+    $(TARGET_OUT_SYSTEM_EXT_SHARED_LIBRARIES)/libdisplayconfig.qti.so
+
+# Namespace definition for librecovery_updater
+SOONG_CONFIG_NAMESPACES += ufsbsg
+SOONG_CONFIG_ufsbsg += ufsframework
+SOONG_CONFIG_ufsbsg_ufsframework := bsg

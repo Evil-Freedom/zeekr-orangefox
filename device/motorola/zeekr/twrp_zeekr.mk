@@ -1,21 +1,22 @@
 #
-# Copyright (C) 2024 The OrangeFox Recovery Project
-# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2023 The Android Open Source Project
+# Copyright (C) 2023 SebaUbuntu's TWRP device tree generator
+#
+# SPDX-License-Identifier: Apache-2.0
 #
 
-# 基础产品配置
+# Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
 
-# TWRP 公共配置
+# Inherit some common TWRP stuff.
 $(call inherit-product, vendor/twrp/config/common.mk)
 
-# 电话基础
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-
-# 设备专属 recovery 配置
+# Inherit from zeekr device
 $(call inherit-product, device/motorola/zeekr/device.mk)
 
 PRODUCT_DEVICE := zeekr
@@ -27,9 +28,6 @@ PRODUCT_MANUFACTURER := motorola
 PRODUCT_GMS_CLIENTID_BASE := android-motorola
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    DeviceProduct=zeekr_g
+    PRIVATE_BUILD_DESC="zeekr_gu-user 13 T2TV33.45-83-2 b6410-dddbd9 release-keys"
 
-BUILD_FINGERPRINT := motorola/zeekr_g/zeekr_g:16/BP2A.250605.015/release-keys
-
-# 主题
-TW_STATUS_ICONS_ALIGN := center
+BUILD_FINGERPRINT := motorola/zeekr_g/msi:13/T1TZ33M.3-62-45/fc8bb:user/release-keys

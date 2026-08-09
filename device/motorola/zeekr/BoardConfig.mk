@@ -1,193 +1,226 @@
 #
-# Copyright (C) 2024-2026 The OrangeFox Recovery Project
-# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2023 The Android Open Source Project
+# Copyright (C) 2023 SebaUbuntu's TWRP device tree generator
 #
-# OrangeFox Recovery 设备配置 —— Motorola Razr 40 Ultra (zeekr)
-# 平台: SM8475 (骁龙 8+ Gen1)，安卓 16 (OrangeFox 16.0)
-#
-# 注意：本文件为“自包含 recovery 配置”，刻意不继承
-# device/motorola/sm8475-common 与 vendor/motorola/zeekr，
-# 以避免引入 ROM 专属依赖。仅保留 recovery 真正需要的配置。
+# SPDX-License-Identifier: Apache-2.0
 #
 
 DEVICE_PATH := device/motorola/zeekr
 
-# 允许 minimal manifest 构建
+# For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true
+
+# A/B
+AB_OTA_UPDATER := true
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
+AB_OTA_PARTITIONS += \
+    boot \
+    dtbo \
+    product \
+    system \
+    system_ext \
+    recovery \
+    vbmeta \
+    vbmeta_system \
+    vendor \
+    vendor_dlkm \
+    vendor_boot
+
+# Architecture
+TARGET_ARCH := arm64
+TARGET_ARCH_VARIANT := armv8-2a
+TARGET_CPU_ABI := arm64-v8a
+TARGET_CPU_ABI2 :=
+TARGET_CPU_VARIANT := generic
+TARGET_CPU_VARIANT_RUNTIME := kryo385
+
+TARGET_2ND_ARCH := arm
+TARGET_2ND_ARCH_VARIANT := armv8-2a
+TARGET_2ND_CPU_ABI := armeabi-v7a
+TARGET_2ND_CPU_ABI2 := armeabi
+TARGET_2ND_CPU_VARIANT := generic
+TARGET_2ND_CPU_VARIANT_RUNTIME := kryo385
+
+# Audio
+AUDIO_FEATURE_ENABLED_DLKM := true
+AUDIO_FEATURE_ENABLED_DTS_EAGLE := false
+AUDIO_FEATURE_ENABLED_GEF_SUPPORT := true
+AUDIO_FEATURE_ENABLED_HW_ACCELERATED_EFFECTS := false
+AUDIO_FEATURE_ENABLED_INSTANCE_ID := true
+AUDIO_FEATURE_ENABLED_LSM_HIDL := true
+AUDIO_FEATURE_ENABLED_PAL_HIDL := true
+AUDIO_FEATURE_ENABLED_PROXY_DEVICE := true
+BOARD_SUPPORTS_SOUND_TRIGGER := true
+BOARD_USES_ALSA_AUDIO := true
+TARGET_USES_QCOM_MM_AUDIO := true
+USE_CUSTOM_AUDIO_POLICY := 1
+
+SOONG_CONFIG_NAMESPACES += android_hardware_audio
+SOONG_CONFIG_android_hardware_audio += \
+        run_64bit
+SOONG_CONFIG_android_hardware_audio_run_64bit := true
+
+# Bootloader
+TARGET_NO_BOOTLOADER := false
+TARGET_USES_UEFI := true
+TARGET_USES_REMOTEPROC := true
+
+# Build
 BUILD_BROKEN_DUP_RULES := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
-BUILD_BROKEN_NINJA_USES_ENV_VARS += RTIC_MPGEN
-BUILD_BROKEN_PLUGIN_VALIDATION := soong-libaosprecovery_defaults soong-libguitwrp_defaults soong-libminuitwrp_defaults soong-vold_defaults
 # Android 16(及更高)的 soong sandbox 把源码树挂成只读，ccache 写临时文件
 # (哪怕放在 RUNNER_TEMP，只要与源码树同分区) 就会撞 "Read-only file system"。
 # 这是 AOSP 官方提供的标准开关：构建期间将整个源码树声明为可写。
 BUILD_BROKEN_SRC_DIR_IS_WRITABLE := true
 
-# AOSP 预编译二进制对齐检查(magiskboot)关闭：
-# Android 16 的 check_elf_file 要求 16384 对齐，上游预编译的 magiskboot 为 4096 对齐。
-# 这是 AOSP 上游预编译在 A16 下的已知不兼容，关闭对齐检查绕过。
-PRODUCT_CHECK_PREBUILT_MAX_PAGE_SIZE := false
+# Display
+# 内屏物理分辨率 1080x2640（pOLED 144Hz）。TWRP 图形栈用它决定 framebuffer 尺寸，
+# 缺失会导致 recovery 界面拉伸或触摸坐标错位。
+TARGET_SCREEN_WIDTH := 1080
+TARGET_SCREEN_HEIGHT := 2640
+TARGET_SCREEN_DENSITY := 400
+TARGET_USES_COLOR_METADATA := true
+TARGET_USES_DISPLAY_RENDER_INTENTS := true
+TARGET_USES_GRALLOC4 := true
+TARGET_USES_HWC2 := true
+TARGET_GRALLOC_HANDLE_HAS_RESERVED_SIZE := true
+TARGET_GRALLOC_HANDLE_HAS_CUSTOM_CONTENT_MD_RESERVED_SIZE := false
 
-# ===== 架构 =====
-TARGET_ARCH := arm64
-TARGET_ARCH_VARIANT := armv8-a
-TARGET_CPU_ABI := arm64-v8a
-TARGET_CPU_VARIANT := generic
-TARGET_CPU_VARIANT_RUNTIME := generic
+# DRM
+TARGET_ENABLE_MEDIADRM_64 := true
 
-# ===== 平台 =====
-TARGET_BOARD_PLATFORM := sm8475
-TARGET_BOARD_PLATFORM_GPU := qcom-adreno730
-QCOM_BOARD_PLATFORMS += sm8475
+# Init
+TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_zeekr
+TARGET_RECOVERY_DEVICE_MODULES := libinit_zeekr
 
-# ===== 内核（预编译，取自真机 boot.img）=====
-# 不从源码编译内核：recovery 只需要能起来的内核，而 prebuilt/ 里这颗与
-# recovery/root/vendor/lib/modules 下的 .ko 是同一次编译产出的，版本天然匹配。
-# 换成源码编译的 lineage-23.2 内核，那批 .ko 会因 vermagic 不符而全部拒载 ——
-# msm_drm.ko 加载不上就是黑屏。顺带省掉 CI 里 30-60 分钟的内核编译。
+# Kernel
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
-BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_BOOT_HEADER_VERSION := 4
-BOARD_KERNEL_PAGESIZE := 4096
+BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_CMDLINE += printk.devkmsg=on
 BOARD_KERNEL_CMDLINE += firmware_class.path=/data/vendor/param/firmware
+#BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+BOARD_BOOTCONFIG += androidboot.hardware=qcom
+BOARD_BOOTCONFIG += androidboot.memcg=1
+BOARD_BOOTCONFIG += androidboot.usbcontroller=a600000.dwc3
+BOARD_KERNEL_IMAGE_NAME := Image
+BOARD_KERNEL_PAGESIZE := 4096
+BOARD_KERNEL_SEPARATED_DTBO := true
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
-BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE)
 BOARD_RAMDISK_USE_LZ4 := true
+BOARD_USES_GENERIC_KERNEL_IMAGE := true
+TARGET_KERNEL_SOURCE := kernel/motorola/sm8475
+TARGET_KERNEL_CONFIG := \
+    gki_defconfig \
+    vendor/waipio_GKI.config \
+    vendor/ext_config/moto-waipio.config \
+    vendor/ext_config/moto-waipio-gki.config \
+    vendor/ext_config/lineage-moto-waipio.config
+KERNEL_LTO := none
 
-# ===== A/B（虚拟 A/B）=====
-AB_OTA_UPDATER := true
-AB_OTA_PARTITIONS := \
-    boot \
-    init_boot \
-    vendor_boot \
-    dtbo \
-    odm \
-    product \
-    system \
-    system_ext \
-    system_dlkm \
-    vbmeta \
-    vbmeta_system \
-    vbmeta_vendor \
-    vendor \
-    vendor_dlkm
-
-# ===== 校验启动 (AVB) =====
-BOARD_AVB_ENABLE := true
-
-# ===== 分区 =====
-BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 104857600
-
-# ===== 动态分区 (super) =====
-BOARD_SUPER_PARTITION_SIZE := 9487515648
+# Partitions
+BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
 BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
-BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 9483398144 # (SUPER - 4MiB)
-BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := \
-    system system_ext product vendor vendor_dlkm odm
-BOARD_PARTITION_LIST := $(call to-upper, $(BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST))
-$(foreach p, $(BOARD_PARTITION_LIST), $(eval BOARD_$(p)IMAGE_FILE_SYSTEM_TYPE := erofs))
-$(foreach p, $(BOARD_PARTITION_LIST), $(eval TARGET_COPY_OUT_$(p) := $(call to-lower, $(p))))
-BOARD_VENDOR_DLKMIMAGE_FILE_SYSTEM_TYPE := ext4
-
-# 动态分区 product 级开关：OrangeFox 要求 PRODUCT_USE_DYNAMIC_PARTITIONS=true 才允许
-# OF_ENABLE_ALL_PARTITION_TOOLS，否则 bootable/recovery/orangefox.mk:485 报
-# "requires dynamic partitions; quitting"。zeekr 是 super 分区(9GB)设备，本就动态分区。
-# 注意：OrangeFox 16.0 的 build/make 已将 PRODUCT_USE_DYNAMIC_PARTITIONS 声明为 readonly，
-# 设备树里用 := 直接赋值会报 "cannot assign to readonly variable"。改用 ?=（仅未定义时赋值，
-# super 设备 AOSP 默认即 true），既满足 OF 的 dynamic partitions 前置条件，又不触发 readonly 冲突。
-PRODUCT_USE_DYNAMIC_PARTITIONS ?= true
-
-# ===== 文件系统 =====
+BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext product vendor vendor_dlkm
+BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 9122611200
+BOARD_SUPER_PARTITION_SIZE := 9126805504
+BOARD_BOOTIMAGE_PARTITION_SIZE := 100663296
+BOARD_KERNEL-GKI_BOOTIMAGE_PARTITION_SIZE := $(BOARD_BOOTIMAGE_PARTITION_SIZE)
+BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 100663296
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 104857600
+BOARD_SYSTEMIMAGE_PARTITION_TYPE := ext4
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+# BOARD_USES_METADATA_PARTITION 已移至下方 Crypto 段统一声明，避免两处重复定义
+TARGET_COPY_OUT_VENDOR := vendor
+
+# Platform
+# zeekr 实际平台为 sm8475 (骁龙 8+ Gen1, Waipio)。
+# 注意：taro 是 SM8450 (骁龙 8 Gen1) 的平台代号，与 zeekr 不符。
+# 但 OrangeFox 16.0 的 vendor/twrp 配置中硬编码引用 taro，
+# 且 SM8475 与 SM8450 共享 Adreno 730 GPU、相同 SMMU/ACPI 表，
+# 实际 recovery 构建不区分两者。保持 taro 以兼容 OF 上游。
+TARGET_BOARD_PLATFORM := taro
+TARGET_BOOTLOADER_BOARD_NAME := taro
+QCOM_BOARD_PLATFORMS += taro
+
+# Properties
+TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
+
+# Recovery
+TARGET_RECOVERY_QCOM_RTC_FIX := true
+TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
+TARGET_RECOVERY_DEVICE_DIRS += $(DEVICE_PATH)
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
+RECOVERY_SDCARD_ON_DATA := true
 
-# ===== 加密（Motorola SM8475 FBE）=====
-BOARD_USES_METADATA_PARTITION := true
-BOARD_USES_QCOM_FBE_DECRYPTION := true
+# Verified Boot
+BOARD_AVB_ENABLE := true
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
+BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
+BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA4096
+BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 1
+BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
+BOARD_AVB_VBMETA_SYSTEM := product system system_ext
+BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
+BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA4096
+BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
+BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
+
+# Crypto —— Android 16 FBE v2 硬件级解密
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
+BOARD_USES_QCOM_FBE_DECRYPTION := true
 TW_USE_FSCRYPT_POLICY := 2
-# 安卓15起 FBE 默认使用硬件包裹密钥(wrapped key)，不开这项 A16 的 /data 解不开
-TW_INCLUDE_CRYPTO_WRAPPED_KEY := true
-# FBE v2 解密需等 QSEE listener 注册完成再解包密钥，并挂 binderfs 供 HAL/servicemanager 使用
-TARGET_USES_BINDERFS := true
-WAIT_FOR_QSEECOM := true
+TW_FIX_DECRYPTION_ON_DATA_MEDIA := true
+
+# 高通 TEE 阻塞等待开关：这是解密超时与 keymint 段错误的根因治理项。
+# 不开启时 keymint/gatekeeper 会在 QSEECom listener 尚未注册完成时就发起 TEE 调用，
+# 拿到空的 handle 后解引用 -> SIGSEGV；或一直等到 vold 超时 -> 报“密码错误”。
+# 开启后 keymaster/keymint 客户端会阻塞直到 qseecomd 就绪再继续。
 TARGET_KEYMASTER_WAIT_FOR_QSEE := true
+WAIT_FOR_QSEECOM := true
 
-# ===== Recovery 基础 =====
-# 不能开 BOARD_EXCLUDE_KERNEL_FROM_RECOVERY_IMAGE：
-# 摩托 A/B 机型保留了独立 recovery 分区（fox_zeekr.mk 里
-# OF_AB_DEVICE_WITH_RECOVERY_PARTITION := 1 也印证了这点），
-# 不带内核的 recovery.img 刷进去起不来。
-TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
+# BinderFS：Android 12+ 的 recovery 中 servicemanager/keystore2/AIDL HAL 全部走 binder，
+# 必须有 /dev/binderfs 提供 binder 设备节点，否则 servicemanager 起不来，AIDL 链整条断掉。
+TARGET_USES_BINDERFS := true
 
-# ===== 内核模块加载（运行时 insmod，见 init.recovery.qcom.rc）=====
-# 加载 recovery/root/vendor/lib/modules 下的驱动（显示 msm_drm.ko、触摸 goodix/stmicro 等）。
-# 重要：A16 的 soong 会把 TW_LOAD_VENDOR_MODULES 的值（空格分隔的 .ko 列表）直接当成
-# 编译源文件参数传给 clang，导致 "no such file or directory: xxx.ko" 构建失败（见 run 31236604198）。
-# 因此不再用 TW_LOAD_VENDOR_MODULES 编译期注入，改为在
-# recovery/root/init.recovery.qcom.rc 的 on boot 段用 insmod 运行时加载（见该文件）。
-# 只加载 recovery 真正需要、文件确实存在的 19 个；其余 283 个属于 vendor_dlkm，
-# recovery 阶段挂不到那个分区，列了只会刷失败日志。
-TW_INCLUDE_FASTBOOTD := true
-TW_SKIP_ADDITIONAL_FSTAB := true
-TARGET_RECOVERY_UI_MARGIN_HEIGHT := 90
+# metadata 分区承载 FBE v2 的 metadata_encryption 密钥目录，解密第一步就要读它
+BOARD_USES_METADATA_PARTITION := true
 
-# ===== 工具 =====
-TW_INCLUDE_LIBRESETPROP := true
-TW_INCLUDE_LPDUMP := true
-TW_INCLUDE_LPTOOLS := true
+# TWRP Configuration
+TW_DEVICE_VERSION := zeekr
+TW_THEME := portrait_hd
+TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_INCLUDE_REPACKTOOLS := true
 TW_INCLUDE_RESETPROP := true
-
-# ===== TWRP 显示（内屏 1080x2400 竖屏）=====
-# 亮度节点需按实机 sysfs 调整，下面为常用猜测值
-TW_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
-TW_DEFAULT_BRIGHTNESS := 1023
-TW_MAX_BRIGHTNESS := 2047
-TW_THEME := portrait_hdpi
-TW_NO_SCREEN_BLANK := true
-TW_SCREEN_BLANK_ON_BOOT := true
-TARGET_USES_VULKAN := true
-
-# ===== TWRP 文件系统支持 =====
-RECOVERY_SDCARD_ON_DATA := true
-TARGET_USES_MKE2FS := true
-TW_ENABLE_FS_COMPRESSION := true
-TW_INCLUDE_FUSE_EXFAT := true
-TW_INCLUDE_FUSE_NTFS := true
+TW_INCLUDE_LIBRESETPROP := true
 TW_INCLUDE_NTFS_3G := true
-TW_NO_EXFAT_FUSE := true
-
-# ===== 调试 =====
-TARGET_USES_LOGD := true
-TWRP_INCLUDE_LOGCAT := true
-TARGET_RECOVERY_DEVICE_MODULES += debuggerd
-TARGET_RECOVERY_DEVICE_MODULES += strace
-RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/debuggerd
-RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/strace
-
-# ===== 版本 =====
-PLATFORM_VERSION := 16
-PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
-PLATFORM_SECURITY_PATCH := 2025-05-01
-VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
-BOOT_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
-TW_DEVICE_VERSION := Motorola_Razr_40_Ultra
-
-# ===== 其它 TWRP 配置 =====
-TARGET_RECOVERY_QCOM_RTC_FIX := true
-TW_EXCLUDE_APEX := true
+TW_BACKUP_EXCLUSIONS := /data/fonts
+TW_NO_SCREEN_BLANK := true
+TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
+TW_MAX_BRIGHTNESS := 16380
+TW_DEFAULT_BRIGHTNESS := 16380
+TW_FRAMERATE := 120
+TW_HAS_EDL_MODE := true
+TW_CUSTOM_CPU_TEMP_PATH := /sys/class/thermal/thermal_zone39/temp
 TW_EXCLUDE_DEFAULT_USB_INIT := true
-TW_DEFAULT_LANGUAGE := en
-TW_EXTRA_LANGUAGES := true
-TW_USE_TOOLBOX := true
-TW_INCLUDE_ZSTD := true
-TW_INPUT_BLACKLIST := hbtp_vm
+TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file
+TW_SUPPORT_INPUT_AIDL_HAPTICS := true
+TW_SUPPORT_INPUT_AIDL_HAPTICS_FIX_OFF := true
+TW_INCLUDE_FASTBOOTD := true
+TW_NO_FLASH_CURRENT_TWRP := true
+TW_EXCLUDE_APEX := true
+TW_USE_SERIALNO_PROPERTY_FOR_DEVICE_ID := true
 
-# ===== 引入 OrangeFox 配置 =====
--include $(DEVICE_PATH)/fox_zeekr.mk
+# Debug flags
+TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := true
+
+# Namespace definition for librecovery_updater
+SOONG_CONFIG_NAMESPACES += ufsbsg
+SOONG_CONFIG_ufsbsg += ufsframework
+SOONG_CONFIG_ufsbsg_ufsframework := bsg
