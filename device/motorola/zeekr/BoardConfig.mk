@@ -118,7 +118,7 @@ TARGET_KEYMASTER_WAIT_FOR_QSEE := true
 # 摩托 A/B 机型保留了独立 recovery 分区（fox_zeekr.mk 里
 # OF_AB_DEVICE_WITH_RECOVERY_PARTITION := 1 也印证了这点），
 # 不带内核的 recovery.img 刷进去起不来。
-TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 
 # ===== 内核模块加载（运行时 insmod，见 init.recovery.qcom.rc）=====
 # 加载 recovery/root/vendor/lib/modules 下的驱动（显示 msm_drm.ko、触摸 goodix/stmicro 等）。
@@ -141,7 +141,7 @@ TW_INCLUDE_RESETPROP := true
 
 # ===== TWRP 显示（内屏 1080x2400 竖屏）=====
 # 亮度节点需按实机 sysfs 调整，下面为常用猜测值
-TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
+TW_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
 TW_DEFAULT_BRIGHTNESS := 1023
 TW_MAX_BRIGHTNESS := 2047
 TW_THEME := portrait_hdpi
