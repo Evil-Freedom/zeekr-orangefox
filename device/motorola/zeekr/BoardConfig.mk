@@ -120,13 +120,14 @@ TARGET_KEYMASTER_WAIT_FOR_QSEE := true
 # 不带内核的 recovery.img 刷进去起不来。
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 
-# 加载 recovery/root/vendor/lib/modules 下的驱动，顺序即依赖顺序。
-# 不开这项就没有 msm_drm.ko（显示）和 goodix/stmicro（触摸）—— 黑屏且没触摸。
-# 只列 recovery 真正需要、且文件确实存在的 19 个；原厂 modules.load 里
-# 另外 283 个属于 vendor_dlkm，recovery 阶段挂不到那个分区，列了只会刷失败日志。
-# 注意：make 的 := 赋值，值里不要加双引号，否则 soong 导出 JSON 时会把字面引号
-# 塞进 product_config.json 导致解析失败（Expecting ',' delimiter）
-TW_LOAD_VENDOR_MODULES := q6_notifier_dlkm.ko spf_core_dlkm.ko gpr_dlkm.ko adsp_loader_dlkm.ko q6_pdr_dlkm.ko snd_event_dlkm.ko msm_drm.ko mmi_annotate.ko mmi_info.ko bm_adsp_ulog.ko mmi_charger.ko mmi_relay.ko sensors_class.ko sx937x_multi.ko stmicro_mmi.ko goodix_brl_mmi.ko qti_glink_charger.ko mmi_sys_temp.ko qpnp_adaptive_charge.ko
+# ===== 内核模块加载（运行时 insmod，见 init.recovery.qcom.rc）=====
+# 加载 recovery/root/vendor/lib/modules 下的驱动（显示 msm_drm.ko、触摸 goodix/stmicro 等）。
+# 重要：A16 的 soong 会把 TW_LOAD_VENDOR_MODULES 的值（空格分隔的 .ko 列表）直接当成
+# 编译源文件参数传给 clang，导致 "no such file or directory: xxx.ko" 构建失败（见 run 31236604198）。
+# 因此不再用 TW_LOAD_VENDOR_MODULES 编译期注入，改为在
+# recovery/root/init.recovery.qcom.rc 的 on boot 段用 insmod 运行时加载（见该文件）。
+# 只加载 recovery 真正需要、文件确实存在的 19 个；其余 283 个属于 vendor_dlkm，
+# recovery 阶段挂不到那个分区，列了只会刷失败日志。
 TW_INCLUDE_FASTBOOTD := true
 TW_SKIP_ADDITIONAL_FSTAB := true
 TARGET_RECOVERY_UI_MARGIN_HEIGHT := 90

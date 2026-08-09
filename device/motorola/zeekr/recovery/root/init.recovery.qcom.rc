@@ -44,9 +44,10 @@ on fs
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
 
 on property:init.svc.fastbootd=running
-    # 模块由 TW_LOAD_VENDOR_MODULES 在启动早期统一加载，这里不再重复 insmod。
+    # 内核模块统一在 init.recovery.qcom.rc 的 on boot 段通过 insmod 加载，
+    # 不再依赖 TW_LOAD_VENDOR_MODULES（A16 soong 会把它当编译源文件导致构建失败）。
     # 原来这段里的 touchscreen_mmi.ko 和 sx937x_sar.ko 在 ramdisk 里根本不存在
-    # （实际文件名是 sx937x_multi.ko），insmod 失败会在 fastbootd 切换时卡顿。
+    # （实际文件名是 sx937x_multi.ko），这里不再 insmod 它们。
     setprop twrp.modules.loaded true
 
 on post-fs && property:init.svc.fastbootd=stopped
@@ -66,6 +67,28 @@ on boot
     # 先起 QSEE，注册 listener 后 KeyMint/Gatekeeper 才能绑定
     start qseecomd
     start health-hal-2-1
+    # 运行时加载 recovery 所需的 vendor 内核模块（显示/触摸/充电/音频等）。
+    # 顺序即模块依赖顺序（见 recovery/root/vendor/lib/modules/modules.load）。
+    # 注意：不再用 TW_LOAD_VENDOR_MODULES 编译期注入（A16 soong 会把它当源码导致构建失败）。
+    insmod /vendor/lib/modules/q6_notifier_dlkm.ko
+    insmod /vendor/lib/modules/spf_core_dlkm.ko
+    insmod /vendor/lib/modules/gpr_dlkm.ko
+    insmod /vendor/lib/modules/adsp_loader_dlkm.ko
+    insmod /vendor/lib/modules/q6_pdr_dlkm.ko
+    insmod /vendor/lib/modules/snd_event_dlkm.ko
+    insmod /vendor/lib/modules/msm_drm.ko
+    insmod /vendor/lib/modules/mmi_annotate.ko
+    insmod /vendor/lib/modules/mmi_info.ko
+    insmod /vendor/lib/modules/bm_adsp_ulog.ko
+    insmod /vendor/lib/modules/mmi_charger.ko
+    insmod /vendor/lib/modules/mmi_relay.ko
+    insmod /vendor/lib/modules/sensors_class.ko
+    insmod /vendor/lib/modules/sx937x_multi.ko
+    insmod /vendor/lib/modules/stmicro_mmi.ko
+    insmod /vendor/lib/modules/goodix_brl_mmi.ko
+    insmod /vendor/lib/modules/qti_glink_charger.ko
+    insmod /vendor/lib/modules/mmi_sys_temp.ko
+    insmod /vendor/lib/modules/qpnp_adaptive_charge.ko
 
 service set_permissive /system/bin/set_permissive.sh
     user root
