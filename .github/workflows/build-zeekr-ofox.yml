@@ -167,6 +167,25 @@ jobs:
             exit 1
           fi
 
+      - name: 🔍 诊断产品配置与 lunch
+        run: |
+          cd "$HOME/fox16"
+          echo "===== 设备树 PRODUCT 变量 ====="
+          grep -E "PRODUCT_CHECK_PREBUILT|PRODUCT_USE_DYNAMIC|PRODUCT_MODEL" device/motorola/zeekr/twrp_zeekr.mk device/motorola/zeekr/BoardConfig.mk 2>/dev/null
+          echo "===== source envsetup.sh ====="
+          source build/envsetup.sh
+          echo "===== lunch twrp_zeekr-bp2a-eng ====="
+          lunch twrp_zeekr-bp2a-eng 2>&1 | tee /tmp/lunch.log
+          rc=${PIPESTATUS[0]}
+          if [ "$rc" -ne 0 ]; then
+            echo "❌ lunch 失败 exit=$rc"
+            exit $rc
+          fi
+          echo "===== product_config.json 检查 ====="
+          cat out/target/product/zeekr/product_config.json 2>/dev/null | head -30 || echo "product_config.json 不存在"
+          echo "===== soong 变量 ====="
+          echo "PRODUCT_CHECK_PREBUILT_MAX_PAGE_SIZE=$(grep -o 'product_check_prebuilt_max_page_size[^,]*' out/target/product/zeekr/product_config.json 2>/dev/null || echo 未找到)"
+
       - name: 编译 OrangeFox (安卓16)
         run: |
           cd "$HOME/fox16"
